@@ -3,6 +3,9 @@ body {
   color: #111;
 }
 
+/**
+ * NAV
+ */
 #hamburger {
   position: fixed;
   display: flex;
@@ -12,6 +15,7 @@ body {
   flex-direction: column;
   width: 40px;
   height: 25px;
+  z-index: 10;
 }
 
 #hamburger span {
@@ -32,15 +36,27 @@ header {
 
 header nav {
   position: fixed;
+  display: none;
   left: 0;
-  top: 50px;
+  top: 0;
+  width: 90vw;
   height: 100vh;
-  background: #fffff2;
+  padding-top: 50px;
+  background: #ccc;
   overflow: auto;
   transition: transform .2s;
   transform: translateX(-101%);
 }
 
 header nav[aria-hidden="false"] {
+  display: block;
   transform: translateX(0);
+}
+
+/**
+ * FOOTER
+ */
+footer {
+  display: flex;
+  flex-direction: column;
 }

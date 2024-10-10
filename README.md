@@ -23,10 +23,12 @@ The process for creating CubeMart wasn't
 - Product image optimization
 
 ### TODO Dev
+- 404 page
 - ~~create initial db seed (random is fine for now)~~
 - set up mailtrap for use with nodemailer
 - ~~decide on templating engine~~
 - add 'reviewer' role to users after a single purchase
+- banner/advert for low-stock items (2-10)
 
 ### TODO Cleanup
 - refine db seed to be realistic (or just create the live database)

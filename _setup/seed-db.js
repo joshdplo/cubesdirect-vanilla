@@ -1,102 +1,132 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
+const sequelize = require('../config/db');
 const { faker } = require('@faker-js/faker');
-const User = require('../models/User');
-const Product = require('../models/Product');
-const Category = require('../models/Category');
-const Review = require('../models/Review');
-const Order = require('../models/Order');
-const Cart = require('../models/Cart');
+const { User, Product, Category, Cart, Order, Review, CartItem, OrderItem } = require('../models');
 
-// Connect to Mongo
-// @TODO investigate deprecation warnings if needed
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/cubemart');
+const seedDB = async () => {
+  console.log('Starting Database Seeding...');
+  try {
+    console.log('-> Syncing Database (drop + recreate tables)...');
+    await sequelize.sync({ force: true });
+    console.log('-> Sync Complete!');
 
-async function seedUsers() {
-  const users = [];
-  for (let i = 0; i < 10; i++) {
-    users.push({
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      isVerified: faker.datatype.boolean(),
-      roles: ['user'],
-      addresses: [
-        {
-          name: faker.animal.bird(),
+    // Create users
+    console.log('-> Seeding Users...');
+    const users = [];
+    for (let i = 0; i < 10; i++) {
+      const user = await User.create({
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+        isVerified: faker.datatype.boolean(),
+        addresses: [
+          {
+            name: faker.animal.bird(),
+            street: faker.location.streetAddress(),
+            city: faker.location.city(),
+            state: faker.location.state(),
+            zip: faker.location.zipCode(),
+            country: faker.location.country(),
+            phone: faker.phone.number({ style: 'international' }),
+          }
+        ]
+      });
+      users.push(user);
+    }
+    console.log('-> Users complete!');
+
+    // Create categories
+    console.log('-> Seeding Categories...');
+    const categories = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
+      name: category.toLowerCase(),
+      description: faker.lorem.sentence()
+    }));
+    await Category.bulkCreate(categories);
+    console.log('-> Categories complete!');
+
+    // Create Products
+    console.log('-> Seeding Products...');
+    const products = [];
+    for (let i = 0; i < 30; i++) {
+      const productName = `${faker.commerce.productName()} Cube`;
+
+      const product = await Product.create({
+        name: productName,
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
+        stock: faker.number.int({ min: 0, max: 100 }),
+        category: faker.helpers.arrayElement(categories)._id,
+        images: [faker.image.urlPicsumPhotos()],
+        featured: faker.datatype.boolean(),
+        categoryId: categories[Math.floor(Math.random() * categories.length)].id, // Assign random category
+      });
+      products.push(product);
+    }
+    console.log('-> Products complete!');
+
+    // Create Carts and associate Products with them
+    console.log('-> Seeding Carts (with associated Products)...');
+    for (const user of users) {
+      const cart = await Cart.create({ userId: user.id });
+
+      for (let i = 0; i < 3; i++) {
+        const product = products[Math.floor(Math.random() * products.length)];
+        await cart.addProduct(product, {
+          through: {
+            quantity: faker.number.int({ min: 1, max: 5 }),
+            price: product.price
+          }
+        });
+      }
+    }
+    console.log('-> Carts complete!');
+
+    // Create Orders and associate Prodcuts with them
+    console.log('-> Seeding Orders (with associated Products)...');
+    for (const user of users) {
+      const order = await Order.create({
+        userId: user.id,
+        totalAmount: faker.commerce.price(50, 300, 2),
+        paymentStatus: 'Paid',
+        orderStatus: 'Delivered',
+        deliveryAddress: {
           street: faker.location.streetAddress(),
           city: faker.location.city(),
           state: faker.location.state(),
           zip: faker.location.zipCode(),
           country: faker.location.country(),
-          phone: faker.phone.number({ style: 'international' }),
         }
-      ]
-    });
+      });
+
+      for (let i = 0; i < 3; i++) {
+        const product = products[Math.floor(Math.random() * products.length)];
+        await order.addProduct(product, {
+          through: {
+            quantity: faker.number.int({ min: 1, max: 5 }),
+            price: product.price
+          }
+        })
+      }
+    }
+    console.log('-> Orders complete!');
+
+    // Create Reviews
+    for (const product of products) {
+      for (let i = 0; i < 3; i++) {
+        const user = users[Math.floor(Math.random() * users.length)];
+        await Review.create({
+          userId: user.id,
+          productId: product.id,
+          rating: faker.number.int({ min: 1, max: 5 }),
+          comment: faker.lorem.sentences(2)
+        })
+      }
+    }
+
+  } catch (err) {
+    console.error('ERROR seeding database:', error);
+  } finally {
+    sequelize.close();
   }
-
-  await User.insertMany(users);
-  console.log('-> Seeded Users');
 }
 
-async function seedCategories() {
-  const categories = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
-    name: category,
-    description: faker.lorem.sentence()
-  }));
-
-  await Category.insertMany(categories);
-  console.log('-> Seeded Categories');
-}
-
-async function seedProducts() {
-  const categories = await Category.find();
-  const products = [];
-
-  for (let i = 0; i < 50; i++) {
-    const productName = `${faker.commerce.productName()} Cube`;
-    products.push({
-      name: productName,
-      description: faker.commerce.productDescription(),
-      price: faker.commerce.price(),
-      stock: faker.number.int({ min: 0, max: 100 }),
-      category: faker.helpers.arrayElement(categories)._id,
-      images: [faker.image.urlPicsumPhotos()],
-    });
-  }
-
-  await Product.insertMany(products);
-  console.log('-> Seeded Products');
-}
-
-async function seedReviews() {
-  const users = await User.find();
-  const products = await Product.find();
-  const reviews = [];
-
-  for (let i = 0; i < 30; i++) {
-    reviews.push({
-      user: faker.helpers.arrayElement(users)._id,
-      product: faker.helpers.arrayElement(products)._id,
-      rating: faker.number.int({ min: 1, max: 5 }),
-      comment: faker.lorem.sentence()
-    });
-  }
-
-  await Review.insertMany(reviews);
-  console.log('-> Seeded Reviews');
-}
-
-async function seedAll() {
-  console.log('Starting Database Seeding...');
-
-  await mongoose.connection.dropDatabase();
-  await seedUsers();
-  await seedCategories();
-  await seedProducts();
-  await seedReviews();
-  mongoose.connection.close();
-
-  console.log('Finished Database Seeding!');
-}
-
-seedAll().catch((err) => console.error(err));
+seedDB();

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include ('../partials/header') %>
+
+  <main>
+    <h1>Login</h1>
+    <form id="login">
+      <fieldset>
+        <label for="email-login">Email</label>
+        <input type="email" name="email" id="email-login">
+      </fieldset>
+      <fieldset>
+        <label for="password-login"></label>
+        <input type="password" name="password" id="password-login">
+      </fieldset>
+      <input type="submit" value="Log in">
+    </form>
+    <hr>
+    <p>Don't have a <%= global.SITE_NAME %> account? <a href="/register">Register here</a>.</p>
+  </main>
+
+  <%- include ('../partials/footer') %>
+  <%- include ('../partials/end') %>
+</body>
+
+</html>

@@ -9,11 +9,8 @@
   <%- include ('../partials/header') %>
 
   <main>
-    <div class="products">
-      <% for( let i = 0; i < featuredProducts.length; i++ ) { %>
-      <div class="product featured"><%= featuredProducts[i].name %></div>
-      <% } %>
-    </div>
+    <h1>Error <%= error.status%></h1>
+    <pre><%= error.message%></pre>
   </main>
 
   <%- include ('../partials/footer') %>

@@ -1,42 +1,35 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const User = require('./User');
 
-const OrderSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  items: [
-    {
-      product: {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true
-      },
-      quantity: {
-        type: Number,
-        required: true
-      }
-    }
-  ],
+const Order = sequelize.define('Order', {
   totalAmount: {
-    type: Number,
-    required: true
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
   },
   paymentStatus: {
-    type: String,
-    enum: ['Pending', 'Completed', 'Failed'],
-    default: 'Pending'
+    type: DataTypes.STRING,
+    defaultValue: 'Pending' // 'Pending', 'Completed', 'Failed'
   },
   orderStatus: {
-    type: String,
-    enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
-    default: 'Processing'
+    type: DataTypes.STRING,
+    defaultValue: 'Processing' // 'Processing', 'Shipped', 'Delivered', 'Cancelled'
   },
   deliveryAddress: {
-    type: String
+    type: DataTypes.JSON,
+    allowNull: false,
+    validate: {
+      isValidStructure(value) {
+        value.forEach((address) => {
+          if (!address.street || !address.city || !address.state || !address.zip || !address.country) {
+            throw new Error('Invalid address format. Expected { street, city, state, zip, country }')
+          }
+        })
+      }
+    }
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Order', OrderSchema);
+Order.belongsTo(User, { foreignKey: 'userId' });
+
+module.exports = Order;

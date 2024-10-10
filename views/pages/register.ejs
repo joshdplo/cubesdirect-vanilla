@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include ('../partials/header') %>
+
+  <main>
+    <h1>Register</h1>
+    <form id="register">
+      <fieldset>
+        <label for="email-register">Email</label>
+        <input type="email" name="email" id="email-register">
+      </fieldset>
+      <fieldset>
+        <label for="password-register"></label>
+        <input type="password" name="password" id="password-register">
+      </fieldset>
+      <input type="submit" value="Register">
+    </form>
+  </main>
+
+  <%- include ('../partials/footer') %>
+  <%- include ('../partials/end') %>
+</body>
+
+</html>

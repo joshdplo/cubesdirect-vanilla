@@ -1,58 +1,70 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
 
-const UserSchema = new Schema({
+const User = sequelize.define('User', {
   email: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
     unique: true,
-    lowercase: true
+    validate: {
+      isEmail: true
+    }
   },
   password: {
-    type: String,
-    required: true
+    type: DataTypes.STRING,
+    allowNull: false
   },
   isVerified: {
-    type: Boolean,
-    default: false
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   },
   roles: {
-    type: [String], //['user', 'reviewer', 'admin']
-    default: ['user']
+    type: DataTypes.JSON, //['user', 'reviewer', 'admin']
+    defaultValue: ['user']
   },
-  addresses: [
-    {
-      name: String,
-      street: String,
-      city: String,
-      state: String,
-      zip: String,
-      country: String,
-      phone: String
+  addresses: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    validate: {
+      isValidStructure(value) {
+        if (!Array.isArray(value)) {
+          throw new Error('Addresses must be an array.');
+        }
+        value.forEach((address) => {
+          if (!address.name || !address.street || !address.city || !address.state || !address.zip || !address.country || !address.phone) {
+            throw new Error('Invalid address format. Expected { name, street, city, state, zip, country, phone }')
+          }
+        })
+      }
     }
-  ],
-  orders: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Order'
-    }
-  ],
+    // {
+    //   name: String,
+    //   street: String,
+    //   city: String,
+    //   state: String,
+    //   zip: String,
+    //   country: String,
+    //   phone: String
+    // }
+  },
   resetPasswordToken: {
-    type: String,
-    default: ''
+    type: DataTypes.STRING,
+    defaultValue: ''
   },
   resetPasswordExpires: {
-    type: Date,
-    default: Date.now
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+    //@TODO: check that this defaultValue is correct - link below
+    // https://sequelize.org/docs/v7/models/data-types/#dates
   },
   failedLoginAttempts: {
-    type: Number,
-    default: 0
+    type: DataTypes.TINYINT,
+    defaultValue: 0
   },
   isLocked: {
-    type: Boolean,
-    default: false
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = User;

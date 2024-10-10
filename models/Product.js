@@ -1,38 +1,40 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const Category = require('./Category');
 
-const ProductSchema = new Schema({
+const Product = sequelize.define('Product', {
   name: {
-    type: String,
-    required: true,
-    unique: true
+    type: DataTypes.STRING,
+    allowNull: false
   },
   description: {
-    type: String,
-    required: true
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   price: {
-    type: Number,
-    required: true
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
   },
   discountPrice: {
-    type: Number
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true
   },
   stock: {
-    type: Number,
-    required: true
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   },
-  category: {
-    type: Schema.Types.ObjectId,
-    ref: 'Category'
+  images: {
+    type: DataTypes.JSON,
+    allowNull: false
   },
-  images: [String], //array of image URLs
-  reviews: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Review'
-    }
-  ]
+  featured: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Product', ProductSchema);
+Product.belongsTo(Category, { foreignKey: 'categoryId' });
+Category.hasMany(Product, { foreignKey: 'categoryId' });
+
+module.exports = Product;

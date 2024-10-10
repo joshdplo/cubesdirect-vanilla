@@ -1,28 +1,18 @@
 // Header Mock
-const Header = {
-  isActive: false, //document.windowWidth > xxx etc. for the desktop, skipping for now FIX IT IN POST
+function header() {
+  const hamburger = document.querySelector('#hamburger');
+  const menu = document.querySelector('header nav');
 
-  elements: {
-    hamburger: document.querySelector('#hamburger'),
-    menu: document.querySelector('header nav')
-  },
-
-  onHamburgerClick: () => {
-    const menuIsHidden = Header.elements.menu.getAttribute('aria-hidden') === 'true';
-    Header.elements.menu.setAttribute('aria-hidden', menuIsHidden ? 'false' : 'true');
-  },
-
-  addEventListeners: () => {
-    Header.elements.hamburger.addEventListener('click', Header.onHamburgerClick);
-  },
-
-  init: () => {
-    Header.addEventListeners();
-  }
+  hamburger.addEventListener('click', () => {
+    const isHidden = menu.getAttribute('aria-hidden') === 'true';
+    hamburger.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    menu.setAttribute('aria-hidden', isHidden ? 'false' : 'true');
+  });
 }
 
 // DOM Loaded
 document.addEventListener('DOMContentLoaded', function onDOMLoad() {
   console.log(`-> script.js`);
-  Header.init();
+
+  header();
 });

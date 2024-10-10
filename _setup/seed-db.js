@@ -1,7 +1,14 @@
 require('dotenv').config();
 const sequelize = require('../config/db');
 const { faker } = require('@faker-js/faker');
-const { User, Product, Category, Cart, Order, Review, CartItem, OrderItem } = require('../models');
+const User = require('../models/User');
+const Product = require('../models/Product');
+const Category = require('../models/Category');
+const Cart = require('../models/Cart');
+const Order = require('../models/Order');
+const Review = require('../models/Review');
+const CartItem = require('../models/CartItem');
+const OrderItem = require('../models/OrderItem');
 
 const seedDB = async () => {
   console.log('Starting Database Seeding...');
@@ -110,6 +117,7 @@ const seedDB = async () => {
     console.log('-> Orders complete!');
 
     // Create Reviews
+    console.log('-> Seeding Reviews...');
     for (const product of products) {
       for (let i = 0; i < 3; i++) {
         const user = users[Math.floor(Math.random() * users.length)];
@@ -121,10 +129,11 @@ const seedDB = async () => {
         })
       }
     }
-
+    console.log('-> Reviews complete!');
   } catch (err) {
-    console.error('ERROR seeding database:', error);
+    console.error('ERROR seeding database:', err);
   } finally {
+    console.log('Completed Database Seeding!');
     sequelize.close();
   }
 }

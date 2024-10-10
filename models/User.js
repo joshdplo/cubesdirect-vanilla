@@ -26,11 +26,12 @@ const User = sequelize.define('User', {
     type: DataTypes.JSON,
     allowNull: true,
     validate: {
-      isValidStructure(value) {
+      isValidUserAddresses(value) {
         if (!Array.isArray(value)) {
           throw new Error('Addresses must be an array.');
         }
         value.forEach((address) => {
+          //@TODO: ensure these objects values are strings
           if (!address.name || !address.street || !address.city || !address.state || !address.zip || !address.country || !address.phone) {
             throw new Error('Invalid address format. Expected { name, street, city, state, zip, country, phone }')
           }

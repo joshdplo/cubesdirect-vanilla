@@ -19,12 +19,11 @@ const Order = sequelize.define('Order', {
     type: DataTypes.JSON,
     allowNull: false,
     validate: {
-      isValidStructure(value) {
-        value.forEach((address) => {
-          if (!address.street || !address.city || !address.state || !address.zip || !address.country) {
-            throw new Error('Invalid address format. Expected { street, city, state, zip, country }')
-          }
-        })
+      isValidOrderDeliveryAddress(value) {
+        //@TODO: ensure these objects values are strings
+        if (!value.street || !value.city || !value.state || !value.zip || !value.country) {
+          throw new Error('Invalid address format. Expected { street, city, state, zip, country }');
+        }
       }
     }
   }

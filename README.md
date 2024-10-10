@@ -18,18 +18,22 @@ The process for creating CubeMart wasn't
 
 #### Node
 - Basic authentication with JWT
+- Introduction to SQLite via Sequelize
+- Migrating from MongoDB/Mongoose to SQLite/Sequelize
+- Introduction to database seeding with faker.js (both mongodb and sqlite)
 
 #### Front End
 - Product image optimization
 
 ### TODO Dev
-- 404 page
 - ~~create initial db seed (random is fine for now)~~
-- set up mailtrap for use with nodemailer
 - ~~decide on templating engine~~
+- ~~migrate models and db code from mongodb/mongoose to sqlite/sequelize~~
+- better error handling in server.js, test non-404 errors
+- set up mailtrap for use with nodemailer
 - add 'reviewer' role to users after a single purchase
 - banner/advert for low-stock items (2-10)
 
 ### TODO Cleanup
-- refine db seed to be realistic (or just create the live database)
-- change db to sqlite???
+- create JSON files for live DB seed (and update seed file)
+  - include correct product items

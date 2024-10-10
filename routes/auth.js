@@ -182,3 +182,5 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).send('Server error on reset-password');
   }
 });
+
+module.exports = router;

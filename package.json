@@ -3,7 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run dev",
+    "dev": "nodemon server.js"
+  },
+  "nodemonConfig": {
+    "ext": "js,ejs",
+    "ignore": [
+      "_setup/**",
+      "src/**"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -12,6 +20,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.1",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
@@ -19,6 +28,7 @@
     "nodemailer": "^6.9.15"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.0.3"
+    "@faker-js/faker": "^9.0.3",
+    "nodemon": "^3.1.7"
   }
 }

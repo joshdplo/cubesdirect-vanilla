@@ -11,13 +11,16 @@ const NAME = process.env.NAME || 'New Server';
 const JWT_SECRET = process.env.JWT_SECRET || 'changeme';
 const JWT_EXPIRATION = '1h';
 
-// @route   POST api/auth/register
-// @desc    Register New User + Send Verification Email
-router.post('/register', async (req, res) => {
+// Register
+//@TODO: validate user data
+exports.authRegister = async (req, res, next) => {
   const { email, password } = req.body;
 
   // Make sure we received email and password
-  if (!email || !password) return res.status(500).json({ msg: 'Email and/or password values missing for register' });
+  if (!email || !password) {
+    res.status(500);
+    next();
+  }
 
   try {
     // Check if User Exists
@@ -55,18 +58,22 @@ router.post('/register', async (req, res) => {
     };
 
     transporter.sendMail(mailOptions, (err) => {
-      if (err) return res.status(500).json({ msg: 'Verification email could not be sent' });
+      if (err) {
+        res.status(500);
+        next();
+      }
+
       res.json({ msg: 'Verification Link sent to email' });
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error on register post');
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
   }
-});
+};
 
-// @route   GET api/auth/verify-email/:token
-// @desc    Verify user's email using token
-router.get('/verify-email/:token', async (req, res) => {
+// Verify Email
+exports.authVerifyEmail = async (req, res, next) => {
   try {
     const { token } = req.params;
     const decoded = jwt.verify(token, JWT_SECRET);
@@ -81,19 +88,23 @@ router.get('/verify-email/:token', async (req, res) => {
     await user.save();
 
     res.json({ msg: 'Email successfully verified' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error on verify-email');
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
   }
-});
+};
 
-// @route   POST api/auth/login
-// @desc    Authenticate user & get token
-router.post('/login', async (req, res) => {
+// Login
+//@TODO: validate user data
+exports.authLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
   // Make sure we received email and password
-  if (!email || !password) return res.status(500).json({ msg: 'Email and/or password values missing for login' });
+  if (!email || !password) {
+    res.status(500);
+    next();
+  }
 
   try {
     // Check if user exists
@@ -133,19 +144,23 @@ router.post('/login', async (req, res) => {
       if (err) throw err;
       res.json({ token });
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error on login');
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
   }
-});
+};
 
-// @route   POST api/auth/reset-password
-// @desc    Generate password reset link
-router.post('/reset-password', async (req, res) => {
+// REset Password
+//@TODO: validate user data
+exports.authResetPassword = async (req, res, next) => {
   const { email } = req.body;
 
   // Make sure we received email
-  if (!email) return res.status(500).json({ msg: 'Email value missing for reset-password' });
+  if (!email) {
+    res.status(500);
+    next();
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -174,13 +189,18 @@ router.post('/reset-password', async (req, res) => {
     };
 
     transporter.sendMail(mailOptions, (err) => {
-      if (err) return res.status(500).json({ msg: 'Password Reset email could not be sent' });
+      if (err) {
+        res.status(500);
+        next();
+      }
+
       res.json({ msg: 'Password Reset Link sent to email' });
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error on reset-password');
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
   }
-});
+};
 
 module.exports = router;

@@ -13,16 +13,17 @@
     <form id="login">
       <fieldset>
         <label for="email-login">Email</label>
-        <input type="email" name="email" id="email-login">
+        <input type="email" name="email" id="email-login" autocomplete="email">
       </fieldset>
       <fieldset>
         <label for="password-login"></label>
         <input type="password" name="password" id="password-login">
       </fieldset>
-      <input type="submit" value="Log in">
+      <div class="error-text"></div>
+      <input type="submit" value="Log in" id="submit-login">
     </form>
     <hr>
-    <p>Don't have a <%= global.SITE_NAME %> account? <a href="/register">Register here</a>.</p>
+    <p>Don't have an account for <%= global.SITE_NAME %>? <a href="/register">Register here</a>.</p>
   </main>
 
   <%- include ('../partials/footer') %>

@@ -1,25 +1,26 @@
 require('dotenv').config();
 const express = require('express');
-const helmet = require('helmet');
+// const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 const app = express();
 
-const globals = require('./globals');
-const stringUtils = require('./util/string-utils');
-const categoryJSON = require('./data/categories.json');
 
 // Connect to DB
 require('./config/db');
 
 // Middlewares
-app.use(helmet());
+// app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static('./public'));
 
 // Locals
-app.locals.stringUtils = stringUtils;
-app.locals.categoryData = categoryJSON;
-app.locals.global = globals;
+app.locals.stringUtils = require('./util/string-utils');
+app.locals.categoryData = require('./data/categories.json');
+app.locals.global = require('./globals');
 app.locals.title = null;
+app.locals.isAuthenticated = false; // needed for error page (overridden by checkAuth middleware)
+app.use(require('./middlewares/checkAuth'));
 
 // Views
 app.set('view engine', 'ejs');
@@ -44,11 +45,11 @@ app.use((error, req, res, next) => {
   if (error.status === 404) {
     res.status(404).render('pages/404', { error });
   } else {
-    res.status(error.status).render('pages/error', { error })
+    res.status(error.status || 500).render('pages/error', { error })
   }
 });
 
 // Server Start
 const PORT = process.env.PORT || 5000;
-const NAME = process.env.NAME || 'New Server';
+const NAME = process.env.NAME;
 app.listen(PORT, () => console.log(`${NAME} Server running on port ${PORT}`));

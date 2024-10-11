@@ -1,4 +1,5 @@
-module.exports = {
+//@TODO: make this util file project-wide
+const stringUtils = {
   // Capitalize first word
   capitalize: str => (str && str[0].toUpperCase() + str.slice(1)) || "",
 

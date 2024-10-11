@@ -13,7 +13,11 @@
     <%- include ('./category-nav') %>
   </nav>
   <div class="nav-main_right">
-    <a href="/login">User</a>
+    <% if (isAuthenticated) { %>
+    <a href="/account">Account</a>
+    <% } else { %>
+    <a href="/login">Log In</a>
+    <% } %>
     <a href="/cart">
       Cart
       <span class="nav-main_cart"></span>

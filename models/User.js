@@ -27,6 +27,7 @@ const User = sequelize.define('User', {
     allowNull: true,
     validate: {
       isValidUserAddresses(value) {
+        if (!value) return;
         if (!Array.isArray(value)) {
           throw new Error('Addresses must be an array.');
         }

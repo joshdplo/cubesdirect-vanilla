@@ -6,7 +6,7 @@ const Review = require('../models/Review');
 const Order = require('../models/Order');
 const OrderItem = require('../models/OrderItem');
 const Cart = require('../models/Cart');
-const CartItem = require('../models/Cart');
+const CartItem = require('../models/CartItem');
 
 async function syncDB() {
   await sequelize.sync({ force: true }); // force table drop + recreate

@@ -13,13 +13,22 @@
     <form id="register">
       <fieldset>
         <label for="email-register">Email</label>
-        <input type="email" name="email" id="email-register">
+        <input type="email" name="email" id="email-register" autocomplete="email">
       </fieldset>
       <fieldset>
-        <label for="password-register"></label>
+        <label for="password-register">Password</label>
         <input type="password" name="password" id="password-register">
       </fieldset>
-      <input type="submit" value="Register">
+      <fieldset>
+        <label for="password-register">Confirm Password</label>
+        <input type="password" name="password" id="password-register-confirm">
+      </fieldset>
+      <p>Password must be at least <b>8 characters</b>, contain at least <b>1 uppercase letter</b>, contain at
+        least
+        <b>1 lowercase letter</b>, and contain at least <b>1 number</b>.
+      </p>
+      <div class="error-text"></div>
+      <input type="submit" value="Register" id="submit-register">
     </form>
   </main>
 

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const sequelize = require('../config/db');
+const bcrypt = require('bcryptjs');
 const { faker } = require('@faker-js/faker');
 const User = require('../models/User');
 const Product = require('../models/Product');
@@ -21,9 +22,12 @@ const seedDB = async () => {
     console.log('-> Seeding Users...');
     const users = [];
     for (let i = 0; i < 10; i++) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(faker.internet.password(), salt);
+
       const user = await User.create({
         email: faker.internet.email(),
-        password: faker.internet.password(),
+        password: hashedPassword,
         isVerified: faker.datatype.boolean(),
         addresses: [
           {

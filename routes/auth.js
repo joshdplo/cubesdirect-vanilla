@@ -56,7 +56,7 @@ router.post('/register', async (req, res) => {
 
     transporter.sendMail(mailOptions, (err) => {
       if (err) return res.status(500).json({ msg: 'Verification email could not be sent' });
-      res.json({ msg: 'Password Reset Link sent to email' });
+      res.json({ msg: 'Verification Link sent to email' });
     });
   } catch (err) {
     console.error(err.message);

@@ -208,7 +208,7 @@ exports.authResetPassword = async (req, res, next) => {
 // Change Password
 //@TODO: implement change password
 exports.authChangePassword = async (req, res, next) => {
-  const { currentPassword, newPassword, newPasswordConfirm } = req.body;
+  const { userId, currentPassword, newPassword, newPasswordConfirm } = req.body;
 
   // Make sure passwords are valid
   //@TODO: move this to be re-usable
@@ -219,7 +219,7 @@ exports.authChangePassword = async (req, res, next) => {
   if (!validatedNewPassword.valid) return res.status(400).json({ error: validatedNewPassword.message });
 
   try {
-    const user = await User.findOne({ where: { id: req.user.id } });
+    const user = await User.findOne({ where: { id: userId || req.user.id } });
     if (!user) return res.status(400).json({ error: 'User does not exist' });
 
     const isCurrentPasswordMatch = await bcrypt.compare(currentPassword, user.password);

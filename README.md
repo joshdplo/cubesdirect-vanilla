@@ -29,12 +29,13 @@ The process for creating CubeMart wasn't
 - ~~create initial db seed (random is fine for now)~~
 - ~~decide on templating engine~~
 - ~~migrate models and db code from mongodb/mongoose to sqlite/sequelize~~
-- product slugs for URLs
-- better error handling in server.js, test non-404 errors
-- set up mailtrap for use with nodemailer
+- ~~better error handling in server.js, test non-404 errors~~
 - add 'reviewer' role to users after a single purchase
 - banner/advert for low-stock items (2-10)
 
 ### TODO Cleanup
+- global/shared validation: sequelize models, BE <-> FE user inputs, FE form input error messages  (typescript?)
+- product slugs for URLs
+- set up email functionality: verify, password reset,  (mailtrap via nodemailer)
 - create JSON files for live DB seed (and update seed file)
   - include correct product items

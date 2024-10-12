@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {
-  pageIndex,
-  pageRegister,
-  pageLogin,
-  pageResetPassword,
-  pageChangePassword,
-} = require('./controllers/pageController');
+const { pageIndex } = require('./controllers/pageController');
+const { productCategory } = require('./controllers/productController');
 const {
   authRegister,
   authVerifyEmail,
@@ -15,18 +10,23 @@ const {
   authChangePassword,
   authLogout
 } = require('./controllers/authController');
-const { accountPage } = require('./controllers/accountController');
-const { productCategory } = require('./controllers/productController');
+const {
+  accountPage,
+  accountRegister,
+  accountLogin,
+  accountResetPassword,
+  accountChangePassword,
+} = require('./controllers/accountController');
 
 // General
 router.get('/', pageIndex);
-router.get('/login', pageLogin);
-router.get('/register', pageRegister);
-router.get('/reset-password', pageResetPassword);
-router.get('/change-password', pageChangePassword);
 
 // Account
+router.get('/login', accountLogin);
+router.get('/register', accountRegister);
 router.get('/account', accountPage);
+router.get('/account/reset-password', accountResetPassword);
+router.get('/account/change-password', accountChangePassword);
 
 // Products
 router.get('/category/:name', productCategory);

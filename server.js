@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -9,7 +9,7 @@ const app = express();
 require('./config/db');
 
 // Middlewares
-// app.use(helmet());
+app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('./public'));

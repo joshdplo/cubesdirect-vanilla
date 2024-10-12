@@ -208,7 +208,42 @@ exports.authResetPassword = async (req, res, next) => {
 // Change Password
 //@TODO: implement change password
 exports.authChangePassword = async (req, res, next) => {
-  res.status(500).json({ error: 'implement me' });
+  const { currentPassword, newPassword, newPasswordConfirm } = req.body;
+
+  // Make sure passwords are valid
+  //@TODO: move this to be re-usable
+  const validatedCurrentPassword = stringUtils.validatePasswords(currentPassword, currentPassword);
+  const validatedNewPassword = stringUtils.validatePasswords(newPassword, newPasswordConfirm);
+
+  if (!validatedCurrentPassword.valid) return res.status(400).json({ error: validatedCurrentPassword.message });
+  if (!validatedNewPassword.valid) return res.status(400).json({ error: validatedNewPassword.message });
+
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    if (!user) return res.status(400).json({ error: 'User does not exist' });
+
+    const isCurrentPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isCurrentPasswordMatch) return res.status(400).json({ error: 'Current password does not match' });
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Check if new pass is same as old pass
+    const isDuplicatePassword = await bcrypt.compare(user.password, hashedPassword);
+    if (isDuplicatePassword) return res(400).json({ error: 'New password can not be the same as current password' });
+
+    // Save new pass
+    user.password = hashedPassword;
+    await user.save();
+
+    // Log the user out and send json with redirect key
+    res.clearCookie('token');
+    return res.json({ success: true, redirect: '/login', message: 'Password change successful' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error });
+  }
 };
 
 // Logout (GET)

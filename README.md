@@ -34,6 +34,8 @@ The process for creating CubeMart wasn't
 - banner/advert for low-stock items (2-10)
 
 ### TODO Cleanup
+- hamburger thick verts with 1-2px border radius - sharp, subtle drop shadows
+- incorporate very sharp, subtle drop shadows in the UI to feel more cubey
 - global/shared validation: sequelize models, BE <-> FE user inputs, FE form input error messages  (typescript?)
 - product slugs for URLs
 - set up email functionality: verify, password reset,  (mailtrap via nodemailer)

@@ -3,7 +3,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const app = express();
-
+const { getUser } = require('./middlewares/authMiddleware');
 
 // Connect to DB
 require('./config/db');
@@ -19,8 +19,8 @@ app.locals.stringUtils = require('./util/string-utils');
 app.locals.categoryData = require('./data/categories.json');
 app.locals.global = require('./globals');
 app.locals.title = null;
-app.locals.isAuthenticated = false; // needed for error page (overridden by checkAuth middleware)
-app.use(require('./middlewares/checkAuth'));
+app.locals.user = null; // needed for error page (overridden by getUser middleware)
+app.use(getUser);
 
 // Views
 app.set('view engine', 'ejs');

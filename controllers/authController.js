@@ -39,7 +39,7 @@ exports.authRegister = async (req, res, next) => {
     const newUser = await User.create({ email, password: hashedPassword });
 
     // Generate verification token
-    const verificationToken = jwt.sign({ id: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+    const verificationToken = jwt.sign({ id: newUser.id, email: newUser.email, roles: newUser.roles }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
     // Verification Email (PROD ONLY)
     //@TODO: mock this up with a modal in dev mode? ie. send the verification link through and have user click it
@@ -146,7 +146,7 @@ exports.authLogin = async (req, res, next) => {
     }
 
     // Create JWT Token
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+    const token = jwt.sign({ id: user.id, email: user.email, roles: user.roles }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
     // Set cookie and redirect
     res.cookie('token', token, { httpOnly: true });
@@ -170,7 +170,7 @@ exports.authResetPassword = async (req, res, next) => {
     if (!user) return res.status(400).json({ msg: 'User not found' });
 
     // Create reset tokeny and expiry
-    const resetToken = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '15m' });
+    const resetToken = jwt.sign({ id: user.id, email: user.email, roles: user.roles }, JWT_SECRET, { expiresIn: '15m' });
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
     await user.save();

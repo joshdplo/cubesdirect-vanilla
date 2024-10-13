@@ -31,8 +31,8 @@ The process for creating CubeMart wasn't
 - ~~migrate models and db code from mongodb/mongoose to sqlite/sequelize~~
 - ~~better error handling in server.js, test non-404 errors~~
 - ~~check that req.id is added/accessible to newly-registered users~~
-- make user data available to locals with checkAuth middleware (or new middleware if needed)
-  - currently, if a new account is registered, req.user.id is not available in the req.user object =/
+- ~~if a new account is registered, req.user.id is not available in the req.user object =/~~
+- ~~make user data available to locals with checkAuth middleware (or new middleware if needed)~~
 - add 'reviewer' role to users after a single purchase
 - banner/advert for low-stock items (1-5)
 

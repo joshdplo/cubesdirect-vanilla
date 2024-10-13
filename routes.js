@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { checkAuth } = require('./middlewares/authMiddleware');
 const { pageIndex } = require('./controllers/pageController');
 const {
   productCategory,
@@ -28,9 +29,9 @@ router.get('/', pageIndex);
 // Account
 router.get('/login', accountLogin);
 router.get('/register', accountRegister);
-router.get('/account', accountPage);
-router.get('/account/reset-password', accountResetPassword);
-router.get('/account/change-password', accountChangePassword);
+router.get('/account', checkAuth, accountPage);
+router.get('/account/reset-password', checkAuth, accountResetPassword);
+router.get('/account/change-password', checkAuth, accountChangePassword);
 
 // Products
 router.get('/category/:id', productCategory);

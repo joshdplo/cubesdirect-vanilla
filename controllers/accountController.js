@@ -29,8 +29,6 @@ exports.accountLogin = async (req, res, next) => {
 
 // Account Page (GET)
 exports.accountPage = async (req, res, next) => {
-  if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
-
   try {
     res.render('pages/account', {
       title: 'Account'
@@ -44,8 +42,6 @@ exports.accountPage = async (req, res, next) => {
 
 // Reset Password Page (GET)
 exports.accountResetPassword = async (req, res, next) => {
-  if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
-
   try {
     res.render('pages/reset-password', {
       title: 'Reset Password'
@@ -59,8 +55,6 @@ exports.accountResetPassword = async (req, res, next) => {
 
 // Change Password Page (GET)
 exports.accountChangePassword = async (req, res, next) => {
-  if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
-
   try {
     res.render('pages/change-password', {
       title: 'Update Password'

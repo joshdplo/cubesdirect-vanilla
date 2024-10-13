@@ -5,7 +5,7 @@ const User = require('../models/User');
 const stringUtils = require('../util/string-utils');
 
 // Helpers
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const isEmailEnabled = process.env.EMAIL_ENABLED === 'true';
 const NAME = process.env.NAME;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION = '1h';
@@ -39,11 +39,17 @@ exports.authRegister = async (req, res, next) => {
     const newUser = await User.create({ email, password: hashedPassword });
 
     // Generate verification token
-    const verificationToken = jwt.sign({ id: newUser.id, email: newUser.email, roles: newUser.roles }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+    const verificationToken = jwt.sign({
+      id: newUser.id,
+      email: newUser.email,
+      roles: newUser.roles,
+      isVerified: newUser.isVerified,
+      addresses: newUser.addresses
+    }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
     // Verification Email (PROD ONLY)
     //@TODO: mock this up with a modal in dev mode? ie. send the verification link through and have user click it
-    if (!isDevelopment) {
+    if (isEmailEnabled) {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -146,7 +152,13 @@ exports.authLogin = async (req, res, next) => {
     }
 
     // Create JWT Token
-    const token = jwt.sign({ id: user.id, email: user.email, roles: user.roles }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+    const token = jwt.sign({
+      id: user.id,
+      email: user.email,
+      roles: user.roles,
+      isVerified: user.isVerified,
+      addresses: user.addresses
+    }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
     // Set cookie and redirect
     res.cookie('token', token, { httpOnly: true });
@@ -170,7 +182,13 @@ exports.authResetPassword = async (req, res, next) => {
     if (!user) return res.status(400).json({ msg: 'User not found' });
 
     // Create reset tokeny and expiry
-    const resetToken = jwt.sign({ id: user.id, email: user.email, roles: user.roles }, JWT_SECRET, { expiresIn: '15m' });
+    const resetToken = jwt.sign({
+      id: user.id,
+      email: user.email,
+      roles: user.roles,
+      isVerified: user.isVerified,
+      addresses: user.addresses
+    }, JWT_SECRET, { expiresIn: '15m' });
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
     await user.save();

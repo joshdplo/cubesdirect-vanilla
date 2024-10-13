@@ -40,6 +40,19 @@ exports.accountPage = async (req, res, next) => {
   }
 };
 
+// Verify Email Page (GET)
+exports.accountVerifyEmail = async (req, res, next) => {
+  try {
+    res.render('pages/verify-email', {
+      title: 'Verify Email'
+    });
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
+};
+
 // Reset Password Page (GET)
 exports.accountResetPassword = async (req, res, next) => {
   try {

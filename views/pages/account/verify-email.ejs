@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include ('../partials/header') %>
+
+  <main>
+    <h1>Verify Email</h1>
+    <p>You should have received an email verification for your email address (<%= user.email %>). Click the link in the
+      email to verify your address. If you did not receive an email, check your spam folder or click the button below to
+      resend your verification email.</p>
+    <button id="resend-verification">Resend Email Verification</button>
+  </main>
+
+  <%- include ('../partials/footer') %>
+  <%- include ('../partials/end') %>
+</body>
+
+</html>

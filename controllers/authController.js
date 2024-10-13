@@ -10,7 +10,7 @@ const NAME = process.env.NAME;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION = '1h';
 
-// Register
+// Register (POST)
 exports.authRegister = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -36,9 +36,9 @@ exports.authRegister = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create new user
-    const newUser = User.create({ email, password: hashedPassword });
+    const newUser = await User.create({ email, password: hashedPassword });
 
-    // Generate email verification token
+    // Generate verification token
     const verificationToken = jwt.sign({ id: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 
     // Verification Email (PROD ONLY)
@@ -77,7 +77,7 @@ exports.authRegister = async (req, res, next) => {
   }
 };
 
-// Verify Email
+// Verify Email (GET?)
 //@TODO: implement verify email (this is a GET route)
 exports.authVerifyEmail = async (req, res, next) => {
   try {
@@ -101,7 +101,7 @@ exports.authVerifyEmail = async (req, res, next) => {
   }
 };
 
-// Login
+// Login (POST)
 exports.authLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -158,7 +158,7 @@ exports.authLogin = async (req, res, next) => {
   }
 };
 
-// Reset Password
+// Reset Password (POST)
 //@TODO: implement reset password
 exports.authResetPassword = async (req, res, next) => {
   const { email } = req.body;
@@ -205,8 +205,7 @@ exports.authResetPassword = async (req, res, next) => {
   }
 };
 
-// Change Password
-//@TODO: implement change password
+// Change Password (POST)
 exports.authChangePassword = async (req, res, next) => {
   const { userId, currentPassword, newPassword, newPasswordConfirm } = req.body;
 
@@ -231,7 +230,7 @@ exports.authChangePassword = async (req, res, next) => {
 
     // Check if new pass is same as old pass
     const isDuplicatePassword = await bcrypt.compare(user.password, hashedPassword);
-    if (isDuplicatePassword) return res(400).json({ error: 'New password can not be the same as current password' });
+    if (isDuplicatePassword) return res.status(400).json({ error: 'New password can not be the same as current password' });
 
     // Save new pass
     user.password = hashedPassword;

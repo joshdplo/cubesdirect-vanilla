@@ -1,6 +1,6 @@
 <ul>
   <% for( let index = 0; index < categoryData.length; index++ ) { %>
-  <li><a href="/category/<%= categoryData[index].name %>"><%= stringUtils.titleCase(categoryData[index].name) %></a>
+  <li><a href="/category/<%= categoryData[index].id %>"><%= stringUtils.titleCase(categoryData[index].name) %></a>
   </li>
   <% } %>
 </ul>

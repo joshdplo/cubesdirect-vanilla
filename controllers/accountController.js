@@ -1,7 +1,7 @@
 //@TODO: make util to render login page if not authenticated
 // if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
 
-// Register Page
+// Register Page (GET)
 exports.accountRegister = async (req, res, next) => {
   try {
     res.render('pages/register', {
@@ -14,7 +14,7 @@ exports.accountRegister = async (req, res, next) => {
   }
 }
 
-// Login Page
+// Login Page (GET)
 exports.accountLogin = async (req, res, next) => {
   try {
     res.render('pages/login', {
@@ -27,7 +27,7 @@ exports.accountLogin = async (req, res, next) => {
   }
 }
 
-// Account Page
+// Account Page (GET)
 exports.accountPage = async (req, res, next) => {
   if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
 
@@ -42,7 +42,7 @@ exports.accountPage = async (req, res, next) => {
   }
 };
 
-// Reset Password Page
+// Reset Password Page (GET)
 exports.accountResetPassword = async (req, res, next) => {
   if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
 
@@ -57,7 +57,7 @@ exports.accountResetPassword = async (req, res, next) => {
   }
 }
 
-// Change Password Page
+// Change Password Page (GET)
 exports.accountChangePassword = async (req, res, next) => {
   if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
 

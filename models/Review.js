@@ -14,7 +14,21 @@ const Review = sequelize.define('Review', {
   }
 }, { timestamps: true });
 
-Review.belongsTo(User, { foreignKey: 'userId' });
-Review.belongsTo(Product, { foreignKey: 'productId' });
+// Relationships
+Review.belongsTo(User, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false
+  },
+  onDelete: 'CASCADE'
+});
+
+Review.belongsTo(Product, {
+  foreignKey: {
+    name: 'productId',
+    allowNull: false
+  },
+  onDelete: 'CASCADE'
+});
 
 module.exports = Review;

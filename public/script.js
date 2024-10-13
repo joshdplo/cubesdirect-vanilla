@@ -13,6 +13,22 @@ function header() {
 }
 
 /**
+ * Global Message
+ */
+function globalMessage(message, isError) {
+  if (!message) return console.warn('no message sent to globalMessage');
+  const el = document.querySelector('#global-message');
+  el.innerText = message;
+  el.style.color = isError ? 'red' : 'green';
+  el.classList.add('active');
+  if (isError) el.setAttribute('aria-role', 'alert');
+  setTimeout(() => {
+    el.classList.remove('active');
+    el.removeAttribute('aria-role');
+  }, 4000);
+}
+
+/**
  * Register Form Mock
  */
 function registerForm() {
@@ -181,6 +197,39 @@ function changePasswordForm() {
 }
 
 /**
+ * Add to Cart Buttons Mock
+ */
+function addToCartButtons() {
+  const cartButtons = document.querySelectorAll('button.add-to-cart');
+  const onAddToCartClick = (e) => {
+    const productId = parseInt(e.target.getAttribute('data-productId'), 10);
+    const productQuantity = 1;
+
+    // Add to cart POST request
+    fetch('/api/cart/add', {
+      method: 'POST',
+      body: JSON.stringify({ productId, productQuantity }),
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => res.json())
+      .then(response => {
+        console.log(response);
+        if (response.error) {
+          globalMessage(response.error, 'red');
+        } else {
+          globalMessage(response.message, 'green');
+          if (response.redirect) window.location.href = response.redirect;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        globalMessage('ERROR ADDING TO CART!', 'red');
+      });
+  }
+
+  cartButtons.forEach((el) => el.addEventListener('click', onAddToCartClick));
+}
+
+/**
  * DOM Load
  */
 document.addEventListener('DOMContentLoaded', function onDOMLoad() {
@@ -190,4 +239,5 @@ document.addEventListener('DOMContentLoaded', function onDOMLoad() {
   registerForm();
   loginForm();
   changePasswordForm();
+  addToCartButtons();
 });

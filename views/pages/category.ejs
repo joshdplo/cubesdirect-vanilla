@@ -9,7 +9,16 @@
   <%- include ('../partials/header') %>
 
   <main>
-    <%= stringUtils.capitalize(category.name) %> CATEGORY PAGE!
+    <h1><%= stringUtils.capitalize(category.name) %></h1>
+    <p><%= category.description %></p>
+    <hr>
+    <ul class="category-products">
+      <% for( let index = 0; index < products.length; index++ ) { %>
+      <li>
+        <a href="/product/<%= products[index].id %>"><%= products[index].name %></a>
+      </li>
+      <% } %>
+    </ul>
   </main>
 
   <%- include ('../partials/footer') %>

@@ -15,7 +15,21 @@ const CartItem = sequelize.define('CartItem', {
   }
 }, { timestamps: true });
 
-Cart.belongsToMany(Product, { through: CartItem });
-Product.belongsToMany(Cart, { through: CartItem });
+// Relationships
+CartItem.belongsTo(Cart, {
+  foreignKey: {
+    name: 'cartId',
+    allowNull: false
+  },
+  onDelete: 'CASCADE'
+});
+
+CartItem.belongsTo(Product, {
+  foreignKey: {
+    name: 'productId',
+    allowNull: false
+  },
+  onDelete: 'CASCADE'
+});
 
 module.exports = CartItem;

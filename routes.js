@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { pageIndex } = require('./controllers/pageController');
-const { productCategory } = require('./controllers/productController');
+const {
+  productCategory,
+  productDisplay,
+  addToCart
+} = require('./controllers/productController');
 const {
   authRegister,
   authVerifyEmail,
@@ -29,7 +33,9 @@ router.get('/account/reset-password', accountResetPassword);
 router.get('/account/change-password', accountChangePassword);
 
 // Products
-router.get('/category/:name', productCategory);
+router.get('/category/:id', productCategory);
+router.get('/product/:id', productDisplay);
+router.post('/api/cart/add', addToCart);
 
 // Auth API
 router.post('/api/auth/register', authRegister);

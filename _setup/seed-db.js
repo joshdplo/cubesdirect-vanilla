@@ -47,11 +47,11 @@ const seedDB = async () => {
 
     // Create categories
     console.log('-> Seeding Categories...');
-    const categories = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
+    const categoryObjs = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
       name: category.toLowerCase(),
       description: faker.lorem.sentence()
     }));
-    await Category.bulkCreate(categories);
+    const categories = await Category.bulkCreate(categoryObjs);
     console.log('-> Categories complete!');
 
     // Create Products
@@ -65,11 +65,11 @@ const seedDB = async () => {
         description: faker.commerce.productDescription(),
         price: faker.commerce.price(),
         stock: faker.number.int({ min: 0, max: 100 }),
-        category: faker.helpers.arrayElement(categories)._id,
         images: [faker.image.urlPicsumPhotos()],
         featured: faker.datatype.boolean(),
-        categoryId: categories[Math.floor(Math.random() * categories.length)].id, // Assign random category
       });
+      product.addCategory(categories[Math.floor(Math.random() * categories.length)]);
+
       products.push(product);
     }
     console.log('-> Products complete!');
@@ -81,11 +81,11 @@ const seedDB = async () => {
 
       for (let i = 0; i < 3; i++) {
         const product = products[Math.floor(Math.random() * products.length)];
-        await cart.addProduct(product, {
-          through: {
-            quantity: faker.number.int({ min: 1, max: 5 }),
-            price: product.price
-          }
+        await CartItem.create({
+          cartId: cart.id,
+          productId: product.id,
+          quantity: faker.number.int({ min: 1, max: 5 }),
+          price: product.price
         });
       }
     }
@@ -110,12 +110,12 @@ const seedDB = async () => {
 
       for (let i = 0; i < 3; i++) {
         const product = products[Math.floor(Math.random() * products.length)];
-        await order.addProduct(product, {
-          through: {
-            quantity: faker.number.int({ min: 1, max: 5 }),
-            price: product.price
-          }
-        })
+        await OrderItem.create({
+          orderId: order.id,
+          productId: product.id,
+          quantity: faker.number.int({ min: 1, max: 5 }),
+          price: product.price
+        });
       }
     }
     console.log('-> Orders complete!');

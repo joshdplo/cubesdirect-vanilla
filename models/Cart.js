@@ -3,9 +3,19 @@ const sequelize = require('../config/db');
 const User = require('./User');
 
 const Cart = sequelize.define('Cart', {
-  // no fields currently, using CartItem to link items to user's Cart
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: 'active' // 'active', 'ordering', 'completed'
+  },
 }, { timestamps: true });
 
-Cart.belongsTo(User, { foreignKey: 'userId' });
+// Relationships
+Cart.belongsTo(User, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false
+  },
+  onDelete: 'CASCADE'
+});
 
 module.exports = Cart;

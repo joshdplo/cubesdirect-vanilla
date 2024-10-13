@@ -4,6 +4,29 @@ body {
 }
 
 /**
+ * Global Message
+ * @TODO: accessibility
+ */
+#global-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 3px;
+  background-color: white;
+  z-index: 11;
+}
+
+#global-message.active {
+  display: block;
+}
+
+/**
  * NAV
  */
 #hamburger {

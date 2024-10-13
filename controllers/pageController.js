@@ -2,7 +2,7 @@ const stringUtils = require('../util/string-utils');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 
-// Index Page
+// Index Page (GET)
 exports.pageIndex = async (req, res, next) => {
   try {
     const featuredProducts = await Product.findAll({ where: { featured: true } });

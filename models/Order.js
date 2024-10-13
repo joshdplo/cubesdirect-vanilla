@@ -9,11 +9,11 @@ const Order = sequelize.define('Order', {
   },
   paymentStatus: {
     type: DataTypes.STRING,
-    defaultValue: 'Pending' // 'Pending', 'Completed', 'Failed'
+    defaultValue: 'pending' // 'pending', 'completed', 'failed'
   },
   orderStatus: {
     type: DataTypes.STRING,
-    defaultValue: 'Processing' // 'Processing', 'Shipped', 'Delivered', 'Cancelled'
+    defaultValue: 'processing' // 'processing', 'shipped', 'delivered', 'cancelled'
   },
   deliveryAddress: {
     type: DataTypes.JSON,
@@ -29,6 +29,13 @@ const Order = sequelize.define('Order', {
   }
 }, { timestamps: true });
 
-Order.belongsTo(User, { foreignKey: 'userId' });
+// Relationships
+Order.belongsTo(User, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false
+  },
+  onDelete: 'CASCADE'
+});
 
 module.exports = Order;

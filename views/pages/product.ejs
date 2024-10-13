@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include ('../partials/header') %>
+
+  <main>
+    <h1><%= stringUtils.titleCase(product.name) %></h1>
+    <% if (product.featured) { %>
+    <pre>(featured)</pre>
+    <% } %>
+    <div class="product-images">
+      <% for( let index = 0; index < product.images.length; index++ ) { %>
+      <img src="<%= product.images[index] %>" alt="">
+      <% } %>
+    </div>
+    <div class="product-info">
+      <%= stringUtils.titleCase(product.name) %>
+      <p>
+        <%= product.description %>
+      </p>
+      <%= product.stock %> in stock
+      $<%= product.price %>
+
+      <button class="add-to-cart" data-productId="<%= product.id %>" <% if (product.stock <= 0) { %> disabled="true"
+        <% } %>>
+        Add to Cart
+      </button>
+    </div>
+  </main>
+
+  <%- include ('../partials/footer') %>
+  <%- include ('../partials/end') %>
+</body>
+
+</html>

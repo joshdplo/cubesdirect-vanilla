@@ -1,10 +1,10 @@
 //@TODO: make util to render login page if not authenticated
-// if (!res.locals.isAuthenticated) return res.render('pages/login', { title: 'Log in' });
+// if (!res.locals.isAuthenticated) return res.render('pages/account/login', { title: 'Log in' });
 
 // Register Page (GET)
 exports.accountRegister = async (req, res, next) => {
   try {
-    res.render('pages/register', {
+    res.render('pages/account/register', {
       title: 'Register'
     });
   } catch (error) {
@@ -17,7 +17,7 @@ exports.accountRegister = async (req, res, next) => {
 // Login Page (GET)
 exports.accountLogin = async (req, res, next) => {
   try {
-    res.render('pages/login', {
+    res.render('pages/account/login', {
       title: 'Log in'
     });
   } catch (error) {
@@ -30,7 +30,7 @@ exports.accountLogin = async (req, res, next) => {
 // Account Page (GET)
 exports.accountPage = async (req, res, next) => {
   try {
-    res.render('pages/account', {
+    res.render('pages/account/account', {
       title: 'Account'
     });
   } catch (error) {
@@ -43,7 +43,7 @@ exports.accountPage = async (req, res, next) => {
 // Verify Email Page (GET)
 exports.accountVerifyEmail = async (req, res, next) => {
   try {
-    res.render('pages/verify-email', {
+    res.render('pages/account/verify-email', {
       title: 'Verify Email'
     });
   } catch (error) {
@@ -56,7 +56,7 @@ exports.accountVerifyEmail = async (req, res, next) => {
 // Reset Password Page (GET)
 exports.accountResetPassword = async (req, res, next) => {
   try {
-    res.render('pages/reset-password', {
+    res.render('pages/account/reset-password', {
       title: 'Reset Password'
     });
   } catch (error) {
@@ -69,7 +69,7 @@ exports.accountResetPassword = async (req, res, next) => {
 // Change Password Page (GET)
 exports.accountChangePassword = async (req, res, next) => {
   try {
-    res.render('pages/change-password', {
+    res.render('pages/account/change-password', {
       title: 'Update Password'
     });
   } catch (error) {

@@ -4,14 +4,15 @@ const { JWT_SECRET, EMAIL_ENABLED } = process.env;
 
 // Get User object and store in res.locals.user
 exports.getUser = (req, res, next) => {
-  console.log('-----GETUSER MIDDLEWARE-----');//REMOVE
   const token = req.cookies.token;
 
   if (token) {
     try {
+      console.log('HAS TOKEN');//REMOVE
       const decoded = jwt.verify(token, JWT_SECRET);
       res.locals.user = decoded;
     } catch (error) {
+      console.error(error);
       res.status(500);
       res.locals.user = null;
     }
@@ -34,6 +35,7 @@ exports.checkAuth = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    console.error(error);
     return res.redirect('/login');
   }
 }

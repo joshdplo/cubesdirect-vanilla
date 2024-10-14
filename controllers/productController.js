@@ -23,7 +23,7 @@ exports.productCategory = async (req, res, next) => {
       next();
     }
 
-    res.render('pages/category', {
+    res.render('pages/product/category', {
       title: `${stringUtils.titleCase(category.name)} Cubes`,
       category,
       products
@@ -46,7 +46,7 @@ exports.productDisplay = async (req, res, next) => {
       next();
     }
 
-    res.render('pages/product', {
+    res.render('pages/product/product', {
       //@TODO: shorten name to x characters
       title: stringUtils.titleCase(product.name),
       product

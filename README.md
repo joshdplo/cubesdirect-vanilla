@@ -39,8 +39,12 @@ The process for creating CubeMart was xxxxxxxxxx
 - ~~check that req.id is added/accessible to newly-registered users~~
 - ~~if a new account is registered, req.user.id is not available in the req.user object =/~~
 - ~~make user data available to locals with checkAuth middleware (or new middleware if needed)~~
-- change repo name & folder names to "cubedirect"
-- investigate better way to cache (and break cache for) category names as menu links
+- change repo name & folder names to "cubesdirect"
+- fix jwt invalid signature error in authMiddleware (both in getUser and in checkAuth, is in authController as well!!)
+- investigate calls happening twice (ie. getUser middleware called twice even on index page)
+- create caching strategy
+  - categories = in-memory cache
+  - products = cache all but 'stock' (any others?) + event-based caching
 - set up email functionality `ongoing`
   - verify ("welcome to cubesdirect")
   - password reset
@@ -51,8 +55,8 @@ The process for creating CubeMart was xxxxxxxxxx
 - add 'reviewer' role to users after a single purchase
 
 ### TODO Design
-- hamburger thick verts with 1-2px border radius - sharp, subtle drop shadows
-- incorporate very sharp, subtle drop shadows in the UI to feel more cubey
+- ??hamburger thick verts with 1-2px border radius - sharp, subtle drop shadows??
+- ??incorporate very sharp, subtle drop shadows in the UI to feel more cubey??
 - global message accessibility
 - banner/advert for low-stock items (1-5)
 

@@ -2,13 +2,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
-const stringUtils = require('../util/string-utils');
+const stringUtils = require('../util/stringUtils');
+const {
+  loginUser,
+  logoutUser,
+  issueToken
+} = require('../util/jwtUtils');
 
 // Helpers
 const isEmailEnabled = process.env.EMAIL_ENABLED === 'true';
-const NAME = process.env.NAME;
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRATION = '1h';
+const { NAME } = process.env;
 
 // Register (POST)
 exports.authRegister = async (req, res, next) => {
@@ -27,8 +30,8 @@ exports.authRegister = async (req, res, next) => {
     // Check if User Exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      //@TODO: better error message (no brute force email checking)
-      return res.status(400).json({ error: 'User already exists' });
+      console.log('USER ALREADY EXISTS');
+      return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     // Hash the Password
@@ -38,18 +41,11 @@ exports.authRegister = async (req, res, next) => {
     // Create new user
     const newUser = await User.create({ email, password: hashedPassword });
 
-    // Generate verification token
-    const verificationToken = jwt.sign({
-      id: newUser.id,
-      email: newUser.email,
-      roles: newUser.roles,
-      isVerified: newUser.isVerified,
-      addresses: newUser.addresses
-    }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-
-    // Verification Email (PROD ONLY)
-    //@TODO: mock this up with a modal in dev mode? ie. send the verification link through and have user click it
+    // Verification Email
+    //@TODO: verification email (use jwtUtils)
     if (isEmailEnabled) {
+      const accessToken = issueToken(newUser, 'access');
+
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -62,7 +58,7 @@ exports.authRegister = async (req, res, next) => {
         to: newUser.email,
         from: process.env.EMAIL_USER,
         subject: `${NAME} Email Verification`,
-        text: `Please click the following link to verify your ${NAME} account email address: \n\n http://${req.headers.host}/api/auth/verify-email/${verificationToken}`
+        text: `Please click the following link to verify your ${NAME} account email address: \n\n http://${req.headers.host}/api/auth/verify-email/${accessToken}`
       };
 
       transporter.sendMail(mailOptions, (err) => {
@@ -73,12 +69,13 @@ exports.authRegister = async (req, res, next) => {
         res.json({ message: 'Verification Link sent to email' });
       });
     } else {
-      res.cookie('token', verificationToken, { httpOnly: true });
+      loginUser(res, newUser);
       //@TODO: this can be cleaned up. can use req.get('Referrer') from the login page (pageLogin controller) (will need to check if it is on current domain; if not, redirect to home or account) 
       res.json({ success: true, redirect: '/account', message: 'Registration successful' });
     }
   } catch (error) {
     console.error(error.message);
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -131,8 +128,11 @@ exports.authLogin = async (req, res, next) => {
 
     // Check if email is verified
     // @TODO: implement email verification
-    // @TODO: implement 'resend verification email'
-    //if (!user.isVerified) return res.status(400).json({ message: 'Please verify your email before logging in' });
+    // @TODO: implement 'resend verification email' (on the /verify-email page)
+    if (isEmailEnabled && !user.isVerified) {
+      console.log('User is registered but not verified - redirecting to /verify-email');
+      res.redirect('/verify-email');
+    }
 
     // Validate password
     const isMatch = await bcrypt.compare(password, user.password);
@@ -151,17 +151,9 @@ exports.authLogin = async (req, res, next) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Create JWT Token
-    const token = jwt.sign({
-      id: user.id,
-      email: user.email,
-      roles: user.roles,
-      isVerified: user.isVerified,
-      addresses: user.addresses
-    }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+    // Login user with JWT
+    loginUser(res, user);
 
-    // Set cookie and redirect
-    res.cookie('token', token, { httpOnly: true });
     //@TODO: this can be cleaned up. can use req.get('Referrer') from the login page (pageLogin controller) (will need to check if it is on current domain; if not, redirect to home or account) 
     res.json({ success: true, redirect: '/', message: 'Login successful' });
   } catch (error) {
@@ -171,56 +163,9 @@ exports.authLogin = async (req, res, next) => {
 };
 
 // Reset Password (POST)
-//@TODO: implement reset password
+//@TODO: implement reset password (needs full refactor)
 exports.authResetPassword = async (req, res, next) => {
-  const { email } = req.body;
-
-  //@TODO: validate password
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: 'User not found' });
-
-    // Create reset tokeny and expiry
-    const resetToken = jwt.sign({
-      id: user.id,
-      email: user.email,
-      roles: user.roles,
-      isVerified: user.isVerified,
-      addresses: user.addresses
-    }, JWT_SECRET, { expiresIn: '15m' });
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
-    await user.save();
-
-    // Send email with reset link
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    const mailOptions = {
-      to: user.email,
-      from: process.env.EMAIL_USER,
-      subject: `${NAME} Password Reset`,
-      text: `We have recieved a password reset request for your ${NAME} account. If you did not send this password reset request, please take caution.\n\n Click the following link to reset your password:\n\n http://${req.headers.host}/reset/${resetToken}`
-    };
-
-    transporter.sendMail(mailOptions, (err) => {
-      if (err) {
-        console.error(error.message);
-        res.status(500).json({ error });
-      }
-
-      res.json({ msg: 'Password Reset Link sent to email' });
-    });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error });
-  }
+  res.status(500).json({ error: 'authResetPassword not implemented yet' });
 };
 
 // Change Password (POST)
@@ -255,7 +200,7 @@ exports.authChangePassword = async (req, res, next) => {
     await user.save();
 
     // Log the user out and send json with redirect key
-    res.clearCookie('token');
+    logoutUser(res);
     return res.json({ success: true, redirect: '/login', message: 'Password change successful' });
   } catch (error) {
     console.error(error.message);
@@ -264,7 +209,8 @@ exports.authChangePassword = async (req, res, next) => {
 };
 
 // Logout (GET)
+//@TODO: update FE script to use json instead of relying on BE redirect
 exports.authLogout = (req, res, next) => {
-  res.clearCookie('token');
-  res.redirect('/');
+  logoutUser(res);
+  return res.json({ success: true, redirect: '/', message: 'Successfully logged out' });
 };

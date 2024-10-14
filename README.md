@@ -20,16 +20,17 @@ The process for creating CubesDirect was xxxxxxxxxx
 #### Blender
 - General lighting
 - Area lighting for products
-- More about PBR textures
+- PBR textures basics
 
 #### Node
 - Basic authentication with JWT
 - Introduction to SQLite via Sequelize
+- Introduction to sessions in express via express-session + connect-session-sequelize
 - Migrating from MongoDB/Mongoose to SQLite/Sequelize
 - Introduction to database seeding with faker.js (both mongodb and sqlite)
 
 #### Front End
-- Product image optimization
+- ??Product image optimization??
 
 ### TODO Dev
 - ~~create initial db seed (random is fine for now)~~
@@ -39,20 +40,27 @@ The process for creating CubesDirect was xxxxxxxxxx
 - ~~check that req.id is added/accessible to newly-registered users~~
 - ~~if a new account is registered, req.user.id is not available in the req.user object =/~~
 - ~~make user data available to locals with checkAuth middleware (or new middleware if needed)~~
-- change repo name & folder names to "cubesdirect"
-- fix jwt invalid signature error in authMiddleware (both in getUser and in checkAuth, is in authController as well!!)
-- investigate calls happening twice (ie. getUser middleware called twice even on index page)
+- ~~change repo name & folder names to "cubesdirect"~~
+- ~~investigate calls happening twice (ie. getUser middleware called twice even on index page)~~
+  - ~~missing image triggered multiple calls~~
+- ~~reset the jwt access expiration time to 15m in .env~~
+- implement pagination for category pages
 - create caching strategy
   - categories = in-memory cache
+    - refresh every hour
   - products = cache all but 'stock' (any others?) + event-based caching
-- set up email functionality `ongoing`
+    - refresh every hour
+- set up user add address functionality
+- add 'reviewer' role to users after a single purchase
+- ensure cached data is being invalidated properly
+  - user modifications
+  - product modifications
+- set up email functionality `AFTER BE IS STABLE`
   - verify ("welcome to cubesdirect")
   - password reset
   - order confirmation
   - order shipped
   - order delivered
-- set up user add address functionality
-- add 'reviewer' role to users after a single purchase
 
 ### TODO Design
 - ??hamburger thick verts with 1-2px border radius - sharp, subtle drop shadows??
@@ -67,6 +75,8 @@ The process for creating CubesDirect was xxxxxxxxxx
 - global/shared validation: sequelize models, BE <-> FE user inputs, FE form input error messages  (typescript?)
 - decide if product quantities should be selectable (ie. 1-10 dropdown) or just 1 at a time
 - product slugs for URLs
+- add 'show password' icon to password fields
+- if user starts an order, refresh their access token
 
 ### TODO Final
 - create JSON files for live DB seed (and update seed file)

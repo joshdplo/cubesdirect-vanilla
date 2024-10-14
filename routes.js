@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { checkAuth } = require('./middlewares/authMiddleware');
+const authenticateUser = require('./middlewares/authMiddleware');
 const { pageIndex } = require('./controllers/pageController');
 const {
   productCategory,
@@ -24,19 +24,19 @@ const {
 } = require('./controllers/accountController');
 
 // General
-router.get('/', pageIndex);
+router.get('/', authenticateUser(false), pageIndex);
 
 // Account
-router.get('/login', accountLogin);
-router.get('/register', accountRegister);
-router.get('/account', checkAuth, accountPage);
-router.get('/account/reset-password', checkAuth, accountResetPassword);
-router.get('/account/change-password', checkAuth, accountChangePassword);
+router.get('/login', authenticateUser(false), accountLogin);
+router.get('/register', authenticateUser(false), accountRegister);
+router.get('/account', authenticateUser(true), accountPage);
+router.get('/account/reset-password', authenticateUser(true), accountResetPassword);
+router.get('/account/change-password', authenticateUser(true), accountChangePassword);
 
 // Products
-router.get('/category/:id', productCategory);
-router.get('/product/:id', productDisplay);
-router.post('/api/cart/add', addToCart);
+router.get('/category/:id', authenticateUser(false), productCategory);
+router.get('/product/:id', authenticateUser(false), productDisplay);
+router.post('/api/cart', authenticateUser(false), addToCart);
 
 // Auth API
 router.post('/api/auth/register', authRegister);
@@ -45,13 +45,5 @@ router.get('/api/auth/verify-email', authVerifyEmail);
 router.post('/api/auth/reset-password', authResetPassword);
 router.post('/api/auth/change-password', authChangePassword);
 router.get('/logout', authLogout);
-
-// Testing
-router.post('/api/test', (req, res, next) => {
-  console.log('GOT POST REQUEST ON /API/TEST:');
-  console.log(req.body);
-
-  res.json({ have: 'a', good: 'day' });
-});
 
 module.exports = router;

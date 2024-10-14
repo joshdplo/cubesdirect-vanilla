@@ -1,4 +1,4 @@
-const stringUtils = require('../util/string-utils');
+const stringUtils = require('../util/stringUtils');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 const Cart = require('../models/Cart');
@@ -83,14 +83,6 @@ exports.addToCart = async (req, res, next) => {
         cartItem.quantity += 1;
         await cartItem.save();
       } else {
-        console.log({
-          cartId: cart.id,
-          productId: product.id,
-          quantity: productQuantity || 1,
-          price: product.price
-        });
-        //@TODO: LEFT OFF HERE WITH ERROR
-        // NOT NULL constraint failed: CartItems.CartId
         await CartItem.create({
           cartId: cart.id,
           productId: product.id,

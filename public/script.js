@@ -206,7 +206,7 @@ function addToCartButtons() {
     const productQuantity = 1;
 
     // Add to cart POST request
-    fetch('/api/cart/add', {
+    fetch('/api/cart', {
       method: 'POST',
       body: JSON.stringify({ productId, productQuantity }),
       headers: { 'Content-Type': 'application/json' }

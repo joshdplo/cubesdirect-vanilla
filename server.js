@@ -2,11 +2,21 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sequelize = require('./config/db');
 const app = express();
-const { getUser } = require('./middlewares/authMiddleware');
 
-// Connect to DB
-require('./config/db');
+// Connect to DB + Set up sessions
+const store = new SequelizeStore({ db: sequelize });
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  store: store,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 24 hours
+}));
+store.sync();
 
 // Middlewares
 app.use(helmet());
@@ -14,13 +24,19 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('./public'));
 
+// Middleware dubugging
+// app.use((req, res, next) => {
+//   console.log(`Path: ${req.path}, Method: ${req.method}`);
+//   console.log(`Request path: ${req.path}`);
+//   next();
+// });
+
 // Locals
-app.locals.stringUtils = require('./util/string-utils');
+app.locals.stringUtils = require('./util/stringUtils');
 app.locals.categoryData = require('./data/categories.json');
 app.locals.global = require('./globals');
 app.locals.title = null;
-app.locals.user = null; // needed for error page (overridden by getUser middleware)
-app.use(getUser);
+app.locals.user = null;
 
 // Views
 app.set('view engine', 'ejs');

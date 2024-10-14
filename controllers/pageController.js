@@ -1,4 +1,4 @@
-const stringUtils = require('../util/string-utils');
+const stringUtils = require('../util/stringUtils');
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 

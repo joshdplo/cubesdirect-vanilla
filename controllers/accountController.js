@@ -1,7 +1,5 @@
-//@TODO: make util to render login page if not authenticated
-// if (!res.locals.isAuthenticated) return res.render('pages/account/login', { title: 'Log in' });
-
 // Register Page (GET)
+//@TODO redirect to account if logged-in
 exports.accountRegister = async (req, res, next) => {
   try {
     res.render('pages/account/register', {
@@ -15,6 +13,7 @@ exports.accountRegister = async (req, res, next) => {
 }
 
 // Login Page (GET)
+//@TODO redirect to account if logged-in
 exports.accountLogin = async (req, res, next) => {
   try {
     res.render('pages/account/login', {

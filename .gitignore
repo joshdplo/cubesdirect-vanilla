@@ -131,3 +131,4 @@ dist
 
 # cubesdirect
 *.sqlite
+data/*.json

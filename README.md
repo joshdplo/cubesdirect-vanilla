@@ -5,7 +5,7 @@ A mock e-commerce site built using Node, Express, SQLite, and (insert FE tech he
 I made this project for xxxxxxxxxx
 
 ### Process
-The process for creating CubeMart was xxxxxxxxxx
+The process for creating CubesDirect was xxxxxxxxxx
 1. Planning
   - @TODO
 2. Building

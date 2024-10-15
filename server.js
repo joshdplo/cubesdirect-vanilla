@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelize = require('./config/db');
+const initAppData = require('./middlewares/initAppMiddleware');
 const app = express();
 
 // Connect to DB + Set up sessions
@@ -25,18 +26,16 @@ app.use(cookieParser());
 app.use(express.static('./public'));
 
 // Middleware dubugging
-// app.use((req, res, next) => {
-//   console.log(`Path: ${req.path}, Method: ${req.method}`);
-//   console.log(`Request path: ${req.path}`);
-//   next();
-// });
+if (process.env.DEBUG === 'true') {
+  app.use((req, res, next) => {
+    console.log(`Path: ${req.path}, Method: ${req.method}`);
+    console.log(`Request path: ${req.path}`);
+    next();
+  });
+}
 
 // Locals
-app.locals.stringUtils = require('./util/stringUtils');
-app.locals.categoryData = require('./data/categories.json');
-app.locals.global = require('./globals');
-app.locals.title = null;
-app.locals.user = null;
+(async () => { await initAppData(app) })();
 
 // Views
 app.set('view engine', 'ejs');

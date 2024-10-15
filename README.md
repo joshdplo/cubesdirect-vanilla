@@ -44,12 +44,12 @@ The process for creating CubesDirect was xxxxxxxxxx
 - ~~investigate calls happening twice (ie. getUser middleware called twice even on index page)~~
   - ~~missing image triggered multiple calls~~
 - ~~reset the jwt access expiration time to 15m in .env~~
-- implement pagination for category pages
 - create caching strategy
   - categories = in-memory cache
     - refresh every hour
   - products = cache all but 'stock' (any others?) + event-based caching
     - refresh every hour
+- implement pagination for category pages (products)
 - set up user add address functionality
 - add 'reviewer' role to users after a single purchase
 - ensure cached data is being invalidated properly

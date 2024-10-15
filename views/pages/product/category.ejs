@@ -9,16 +9,42 @@
   <%- include ('../../partials/header') %>
 
   <main>
-    <h1><%= stringUtils.capitalize(category.name) %></h1>
+    <h1><%= category.name %></h1>
     <p><%= category.description %></p>
     <hr>
     <ul class="category-products">
-      <% for( let index = 0; index < products.length; index++ ) { %>
+      <% products.forEach(product => { %>
       <li>
-        <a href="/product/<%= products[index].id %>"><%= products[index].name %></a>
+        <a href="/product/<%= product.id %>"><%= product.name %></a>
       </li>
-      <% } %>
+      <% }) %>
     </ul>
+
+    <nav class="pagination">
+      <ul>
+        <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link"
+            href="/category/<%= category.id %>?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+        </li>
+        <% } %>
+        <% for( let i = 1; i <= totalPages; i++ ) { %>
+        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+          <% if (i === currentPage) { %>
+          <span class="page-link"><%= i %></span>
+          <% } else { %>
+          <a class="page-link" href="/category/<%= category.id %>?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+          <% } %>
+        </li>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a class="page-link"
+            href="/category/<%= category.id %>?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+        </li>
+        <% } %>
+      </ul>
+    </nav>
   </main>
 
   <%- include ('../../partials/footer') %>

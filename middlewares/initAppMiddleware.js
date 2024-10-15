@@ -1,11 +1,11 @@
 require('dotenv').config();
+const { getCache: getCategoryCache } = require('../services/categoryCache');
 const stringUtils = require('../util/stringUtils');
-const categoryCache = require('../services/categoryCache');
 
 // Populate app.locals with initial data
 const initAppData = async (app) => {
   try {
-    const categoryData = await categoryCache.getCache();
+    const categoryData = await getCategoryCache({ queryType: 'findAll' });
 
     app.locals.stringUtils = stringUtils;
     app.locals.categoryData = categoryData;
@@ -15,7 +15,7 @@ const initAppData = async (app) => {
       SITE_NAME: process.env.NAME
     }
 
-    console.log('app.locals populated successfully');
+    console.log(`app.locals populated successfully (${Object.keys(app.locals).length} items)`);
   } catch (error) {
     console.error('Error initializing app data:', error);
   }

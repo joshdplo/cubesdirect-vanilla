@@ -3,7 +3,7 @@ const cacheManager = require('./cacheManager');
 
 const productCache = cacheManager(Product, {
   ttl: 30 * 60 * 1000, // 30 minutes
-  excludedFields: ['stock'] // volatile product fields excluded
+  maxCacheSize: 50
 });
 
 module.exports = productCache;

@@ -1,24 +1,43 @@
 const stringUtils = require('../util/stringUtils');
-const Product = require('../models/Product');
+const { getCache: getCategoryCache } = require('../services/categoryCache');
+const { getCache: getProductCache } = require('../services/productCache');
 const Category = require('../models/Category');
+const Product = require('../models/Product');
 const Cart = require('../models/Cart');
 const CartItem = require('../models/CartItem');
 
 // Category Page (GET)
 //@TODO XSS check for req.params.name
 exports.productCategory = async (req, res, next) => {
-  const categoryId = req.params.id;
+  const { id } = req.params;
+
+  // pagination query strings
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 2;//@TODO: testing limit, reset to 25
+  const offset = (page - 1) * limit;
 
   try {
-    const category = await Category.findByPk(categoryId, {
-      include: {
-        model: Product,
-        through: { attributes: [] } // excludes the join table data from result
-      }
+    // get standalone category data (include Product model query doesn't support pagination due to many-to-many relationship)
+    const category = await getCategoryCache({
+      queryType: 'findByPk',
+      primaryKey: id,
     });
-    const products = category.Products;
 
-    if (!category) {
+    const { count: totalProducts, rows: products } = await getProductCache({
+      queryType: 'findAndCountAll',
+      include: [{
+        model: Category,
+        where: { id },
+        through: { attributes: [] }
+      }],
+      limit,
+      offset
+    });
+
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    if (!category || !products) {
+      console.error('error finding category or products');
       res.status(404);
       next();
     }
@@ -26,9 +45,13 @@ exports.productCategory = async (req, res, next) => {
     res.render('pages/product/category', {
       title: `${stringUtils.titleCase(category.name)} Cubes`,
       category,
-      products
+      products,
+      currentPage: page,
+      totalPages,
+      limit
     });
   } catch (error) {
+    console.error(error);
     console.error(error.message);
     error.status = 500;
     next(error);
@@ -38,11 +61,17 @@ exports.productCategory = async (req, res, next) => {
 // Product Page (GET)
 //@TODO XSS check for req.params.id
 exports.productDisplay = async (req, res, next) => {
+  const { id } = req.params;
+
   try {
-    const product = await Product.findOne({ where: { id: req.params.id } });
+    const product = await getProductCache({
+      queryType: 'findByPk',
+      primaryKey: id,
+    });
 
     if (!product) {
-      res.status(400);
+      console.error('product does not exist');
+      res.status(404);
       next();
     }
 

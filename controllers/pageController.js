@@ -1,11 +1,13 @@
 const stringUtils = require('../util/stringUtils');
-const Product = require('../models/Product');
-const Category = require('../models/Category');
+const { getCache: getProductCache } = require('../services/productCache');
 
 // Index Page (GET)
 exports.pageIndex = async (req, res, next) => {
   try {
-    const featuredProducts = await Product.findAll({ where: { featured: true } });
+    const featuredProducts = await getProductCache({
+      queryType: 'findAll',
+      where: { featured: true }
+    });
 
     res.render('pages/index', {
       featuredProducts

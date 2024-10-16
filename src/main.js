@@ -1,10 +1,10 @@
-import './styles/reset.css';
-import './styles/style.css';
-import header from './scripts/header';
-import registerForm from './scripts/registerForm';
-import loginForm from './scripts/loginForm';
-import changePasswordForm from './scripts/changePasswordForm';
-import addToCartButtons from './scripts/addToCartButtons';
+import './css/reset.css';
+import './css/style.css';
+import header from './js/header';
+import registerForm from './js/registerForm';
+import loginForm from './js/loginForm';
+import changePasswordForm from './js/changePasswordForm';
+import addToCartButtons from './js/addToCartButtons';
 
 /**
  * DOM Load

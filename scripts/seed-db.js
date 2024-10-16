@@ -11,6 +11,63 @@ const Review = require('../models/Review');
 const CartItem = require('../models/CartItem');
 const OrderItem = require('../models/OrderItem');
 
+async function generateUserData() {
+  const users = [];
+  for (let i = 0; i < 10; i++) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(faker.internet.password(), salt);
+
+    const user = {
+      email: faker.internet.email(),
+      password: hashedPassword,
+      isVerified: faker.datatype.boolean(),
+      addresses: [
+        {
+          title: faker.animal.bird(),
+          receiverName: faker.person.fullName(),
+          street: faker.location.streetAddress(),
+          city: faker.location.city(),
+          state: faker.location.state(),
+          zip: faker.location.zipCode(),
+          country: faker.location.country(),
+          phone: faker.phone.number({ style: 'international' }),
+        }
+      ]
+    };
+    users.push(user);
+  }
+
+  return users;
+}
+
+async function generateCategoryData() {
+  const categories = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
+    name: category.toLowerCase(),
+    description: faker.lorem.sentence(),
+    featured: faker.datatype.boolean()
+  }));
+  return categories;
+}
+
+async function generateProductData() {
+  const products = [];
+  for (let i = 0; i < 30; i++) {
+    const productName = `${faker.commerce.productName()} Cube`;
+    const product = {
+      name: productName,
+      description: faker.commerce.productDescription(),
+      price: faker.commerce.price(),
+      stock: faker.number.int({ min: 0, max: 100 }),
+      images: ['/images/product/placeholder.webp'],
+      featured: faker.datatype.boolean(),
+    };
+
+    products.push(product);
+  }
+
+  return products;
+}
+
 const seedDB = async () => {
   console.log('Starting Database Seeding...');
   try {
@@ -20,57 +77,28 @@ const seedDB = async () => {
 
     // Create users
     console.log('-> Seeding Users...');
-    const users = [];
-    for (let i = 0; i < 10; i++) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(faker.internet.password(), salt);
-
-      const user = await User.create({
-        email: faker.internet.email(),
-        password: hashedPassword,
-        isVerified: faker.datatype.boolean(),
-        addresses: [
-          {
-            name: faker.animal.bird(),
-            street: faker.location.streetAddress(),
-            city: faker.location.city(),
-            state: faker.location.state(),
-            zip: faker.location.zipCode(),
-            country: faker.location.country(),
-            phone: faker.phone.number({ style: 'international' }),
-          }
-        ]
-      });
-      users.push(user);
-    }
+    const userData = await generateUserData();
+    const users = await User.bulkCreate(userData);
     console.log('-> Users complete!');
 
     // Create categories
     console.log('-> Seeding Categories...');
-    const categoryObjs = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
-      name: category.toLowerCase(),
-      description: faker.lorem.sentence()
-    }));
-    const categories = await Category.bulkCreate(categoryObjs);
+    const categoryData = await generateCategoryData();
+    const categories = await Category.bulkCreate(categoryData);
     console.log('-> Categories complete!');
 
     // Create Products
     console.log('-> Seeding Products...');
+    const productData = await generateProductData();
     const products = [];
-    for (let i = 0; i < 30; i++) {
-      const productName = `${faker.commerce.productName()} Cube`;
-
-      const product = await Product.create({
-        name: productName,
-        description: faker.commerce.productDescription(),
-        price: faker.commerce.price(),
-        stock: faker.number.int({ min: 0, max: 100 }),
-        images: ['/images/product/placeholder.webp'],
-        featured: faker.datatype.boolean(),
-      });
-      product.addCategory(categories[Math.floor(Math.random() * categories.length)]);
-
-      products.push(product);
+    for (let i = 0; i < productData.length; i++) {
+      try {
+        const product = await Product.create(productData[i]);
+        product.addCategory(categories[Math.floor(Math.random() * categories.length)]);
+        products.push(product);
+      } catch (error) {
+        console.error('Error seeding products:', error);
+      }
     }
     console.log('-> Products complete!');
 

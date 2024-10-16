@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const userSchema = require('../validation/userSchema');
+const validateModel = require('../validation/validateModel');
 
 const User = sequelize.define('User', {
   email: {
@@ -7,65 +9,78 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
     validate: {
-      isEmail: true
+      async isValid(value) {
+        validateModel(userSchema, { email: value })
+      }
     }
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    // skip validation on hashed password - this happens on the controller
   },
   isVerified: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-  roles: {
-    type: DataTypes.JSON, //['user', 'reviewer', 'admin']
-    defaultValue: ['user']
-  },
-  addresses: {
-    type: DataTypes.JSON,
-    allowNull: true,
+    defaultValue: false,
     validate: {
-      isValidUserAddresses(value) {
-        if (!value) return;
-        if (!Array.isArray(value)) {
-          throw new Error('Addresses must be an array.');
-        }
-        value.forEach((address) => {
-          //@TODO: ensure these objects values are strings
-          if (!address.name || !address.street || !address.city || !address.state || !address.zip || !address.country || !address.phone) {
-            throw new Error('Invalid address format. Expected { name, street, city, state, zip, country, phone }')
-          }
-        })
+      async isValid(value) {
+        validateModel(userSchema, { isVerified: value })
       }
     }
-    // {
-    //   name: String,
-    //   street: String,
-    //   city: String,
-    //   state: String,
-    //   zip: String,
-    //   country: String,
-    //   phone: String
-    // }
-  },
-  resetPasswordToken: {
-    type: DataTypes.STRING,
-    defaultValue: ''
-  },
-  resetPasswordExpires: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-    //@TODO: check that this defaultValue is correct - link below
-    // https://sequelize.org/docs/v7/models/data-types/#dates
-  },
-  failedLoginAttempts: {
-    type: DataTypes.TINYINT,
-    defaultValue: 0
   },
   isLocked: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
+    validate: {
+      async isValid(value) {
+        validateModel(userSchema, { isLocked: value })
+      }
+    }
+  },
+  roles: {
+    type: DataTypes.JSON, //['user', 'reviewer', 'admin']
+    defaultValue: ['user'],
+    validate: {
+      async isValid(value) {
+        validateModel(userSchema, { roles: value })
+      }
+    }
+  },
+  addresses: {
+    type: DataTypes.JSON, // [{title, receiverName, street, city, state, zip, country, phone}, {...}]
+    allowNull: true,
+    validate: {
+      async isValid(value) {
+        validateModel(userSchema, { addresses: value }, true)
+      }
+    }
+  },
+  resetPasswordToken: {
+    type: DataTypes.STRING,
+    defaultValue: '',
+    validate: {
+      async isValid(value) {
+        validateModel(userSchema, { resetPasswordToken: value })
+      }
+    }
+  },
+  resetPasswordExpires: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    validate: {
+      async isValid(value) {
+        validateModel(userSchema, { resetPasswordExpires: value })
+      }
+    }
+  },
+  failedLoginAttempts: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    validate: {
+      async isValid(value) {
+        validateModel(userSchema, { failedLoginAttempts: value })
+      }
+    }
   }
 }, { timestamps: true });
 

@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const cartItemSchema = require('../validation/cartItemSchema');
+const validateModel = require('../validation/validateModel');
 const Cart = require('./Cart');
 const Product = require('./Product');
 

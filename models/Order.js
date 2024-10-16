@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const orderSchema = require('../validation/orderSchema');
+const validateModel = require('../validation/validateModel');
 const User = require('./User');
 
 const Order = sequelize.define('Order', {
@@ -8,24 +10,16 @@ const Order = sequelize.define('Order', {
     allowNull: false
   },
   paymentStatus: {
-    type: DataTypes.STRING,
-    defaultValue: 'pending' // 'pending', 'completed', 'failed'
+    type: DataTypes.STRING, // 'pending', 'completed', 'failed'
+    defaultValue: 'pending'
   },
   orderStatus: {
-    type: DataTypes.STRING,
-    defaultValue: 'processing' // 'processing', 'shipped', 'delivered', 'cancelled'
+    type: DataTypes.STRING, // 'processing', 'shipped', 'delivered', 'cancelled'
+    defaultValue: 'processing'
   },
   deliveryAddress: {
-    type: DataTypes.JSON,
+    type: DataTypes.JSON, // same as User address!
     allowNull: false,
-    validate: {
-      isValidOrderDeliveryAddress(value) {
-        //@TODO: ensure these objects values are strings
-        if (!value.street || !value.city || !value.state || !value.zip || !value.country) {
-          throw new Error('Invalid address format. Expected { street, city, state, zip, country }');
-        }
-      }
-    }
   }
 }, { timestamps: true });
 

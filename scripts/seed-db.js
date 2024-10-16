@@ -65,7 +65,7 @@ const seedDB = async () => {
         description: faker.commerce.productDescription(),
         price: faker.commerce.price(),
         stock: faker.number.int({ min: 0, max: 100 }),
-        images: [faker.image.urlPicsumPhotos()],
+        images: ['/images/product/placeholder.webp'],
         featured: faker.datatype.boolean(),
       });
       product.addCategory(categories[Math.floor(Math.random() * categories.length)]);

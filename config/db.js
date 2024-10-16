@@ -6,10 +6,12 @@ const sequelize = new Sequelize({
   storage: path.join(__dirname, '../data/db.sqlite')
 });
 
-// Test connection
-//@TODO: understand this more
+// Confirm connection
 sequelize.authenticate()
-  .then(() => console.log('Connection established with SQLite'))
-  .catch((err) => console.error('Unable to connect: ', err));
+  .catch((error) => {
+    console.error(error);
+    console.error('Unable to connect to sqlite database via sequelize. We need that. Exiting now.');
+    process.exit(1);
+  });
 
 module.exports = sequelize;

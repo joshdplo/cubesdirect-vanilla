@@ -1,10 +1,10 @@
 require('dotenv').config();
+const sequelize = require('./config/db');
 const express = require('express');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const sequelize = require('./config/db');
 const initAppData = require('./middlewares/initAppMiddleware');
 const app = express();
 

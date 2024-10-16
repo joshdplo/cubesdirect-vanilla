@@ -4,15 +4,16 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
-    "dev": "nodemon server.js",
-    "build": "node _setup/write-data.js",
+    "dev": "concurrently --kill-others --names client,server \"vite build --watch\" \"nodemon server.js\"",
+    "build": "vite build",
     "prod": "NODE_ENV=production node server.js"
   },
   "nodemonConfig": {
     "ext": "js,ejs",
     "ignore": [
-      "_setup/**",
-      "src/**"
+      "node_modules/**",
+      "src/**",
+      "public/**"
     ]
   },
   "keywords": [],
@@ -35,6 +36,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.3",
-    "nodemon": "^3.1.7"
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7",
+    "vite": "^5.4.9"
   }
 }

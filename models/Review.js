@@ -1,10 +1,11 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const reviewSchema = require('../validation/reviewSchema');
-const validateModel = require('../validation/validateModel');
-const User = require('./User');
-const Product = require('./Product');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import reviewSchema from '../validation/reviewSchema.js';
+import User from './User.js';
+import Product from './Product.js';
 
+//@TODO: joi validation
 const Review = sequelize.define('Review', {
   rating: {
     type: DataTypes.INTEGER,

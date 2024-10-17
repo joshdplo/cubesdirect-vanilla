@@ -1,5 +1,5 @@
-require('dotenv').config();
-const nodemailer = require('nodemailer');
+import 'dotenv/config';
+import nodemailer from 'nodemailer';
 const emailEnabledStatus = process.env.EMAIL_ENABLED === 'true' ? 'enabled' : 'disabled';
 
 // Notify of current .env email enabled status

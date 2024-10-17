@@ -1,27 +1,28 @@
-const express = require('express');
+import express from 'express';
+import authenticateUser from './middlewares/authMiddleware.js';
 const router = express.Router();
-const authenticateUser = require('./middlewares/authMiddleware');
-const { pageIndex } = require('./controllers/pageController');
-const {
+
+import { pageIndex } from './controllers/pageController.js';
+import {
   productCategory,
   productDisplay,
   addToCart
-} = require('./controllers/productController');
-const {
+} from './controllers/productController.js';
+import {
   authRegister,
   authVerifyEmail,
   authLogin,
   authResetPassword,
   authChangePassword,
   authLogout
-} = require('./controllers/authController');
-const {
+} from './controllers/authController.js';
+import {
   accountPage,
   accountRegister,
   accountLogin,
   accountResetPassword,
   accountChangePassword,
-} = require('./controllers/accountController');
+} from './controllers/accountController.js';
 
 // General
 router.get('/', authenticateUser(false), pageIndex);
@@ -46,4 +47,4 @@ router.post('/api/auth/reset-password', authResetPassword);
 router.post('/api/auth/change-password', authChangePassword);
 router.get('/logout', authLogout);
 
-module.exports = router;
+export default router;

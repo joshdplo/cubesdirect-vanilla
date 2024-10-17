@@ -1,12 +1,12 @@
-const sequelize = require('../config/db');
-const User = require('../models/User');
-const Product = require('../models/Product');
-const Category = require('../models/Category');
-const Cart = require('../models/Cart');
-const Order = require('../models/Order');
-const Review = require('../models/Review');
-const CartItem = require('../models/CartItem');
-const OrderItem = require('../models/OrderItem');
+import sequelize from '../config/db.js';
+import User from '../models/User.js';
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+import Cart from '../models/Cart.js';
+import Order from '../models/Order.js';
+import Review from '../models/Review.js';
+import CartItem from '../models/CartItem.js';
+import OrderItem from '../models/OrderItem.js';
 
 async function syncDB() {
   await sequelize.sync({ force: true }); // force table drop + recreate

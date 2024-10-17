@@ -1,8 +1,8 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
+import 'dotenv/config';
+import jwt from 'jsonwebtoken';
 
 // Issue Token
-const issueToken = (user, type = 'access') => {
+export const issueToken = (user, type = 'access') => {
   const payload = {
     id: user.id,
     roles: user.roles,
@@ -15,10 +15,9 @@ const issueToken = (user, type = 'access') => {
   const token = jwt.sign(payload, secret, { expiresIn });
   return token;
 };
-exports.issueToken = issueToken;
 
 // Login User
-exports.loginUser = (res, user) => {
+export const loginUser = (res, user) => {
   // Create access + refresh tokens
   const accessToken = issueToken(user, 'access');
   const refreshToken = issueToken(user, 'refresh');
@@ -31,7 +30,7 @@ exports.loginUser = (res, user) => {
 };
 
 // Logout User (clear tokens)
-exports.logoutUser = (res) => {
+export const logoutUser = (res) => {
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
 };

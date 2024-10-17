@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // Capitalize first word
   capitalize: str => (str && str[0].toUpperCase() + str.slice(1)) || "",
 

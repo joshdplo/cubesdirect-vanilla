@@ -1,8 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const productSchema = require('../validation/productSchema');
-const validateModel = require('../validation/validateModel');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import productSchema from '../validation/productSchema.js';
 
+//@TODO: joi validation
 const Product = sequelize.define('Product', {
   name: {
     type: DataTypes.STRING,

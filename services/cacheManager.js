@@ -73,4 +73,4 @@ const cacheManager = (model, options) => {
   }
 };
 
-module.exports = cacheManager;
+export default cacheManager;

@@ -1,20 +1,21 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const User = require('../models/User');
-const stringUtils = require('../util/stringUtils');
-const {
+import 'dotenv/config';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import User from '../models/User.js';
+import stringUtils from '../util/stringUtils.js';
+import {
   loginUser,
   logoutUser,
   issueToken
-} = require('../util/jwtUtils');
+} from '../util/jwtUtils.js';
 
 // Helpers
 const isEmailEnabled = process.env.EMAIL_ENABLED === 'true';
 const { NAME } = process.env;
 
 // Register (POST)
-exports.authRegister = async (req, res, next) => {
+export const authRegister = async (req, res, next) => {
   const { email, password } = req.body;
 
   // Make sure email and password are valid
@@ -82,7 +83,7 @@ exports.authRegister = async (req, res, next) => {
 
 // Verify Email (GET?)
 //@TODO: implement verify email (this is a GET route)
-exports.authVerifyEmail = async (req, res, next) => {
+export const authVerifyEmail = async (req, res, next) => {
   try {
     const { token } = req.params;//@TODO: set up get token from params
     const decoded = jwt.verify(token, JWT_SECRET);
@@ -105,7 +106,7 @@ exports.authVerifyEmail = async (req, res, next) => {
 };
 
 // Login (POST)
-exports.authLogin = async (req, res, next) => {
+export const authLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
   // Make sure email and password are valid
@@ -164,12 +165,12 @@ exports.authLogin = async (req, res, next) => {
 
 // Reset Password (POST)
 //@TODO: implement reset password (needs full refactor)
-exports.authResetPassword = async (req, res, next) => {
+export const authResetPassword = async (req, res, next) => {
   res.status(500).json({ error: 'authResetPassword not implemented yet' });
 };
 
 // Change Password (POST)
-exports.authChangePassword = async (req, res, next) => {
+export const authChangePassword = async (req, res, next) => {
   const { userId, currentPassword, newPassword, newPasswordConfirm } = req.body;
 
   // Make sure passwords are valid
@@ -210,7 +211,7 @@ exports.authChangePassword = async (req, res, next) => {
 
 // Logout (GET)
 //@TODO: update FE script to use json instead of relying on BE redirect
-exports.authLogout = (req, res, next) => {
+export const authLogout = (req, res, next) => {
   logoutUser(res);
   return res.json({ success: true, redirect: '/', message: 'Successfully logged out' });
 };

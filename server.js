@@ -7,7 +7,9 @@ import session from 'express-session';
 import connectSessionSequelize from 'connect-session-sequelize';
 
 const SequelizeStore = connectSessionSequelize(session.Store);
-// const initAppData = require('./middlewares/initAppMiddleware');
+import initAppData from './middlewares/initAppMiddleware.js';
+import routes from './routes.js';
+
 const app = express();
 
 // Connect to DB + Set up sessions
@@ -37,13 +39,13 @@ if (process.env.DEBUG === 'true') {
 }
 
 // Locals
-// (async () => { await initAppData(app) })();
+(async () => { await initAppData(app) })();
 
 // Views
 app.set('view engine', 'ejs');
 
 // Routes
-// app.use('/', require('./routes'));
+app.use('/', routes);
 
 // 404s
 app.use((req, res, next) => {

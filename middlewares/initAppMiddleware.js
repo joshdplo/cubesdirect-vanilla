@@ -1,11 +1,11 @@
 import 'dotenv/config';
-const { getCache: getCategoryCache } = require('../services/categoryCache');
-const stringUtils = require('../util/stringUtils');
+import categoryCache from '../services/categoryCache.js';
+import stringUtils from '../util/stringUtils.js';
 
 // Populate app.locals with initial data
 const initAppData = async (app) => {
   try {
-    const categoryData = await getCategoryCache({ queryType: 'findAll' });
+    const categoryData = await categoryCache.getCache({ queryType: 'findAll' });
 
     app.locals.stringUtils = stringUtils;
     app.locals.categoryData = categoryData;
@@ -21,4 +21,4 @@ const initAppData = async (app) => {
   }
 };
 
-module.exports = initAppData;
+export default initAppData;

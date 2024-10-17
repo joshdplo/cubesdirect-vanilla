@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const userSchema = require('../validation/userSchema');
-const validateModel = require('../validation/validateModel');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import userSchema from '../validation/userSchema.js';
 
 const User = sequelize.define('User', {
   email: {

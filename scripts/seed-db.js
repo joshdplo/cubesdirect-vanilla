@@ -1,15 +1,15 @@
-require('dotenv').config();
-const sequelize = require('../config/db');
-const bcrypt = require('bcryptjs');
-const { faker } = require('@faker-js/faker');
-const User = require('../models/User');
-const Product = require('../models/Product');
-const Category = require('../models/Category');
-const Cart = require('../models/Cart');
-const Order = require('../models/Order');
-const Review = require('../models/Review');
-const CartItem = require('../models/CartItem');
-const OrderItem = require('../models/OrderItem');
+import 'dotenv/config';
+import sequelize from '../config/db.js';
+import bcrypt from 'bcryptjs';
+import { faker } from '@faker-js/faker';
+import User from '../models/User.js';
+import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+import Cart from '../models/Cart.js';
+import Order from '../models/Order.js';
+import Review from '../models/Review.js';
+import CartItem from '../models/CartItem.js';
+import OrderItem from '../models/OrderItem.js';
 
 async function generateUserData() {
   const users = [];

@@ -1,10 +1,11 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const {
+import 'dotenv/config';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js'
+
+import {
   loginUser,
   logoutUser
-} = require('../util/jwtUtils');
+} from '../util/jwtUtils.js';
 
 // Authenticate user
 //@TODO: handle email verification
@@ -108,6 +109,6 @@ const authenticateUser = (requireAuth = false) => {
       next();
     }
   }
-}
+};
 
-module.exports = authenticateUser;
+export default authenticateUser;

@@ -1,6 +1,6 @@
 // Register Page (GET)
 //@TODO redirect to account if logged-in
-exports.accountRegister = async (req, res, next) => {
+export const accountRegister = async (req, res, next) => {
   try {
     res.render('pages/account/register', {
       title: 'Register'
@@ -14,7 +14,7 @@ exports.accountRegister = async (req, res, next) => {
 
 // Login Page (GET)
 //@TODO redirect to account if logged-in
-exports.accountLogin = async (req, res, next) => {
+export const accountLogin = async (req, res, next) => {
   try {
     res.render('pages/account/login', {
       title: 'Log in'
@@ -27,7 +27,7 @@ exports.accountLogin = async (req, res, next) => {
 }
 
 // Account Page (GET)
-exports.accountPage = async (req, res, next) => {
+export const accountPage = async (req, res, next) => {
   try {
     res.render('pages/account/account', {
       title: 'Account'
@@ -40,7 +40,7 @@ exports.accountPage = async (req, res, next) => {
 };
 
 // Verify Email Page (GET)
-exports.accountVerifyEmail = async (req, res, next) => {
+export const accountVerifyEmail = async (req, res, next) => {
   try {
     res.render('pages/account/verify-email', {
       title: 'Verify Email'
@@ -53,7 +53,7 @@ exports.accountVerifyEmail = async (req, res, next) => {
 };
 
 // Reset Password Page (GET)
-exports.accountResetPassword = async (req, res, next) => {
+export const accountResetPassword = async (req, res, next) => {
   try {
     res.render('pages/account/reset-password', {
       title: 'Reset Password'
@@ -66,7 +66,7 @@ exports.accountResetPassword = async (req, res, next) => {
 }
 
 // Change Password Page (GET)
-exports.accountChangePassword = async (req, res, next) => {
+export const accountChangePassword = async (req, res, next) => {
   try {
     res.render('pages/account/change-password', {
       title: 'Update Password'

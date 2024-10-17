@@ -5,6 +5,7 @@ import cartItemSchema from '../validation/cartItemSchema.js';
 import Cart from './Cart.js';
 import Product from './Product.js';
 
+//@TODO: joi validation
 const CartItem = sequelize.define('CartItem', {
   quantity: {
     type: DataTypes.INTEGER,

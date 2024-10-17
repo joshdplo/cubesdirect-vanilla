@@ -4,6 +4,7 @@ import validateModel from '../validation/validateModel.js';
 import cartSchema from '../validation/cartSchema.js';
 import User from './User.js';
 
+//@TODO: joi validation
 const Cart = sequelize.define('Cart', {
   status: {
     type: DataTypes.STRING, // 'active', 'ordering', 'completed'

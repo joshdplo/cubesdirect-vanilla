@@ -1,14 +1,14 @@
-const stringUtils = require('../util/stringUtils');
-const { getCache: getCategoryCache } = require('../services/categoryCache');
-const { getCache: getProductCache } = require('../services/productCache');
-const Category = require('../models/Category');
-const Product = require('../models/Product');
-const Cart = require('../models/Cart');
-const CartItem = require('../models/CartItem');
+import stringUtils from '../util/stringUtils.js';
+import categoryCache from '../services/categoryCache.js';
+import productCache from '../services/productCache.js';
+import Category from '../models/Category.js';
+import Product from '../models/Product.js';
+import Cart from '../models/Cart.js';
+import CartItem from '../models/CartItem.js';
 
 // Category Page (GET)
 //@TODO XSS check for req.params.name
-exports.productCategory = async (req, res, next) => {
+export const productCategory = async (req, res, next) => {
   const { id } = req.params;
 
   // pagination query strings
@@ -18,12 +18,12 @@ exports.productCategory = async (req, res, next) => {
 
   try {
     // get standalone category data (include Product model query doesn't support pagination due to many-to-many relationship)
-    const category = await getCategoryCache({
+    const category = await categoryCache.getCache({
       queryType: 'findByPk',
       primaryKey: id,
     });
 
-    const { count: totalProducts, rows: products } = await getProductCache({
+    const { count: totalProducts, rows: products } = await productCache.getCache({
       queryType: 'findAndCountAll',
       include: [{
         model: Category,
@@ -60,11 +60,11 @@ exports.productCategory = async (req, res, next) => {
 
 // Product Page (GET)
 //@TODO XSS check for req.params.id
-exports.productDisplay = async (req, res, next) => {
+export const productDisplay = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const product = await getProductCache({
+    const product = await productCache.getCache({
       queryType: 'findByPk',
       primaryKey: id,
     });
@@ -88,7 +88,7 @@ exports.productDisplay = async (req, res, next) => {
 };
 
 // Add to Cart (POST)
-exports.addToCart = async (req, res, next) => {
+export const addToCart = async (req, res, next) => {
   try {
     const isUser = req.user && req.user.id;
     const { productId, productQuantity } = req.body;

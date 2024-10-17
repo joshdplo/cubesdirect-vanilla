@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const categorySchema = require('../validation/categorySchema');
-const validateModel = require('../validation/validateModel');
-const Product = require('./Product');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import categorySchema from '../validation/categorySchema.js';
+import Product from './Product.js';
 
 const Category = sequelize.define('Category', {
   name: {
@@ -38,4 +38,4 @@ const Category = sequelize.define('Category', {
 Category.belongsToMany(Product, { through: 'ProductCategory' });
 Product.belongsToMany(Category, { through: 'ProductCategory' });
 
-module.exports = Category;
+export default Category;

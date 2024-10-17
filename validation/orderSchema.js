@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from "joi";
 
-module.exports = Joi.object({
+export default Joi.object({
   totalAmount: Joi.number().precision(2).positive().required(),
   paymentStatus: Joi.string().valid('pending', 'completed', 'failed').default('pending'),
   OrderStatus: Joi.string().valid('processing', 'shipped', 'delivered', 'cancelled').default('processing'),

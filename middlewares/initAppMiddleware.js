@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config';
 const { getCache: getCategoryCache } = require('../services/categoryCache');
 const stringUtils = require('../util/stringUtils');
 

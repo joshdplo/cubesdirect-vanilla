@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const cartSchema = require('../validation/cartSchema');
-const validateModel = require('../validation/validateModel');
-const User = require('./User');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import cartSchema from '../validation/cartSchema.js';
+import User from './User.js';
 
 const Cart = sequelize.define('Cart', {
   status: {
@@ -20,4 +20,4 @@ Cart.belongsTo(User, {
   onDelete: 'CASCADE'
 });
 
-module.exports = Cart;
+export default Cart;

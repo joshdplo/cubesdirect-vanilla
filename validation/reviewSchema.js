@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from "joi";
 
-module.exports = Joi.object({
+export default Joi.object({
   rating: Joi.number().integer().min(1).max(5).required(),
   comment: Joi.string().optional(),
   userId: Joi.number().integer().required(),

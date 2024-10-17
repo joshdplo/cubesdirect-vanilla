@@ -1,10 +1,11 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const orderItemSchema = require('../validation/orderItemSchema');
-const validateModel = require('../validation/validateModel');
-const Order = require('./Order');
-const Product = require('./Product');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import orderItemSchema from '../validation/orderItemSchema.js';
+import Order from './Order.js';
+import Product from './Product.js';
 
+//@TODO: joi validation
 const OrderItem = sequelize.define('OrderItem', {
   quantity: {
     type: DataTypes.INTEGER,
@@ -34,4 +35,4 @@ OrderItem.belongsTo(Product, {
   onDelete: 'CASCADE'
 });
 
-module.exports = OrderItem;
+export default OrderItem;

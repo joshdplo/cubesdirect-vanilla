@@ -1,5 +1,9 @@
-const { Sequelize } = require('sequelize');
-const path = require('path');
+import { Sequelize } from 'sequelize';
+import { fileURLToPath } from 'url';
+import path from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -14,4 +18,4 @@ sequelize.authenticate()
     process.exit(1);
   });
 
-module.exports = sequelize;
+export default sequelize;

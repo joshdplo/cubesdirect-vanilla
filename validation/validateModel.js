@@ -1,4 +1,4 @@
-module.exports = async (schema, value, isNullable = false) => {
+export default async (schema, value, isNullable = false) => {
   if (value === null || value === undefined) {
     if (!isNullable) throw new Error('Field cannot be null or empty!');
     return;

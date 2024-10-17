@@ -1,9 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const cartItemSchema = require('../validation/cartItemSchema');
-const validateModel = require('../validation/validateModel');
-const Cart = require('./Cart');
-const Product = require('./Product');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import validateModel from '../validation/validateModel.js';
+import cartItemSchema from '../validation/cartItemSchema.js';
+import Cart from './Cart.js';
+import Product from './Product.js';
 
 const CartItem = sequelize.define('CartItem', {
   quantity: {
@@ -34,4 +34,4 @@ CartItem.belongsTo(Product, {
   onDelete: 'CASCADE'
 });
 
-module.exports = CartItem;
+export default CartItem;

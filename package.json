@@ -2,6 +2,7 @@
   "name": "cubesdirect-vanilla",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "npm run dev",
     "dev": "concurrently --kill-others --names client,server \"vite build --watch\" \"nodemon server.js\"",

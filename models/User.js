@@ -84,4 +84,4 @@ const User = sequelize.define('User', {
   }
 }, { timestamps: true });
 
-module.exports = User;
+export default User;

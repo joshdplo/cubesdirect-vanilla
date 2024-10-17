@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from "joi";
 
-module.exports = Joi.object({
+export default Joi.object({
   quantity: Joi.number().integer().min(1).required(),
   price: Joi.number().precision(2).positive().required(),
   cartId: Joi.number().integer().required(),

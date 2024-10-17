@@ -1,11 +1,13 @@
-require('dotenv').config();
-const sequelize = require('./config/db');
-const express = require('express');
-const helmet = require('helmet');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const initAppData = require('./middlewares/initAppMiddleware');
+import 'dotenv/config';
+import sequelize from './config/db.js';
+import express from 'express';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import connectSessionSequelize from 'connect-session-sequelize';
+
+const SequelizeStore = connectSessionSequelize(session.Store);
+// const initAppData = require('./middlewares/initAppMiddleware');
 const app = express();
 
 // Connect to DB + Set up sessions
@@ -35,13 +37,13 @@ if (process.env.DEBUG === 'true') {
 }
 
 // Locals
-(async () => { await initAppData(app) })();
+// (async () => { await initAppData(app) })();
 
 // Views
 app.set('view engine', 'ejs');
 
 // Routes
-app.use('/', require('./routes'));
+// app.use('/', require('./routes'));
 
 // 404s
 app.use((req, res, next) => {

@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from "joi";
 
-module.exports = Joi.object({
+export default Joi.object({
   status: Joi.string().valid('active', 'ordering', 'completed').default('active'),
   userId: Joi.number().integer().required()
 });

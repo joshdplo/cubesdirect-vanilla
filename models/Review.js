@@ -33,4 +33,4 @@ Review.belongsTo(Product, {
   onDelete: 'CASCADE'
 });
 
-module.exports = Review;
+export default Review;

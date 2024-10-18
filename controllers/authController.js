@@ -3,7 +3,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import User from '../models/User.js';
+import extractFields from '../validation/extractFields.js';
+import { userSchema } from '../validation/userSchema.js';
 import stringUtils from '../util/stringUtils.js';
+import { setMessage } from '../middlewares/messageMiddleware.js';
 import {
   loginUser,
   logoutUser,
@@ -18,18 +21,18 @@ const { NAME } = process.env;
 export const authRegister = async (req, res, next) => {
   const { email, password } = req.body;
 
-  // Make sure email and password are valid
-  //@TODO: move this to be re-usable
-  if (!stringUtils.validateEmail(email).valid) {
-    return res.status(400).json({ error: 'Email is invalid' });
-  }
-  if (!stringUtils.validatePasswords(password, password).valid) {
-    return res.status(400).json({ error: 'Password is invalid' });
-  }
-
   try {
+    // Joi validation: extract and validate only email + password fields from userSchema
+    const schema = extractFields(userSchema, ['email', 'password']);
+    const { error, value } = schema.validate({ email, password });
+
+    if (error) {
+      console.error(`Error with Joi validation in controller:`, error);
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
     // Check if User Exists
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({ where: { email: value.email } });
     if (existingUser) {
       console.log('USER ALREADY EXISTS');
       return res.status(400).json({ error: 'Invalid credentials' });
@@ -37,10 +40,10 @@ export const authRegister = async (req, res, next) => {
 
     // Hash the Password
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(value.password, salt);
 
     // Create new user
-    const newUser = await User.create({ email, password: hashedPassword });
+    const newUser = await User.create({ email: value.email, password: hashedPassword });
 
     // Verification Email
     //@TODO: verification email (use jwtUtils)
@@ -71,6 +74,8 @@ export const authRegister = async (req, res, next) => {
       });
     } else {
       loginUser(res, newUser);
+      setMessage(req, 'Registration successful', 'success');
+
       //@TODO: this can be cleaned up. can use req.get('Referrer') from the login page (pageLogin controller) (will need to check if it is on current domain; if not, redirect to home or account) 
       res.json({ success: true, redirect: '/account', message: 'Registration successful' });
     }

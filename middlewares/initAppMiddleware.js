@@ -11,6 +11,7 @@ const initAppData = async (app) => {
     app.locals.categoryData = categoryData;
     app.locals.title = null; // overridden by res.locals.title
     app.locals.user = null; // overridden by res.locals.user
+    app.message = null;
     app.locals.global = {
       SITE_NAME: process.env.NAME
     }

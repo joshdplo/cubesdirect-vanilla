@@ -1,8 +1,17 @@
 import Joi from "joi";
 
-export default Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/).required(),
+export const passwordValidationMessage = 'Password must be 8-30 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
+export const userSchema = Joi.object({
+  email: Joi.string().email({ tlds: false }).required().messages({
+    'string.email': 'Please enter a valid email address.'
+  }),
+  password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/).required().messages({
+    'string.pattern.base': passwordValidationMessage
+  }),
+  // passwordConfirm only needed on front-end, so set as optional
+  passwordConfirm: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/).optional().messages({
+    'string.pattern.base': passwordValidationMessage
+  }),
   isVerified: Joi.boolean().default(false),
   isLocked: Joi.boolean().default(false),
   roles: Joi.array().items(

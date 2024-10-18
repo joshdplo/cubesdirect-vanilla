@@ -1,9 +1,8 @@
 import './css/reset.css';
 import './css/style.css';
 import header from './js/header';
-import registerForm from './js/registerForm';
-import loginForm from './js/loginForm';
-import changePasswordForm from './js/changePasswordForm';
+import forms from './js/forms/forms.js';
+import { globalMessageOnLoad, globalMessage } from './js/globalMessage.js';
 import addToCartButtons from './js/addToCartButtons';
 
 /**
@@ -12,9 +11,8 @@ import addToCartButtons from './js/addToCartButtons';
 document.addEventListener('DOMContentLoaded', function onDOMLoad() {
   console.log(`-> main.js`);
 
+  globalMessageOnLoad();
   header();
-  registerForm();
-  loginForm();
-  changePasswordForm();
+  forms();
   addToCartButtons();
 });

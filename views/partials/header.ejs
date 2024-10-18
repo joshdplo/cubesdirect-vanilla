@@ -1,4 +1,6 @@
-<div id="global-message"></div>
+<% if (message) { %>
+<div class="global-message <%= message.type %>"><%= message.text %></div>
+<% } %>
 <header class="nav-main">
   <div class="nav-main_left">
     <button id="hamburger" aria-expanded="false">

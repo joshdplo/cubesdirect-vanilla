@@ -7,7 +7,6 @@ export const pageIndex = async (req, res, next) => {
       queryType: 'findAll',
       where: { featured: true }
     });
-
     res.render('pages/index', {
       featuredProducts
     });

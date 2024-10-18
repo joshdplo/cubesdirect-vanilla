@@ -8,6 +8,7 @@ import connectSessionSequelize from 'connect-session-sequelize';
 
 const SequelizeStore = connectSessionSequelize(session.Store);
 import initAppData from './middlewares/initAppMiddleware.js';
+import { messageMiddleware } from './middlewares/messageMiddleware.js';
 import routes from './routes.js';
 
 const app = express();
@@ -38,8 +39,9 @@ if (process.env.DEBUG === 'true') {
   });
 }
 
-// Locals
+// Custom Middlewares
 (async () => { await initAppData(app) })();
+app.use(messageMiddleware);
 
 // Views
 app.set('view engine', 'ejs');

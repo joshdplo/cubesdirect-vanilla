@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 import validateModel from '../validation/validateModel.js';
-import userSchema from '../validation/userSchema.js';
+import { userSchema } from '../validation/userSchema.js';
 
 const User = sequelize.define('User', {
   email: {
@@ -57,7 +57,7 @@ const User = sequelize.define('User', {
   },
   resetPasswordToken: {
     type: DataTypes.STRING,
-    defaultValue: '',
+    allowNull: true,
     validate: {
       async isValid(value) {
         validateModel(userSchema, { resetPasswordToken: value })
@@ -67,6 +67,7 @@ const User = sequelize.define('User', {
   resetPasswordExpires: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
+    allowNull: true,
     validate: {
       async isValid(value) {
         validateModel(userSchema, { resetPasswordExpires: value })

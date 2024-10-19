@@ -9,6 +9,7 @@ import connectSessionSequelize from 'connect-session-sequelize';
 const SequelizeStore = connectSessionSequelize(session.Store);
 import initAppData from './middlewares/initAppMiddleware.js';
 import { messageMiddleware } from './middlewares/messageMiddleware.js';
+import nonceMiddleware from './middlewares/nonceMiddleware.js';
 import routes from './routes.js';
 
 const app = express();
@@ -25,7 +26,15 @@ app.use(session({
 store.sync();
 
 // Middlewares
-app.use(helmet());
+app.use(nonceMiddleware);
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`] // allow nonce scripts via nonceMiddleware
+    }
+  }
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('./public'));

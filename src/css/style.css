@@ -7,19 +7,38 @@ body {
  * Global Message
  * @TODO: accessibility
  */
-.global-message {
+#global-messages {
   display: block;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  padding: .8rem 1rem;
   font-size: 1.1rem;
   font-weight: bold;
   text-align: center;
+  z-index: 11;
+}
+
+#global-messages .message {
+  position: relative;
+  display: block;
+  margin-bottom: 3px;
+  padding: .5rem 2.75rem .5rem .75rem;
+  border-radius: 1rem;
   background-color: black;
   color: white;
-  z-index: 11;
+}
+
+#global-messages button {
+  position: absolute;
+  display: flex;
+  place-items: center;
+  place-content: center;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 2rem;
+  color: white;
 }
 
 

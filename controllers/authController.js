@@ -6,7 +6,7 @@ import User from '../models/User.js';
 import extractFields from '../validation/extractFields.js';
 import { userSchema } from '../validation/userSchema.js';
 import stringUtils from '../util/stringUtils.js';
-import { setMessage } from '../middlewares/messageMiddleware.js';
+import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 import {
   loginUser,
   logoutUser,
@@ -74,7 +74,7 @@ export const authRegister = async (req, res, next) => {
       });
     } else {
       loginUser(res, newUser);
-      setMessage(req, 'Registration successful', 'success');
+      addMessage(req, 'Registration successful', 'success');
 
       //@TODO: this can be cleaned up. can use req.get('Referrer') from the login page (pageLogin controller) (will need to check if it is on current domain; if not, redirect to home or account) 
       res.json({ success: true, redirect: '/account', message: 'Registration successful' });
@@ -218,5 +218,6 @@ export const authChangePassword = async (req, res, next) => {
 //@TODO: update FE script to use json instead of relying on BE redirect
 export const authLogout = (req, res, next) => {
   logoutUser(res);
-  return res.json({ success: true, redirect: '/', message: 'Successfully logged out' });
+  addMessage(req, 'Logged out successfully', 'success');
+  res.redirect('/');
 };

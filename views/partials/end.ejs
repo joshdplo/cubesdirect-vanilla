@@ -1,4 +1,13 @@
-<script type="module" src="/main.js"></script>
+<%# Main Scripts %>
+<script type="module" src="/main.js" defer></script>
+
+<%# Global Messages %>
+<% if (messages.length) { %>
 <script nonce="<%= nonce %>">
-  console.log('NONCE IS HERE!');
+  document.addEventListener('DOMContentLoaded', () => {
+    <% messages.forEach((message) => { %>
+    window._UTIL.showMessage('<%= message.text %>', '<%= message.type %>');
+    <% }) %>
+  });
 </script>
+<% } %>

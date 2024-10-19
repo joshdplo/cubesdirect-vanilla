@@ -132,3 +132,6 @@ dist
 # cubesdirect
 *.sqlite
 data/*.json
+public/*.js
+public/*.css
+public/*.js.map

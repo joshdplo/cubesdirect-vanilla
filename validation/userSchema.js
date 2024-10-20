@@ -1,17 +1,19 @@
 import Joi from "joi";
 
-export const passwordValidationMessage = 'Password must be 8-30 characters long and include at least one uppercase letter, one lowercase letter, and one number.';
-export const userSchema = Joi.object({
+export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/;
+export const passwordRegexMessages = { 'string.pattern.base': 'Password must be 8-30 characters long and include at least one uppercase letter, one lowercase letter, and one number.' };
+
+const basePassword = Joi.string().pattern(passwordRegex).required().messages(passwordRegexMessages);
+const optionalPassword = Joi.string().pattern(passwordRegex).optional().messages(passwordRegexMessages);
+
+const schemaMap = {
   email: Joi.string().email({ tlds: false }).required().messages({
     'string.email': 'Please enter a valid email address.'
   }),
-  password: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/).required().messages({
-    'string.pattern.base': passwordValidationMessage
-  }),
-  // passwordConfirm only needed on front-end, so set as optional
-  passwordConfirm: Joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/).optional().messages({
-    'string.pattern.base': passwordValidationMessage
-  }),
+  password: basePassword,
+  passwordConfirm: optionalPassword, // front-end only
+  newPassword: optionalPassword, // front-end only
+  newPasswordConfirm: optionalPassword, // front-end only
   isVerified: Joi.boolean().default(false),
   isLocked: Joi.boolean().default(false),
   roles: Joi.array().items(
@@ -32,4 +34,6 @@ export const userSchema = Joi.object({
   resetPasswordToken: Joi.string().optional(),
   resetPasswordExpires: Joi.date().iso().optional(),
   failedLoginAttempts: Joi.number().integer().default(0)
-});
+};
+
+export const userSchema = Joi.object(schemaMap);

@@ -15,6 +15,12 @@ class FormHandler {
     this.form.addEventListener('submit', (event) => this.handleSubmit(event));
   }
 
+  // Get user data if needed from the page
+  getUserDataFromPage() {
+    const dataEl = document.querySelector('div[data-user]');
+    return dataEl ? JSON.parse(dataEl.getAttribute('data-user')) : null;
+  }
+
   // Collect form data into an object
   getFormData() {
     const formData = new FormData(this.form);
@@ -28,7 +34,6 @@ class FormHandler {
       const extractedSchema = extractFields(this.schema, fields);
       const value = await extractedSchema.validateAsync(data, { abortEarly: false }); // validate all fields
 
-      console.log('Validation Success:', value);
       return { value, errors: null };
     } catch (error) {
       console.log('VALIDATION ERROR:', error);
@@ -43,15 +48,26 @@ class FormHandler {
     }
   }
 
-  // Check if password and passowrd confirmation match
-  // data: { password, passwordConfirm }
-  validatePasswordConfirmation(data) {
-    if (data &&
-      data.password &&
+  // Check if password and password confirmation match
+  // register: { password, passwordConfirm }
+  // change pass: { newPassword, newPasswordConfirm }
+  validatePasswordConfirmations(data) {
+    const errorText = 'Passwords do not match';
+
+    // Standard password confirms (register)
+    if (data.password &&
       data.passwordConfirm &&
       data.password !== data.passwordConfirm) {
-      return { passwordConfirm: 'Passwords do not match' };
+      return { passwordConfirm: errorText };
     }
+
+    // New Password confirms (change password)
+    if (data.newPassword &&
+      data.newPasswordConfirm &&
+      data.newPassword !== data.newPasswordConfirm) {
+      return { newPasswordConfirm: errorText };
+    }
+
     return null;
   }
 
@@ -86,10 +102,16 @@ class FormHandler {
     if (errors) {
       this.displayErrors(errors);
     } else {
-      const passwordErrors = this.validatePasswordConfirmation(data);
+      const passwordErrors = this.validatePasswordConfirmations(data);
       if (passwordErrors) {
         this.displayErrors(passwordErrors);
       } else {
+        console.log('Validation Success:', value);
+
+        // Get user data
+        const userData = this.getUserDataFromPage();
+        if (userData) value.user = userData;
+
         // Submit form
         try {
           const response = await fetch(this.endpoint, {
@@ -98,7 +120,15 @@ class FormHandler {
             body: JSON.stringify(value)
           });
 
-          if (!response.ok) throw new Error('Error with form submit response');
+          if (!response.ok) {
+            let errorMessage = 'Error with form response';
+            if (response.status === 400) {
+              const result = await response.json();
+              errorMessage = result.error ? result.error : 'Email or password is incorrect'
+            };
+            throw new Error(errorMessage);
+          }
+
           const result = await response.json();
           this.handleSuccess(result);
         } catch (error) {

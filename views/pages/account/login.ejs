@@ -9,21 +9,22 @@
   <%- include ('../../partials/header') %>
 
   <main>
-    <h1>Login</h1>
+    <h1>Log in</h1>
     <form id="login">
       <fieldset>
-        <label for="email-login">Email</label>
-        <input type="email" name="email" id="email-login" autocomplete="email">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" autocomplete="email">
       </fieldset>
       <fieldset>
-        <label for="password-login"></label>
-        <input type="password" name="password" id="password-login">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
       </fieldset>
-      <div class="error-text"></div>
-      <input type="submit" value="Log in" id="submit-login">
+      <div class="messages"></div>
+      <input type="submit" value="Log in">
     </form>
     <hr>
     <p>Don't have an account for <%= global.SITE_NAME %>? <a href="/register">Register here</a>.</p>
+    <p>Forgot your password? <a href="/reset-password">Reset password here</a>.</p>
   </main>
 
   <%- include ('../../partials/footer') %>

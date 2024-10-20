@@ -31,7 +31,7 @@ router.get('/', authenticateUser(false), pageIndex);
 router.get('/login', authenticateUser(false), accountLogin);
 router.get('/register', authenticateUser(false), accountRegister);
 router.get('/account', authenticateUser(true), accountPage);
-router.get('/account/reset-password', authenticateUser(true), accountResetPassword);
+router.get('/reset-password', authenticateUser(false), accountResetPassword);
 router.get('/account/change-password', authenticateUser(true), accountChangePassword);
 
 // Products

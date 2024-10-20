@@ -7,6 +7,6 @@ export default function forms() {
   const changePasswordForm = document.querySelector('form#change-password');
 
   if (registerForm) new FormHandler(registerForm, userSchema, '/api/auth/register');
-  if (loginForm) console.log('on the login page, need some JS now =}');
-  if (changePasswordForm) console.log('on the change password page, need some JS now =}');
+  if (loginForm) new FormHandler(loginForm, userSchema, '/api/auth/login');
+  if (changePasswordForm) new FormHandler(changePasswordForm, userSchema, '/api/auth/change-password');
 }

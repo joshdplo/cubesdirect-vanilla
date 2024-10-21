@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'
+import User from '../models/User.js';
 
 import {
   loginUser,
@@ -8,7 +8,6 @@ import {
 } from '../util/jwtUtils.js';
 
 // Authenticate user
-//@TODO: handle email verification
 const authenticateUser = (requireAuth = false) => {
   return async (req, res, next) => {
     const accessToken = req.cookies.accessToken;

@@ -9,11 +9,19 @@ export const issueToken = (user, type = 'access') => {
     isVerified: user.isVerified
   };
 
-  const secret = type === 'access' ? process.env.JWT_ACCESS_SECRET : process.env.JWT_REFRESH_SECRET;
-  const expiresIn = type === 'access' ? process.env.JWT_ACCESS_EXPIRATION : process.env.JWT_REFRESH_EXPIRATION;
+  let secret, expiresIn;
+  if (type === 'access') {
+    secret = process.env.JWT_ACCESS_SECRET;
+    expiresIn = process.env.JWT_ACCESS_EXPIRATION;
+  } else if (type === 'refresh') {
+    secret = process.env.JWT_REFRESH_SECRET;
+    expiresIn = process.env.JWT_REFRESH_EXPIRATION
+  } else if (type === 'email') {
+    secret = process.env.JWT_EMAIL_SECRET;
+    expiresIn = process.env.JWT_EMAIL_EXPIRATION;
+  }
 
-  const token = jwt.sign(payload, secret, { expiresIn });
-  return token;
+  return jwt.sign(payload, secret, { expiresIn });
 };
 
 // Login User

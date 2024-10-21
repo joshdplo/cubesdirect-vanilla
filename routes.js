@@ -11,6 +11,7 @@ import {
 import {
   authRegister,
   authVerifyEmail,
+  authSendEmailVerification,
   authLogin,
   authResetPassword,
   authChangePassword,
@@ -42,7 +43,8 @@ router.post('/api/cart', authenticateUser(false), addToCart);
 // Auth API
 router.post('/api/auth/register', authRegister);
 router.post('/api/auth/login', authLogin);
-router.get('/api/auth/verify-email', authVerifyEmail);
+router.get('/api/auth/verify-email/:token', authVerifyEmail);
+router.post('/api/auth/send-email-verification', authSendEmailVerification);
 router.post('/api/auth/reset-password', authResetPassword);
 router.post('/api/auth/change-password', authChangePassword);
 router.get('/logout', authLogout);

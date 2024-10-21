@@ -70,6 +70,7 @@ app.use((req, res, next) => {
 
 // Error Handling
 app.use((error, req, res, next) => {
+  console.error(`Error in server.js error catcher: ${error.message}`);
   res.status(error.status || 500);
 
   if (error.status === 404) {

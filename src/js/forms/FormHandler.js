@@ -1,3 +1,4 @@
+import { getUserDataFromPage } from './formUtils.js';
 import extractFields from '../../../validation/extractFields.js';
 
 class FormHandler {
@@ -13,12 +14,6 @@ class FormHandler {
   // Initialize form event listener
   init() {
     this.form.addEventListener('submit', (event) => this.handleSubmit(event));
-  }
-
-  // Get user data if needed from the page
-  getUserDataFromPage() {
-    const dataEl = document.querySelector('div[data-user]');
-    return dataEl ? JSON.parse(dataEl.getAttribute('data-user')) : null;
   }
 
   // Collect form data into an object
@@ -109,7 +104,7 @@ class FormHandler {
         console.log('Validation Success:', value);
 
         // Get user data
-        const userData = this.getUserDataFromPage();
+        const userData = getUserDataFromPage();
         if (userData) value.user = userData;
 
         // Submit form

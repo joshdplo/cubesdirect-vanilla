@@ -5,7 +5,8 @@ body {
 
 /**
  * Global Message
- * @TODO: accessibility
+ * @TODO: accessibility (if error, aria-role=alert),
+ *   animation (with prefers-reduced-motion)
  */
 #global-messages {
   display: block;
@@ -98,4 +99,24 @@ header nav[aria-hidden="false"] {
 footer {
   display: flex;
   flex-direction: column;
+}
+
+/**
+ * Account
+ */
+.verification-status {
+  padding: .75rem;
+  margin: 1rem 0;
+  border: 1px solid orange;
+}
+
+.verification-status.verified {
+  border-color: green;
+}
+
+.verification-status button {
+  padding: .3rem .5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid black;
 }

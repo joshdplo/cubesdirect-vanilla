@@ -1,13 +1,9 @@
 import { Sequelize } from 'sequelize';
-import { fileURLToPath } from 'url';
-import path from 'node:path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { join } from '../util/pathUtils.js';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.join(__dirname, '../data/db.sqlite')
+  storage: join('../data/db.sqlite')
 });
 
 // Confirm connection

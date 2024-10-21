@@ -13,7 +13,8 @@ const initAppData = async (app) => {
     app.locals.user = null; // overridden by res.locals.user
     app.message = null;
     app.locals.global = {
-      SITE_NAME: process.env.NAME
+      SITE_NAME: process.env.NAME,
+      EMAIL_ENABLED: process.env.EMAIL_ENABLED === 'true' ? true : false
     }
 
     console.log(`app.locals populated successfully (${Object.keys(app.locals).length} items)`);

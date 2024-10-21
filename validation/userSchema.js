@@ -31,8 +31,8 @@ const schemaMap = {
       phone: Joi.string().required()
     })
   ).optional(),
-  resetPasswordToken: Joi.string().optional(),
-  resetPasswordExpires: Joi.date().iso().optional(),
+  resetPasswordToken: Joi.string().allow(null).optional(),
+  resetPasswordExpires: Joi.date().allow(null).iso().optional(),
   failedLoginAttempts: Joi.number().integer().default(0)
 };
 

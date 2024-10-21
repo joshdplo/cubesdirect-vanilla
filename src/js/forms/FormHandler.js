@@ -2,10 +2,13 @@ import { getUserDataFromPage } from './formUtils.js';
 import extractFields from '../../../validation/extractFields.js';
 
 class FormHandler {
-  constructor(formElement, schema, endpoint) {
+  constructor(formElement, schema, endpoint, options) {
+    let finalEndpoint = endpoint;
+    if (options?.includeLastPath) finalEndpoint = `${endpoint}/${window.location.pathname.split('/')[window.location.pathname.split('/').length - 1]}`;
+
     this.form = formElement;
     this.schema = schema;
-    this.endpoint = endpoint;
+    this.endpoint = finalEndpoint;
     this.messageContainer = formElement.querySelector('.messages');
 
     this.init();
@@ -44,7 +47,7 @@ class FormHandler {
   }
 
   // Check if password and password confirmation match
-  // register: { password, passwordConfirm }
+  // register, reset-password-form: { password, passwordConfirm }
   // change pass: { newPassword, newPasswordConfirm }
   validatePasswordConfirmations(data) {
     const errorText = 'Passwords do not match';
@@ -121,6 +124,10 @@ class FormHandler {
               const result = await response.json();
               errorMessage = result.error ? result.error : 'Email or password is incorrect'
             };
+            if (response.status === 429) {
+              const result = await response.json();
+              errorMessage = result.error ? result.error : 'Too many requests'
+            }
             throw new Error(errorMessage);
           }
 

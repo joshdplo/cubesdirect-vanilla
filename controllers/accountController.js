@@ -52,11 +52,11 @@ export const accountVerifyEmail = async (req, res, next) => {
   }
 };
 
-// Reset Password Page (GET)
-export const accountResetPassword = async (req, res, next) => {
+// Change Password Page (GET)
+export const accountChangePassword = async (req, res, next) => {
   try {
-    res.render('pages/account/reset-password', {
-      title: 'Reset Password'
+    res.render('pages/account/change-password', {
+      title: 'Update Password'
     });
   } catch (error) {
     console.error(error.message);
@@ -65,11 +65,14 @@ export const accountResetPassword = async (req, res, next) => {
   }
 }
 
-// Change Password Page (GET)
-export const accountChangePassword = async (req, res, next) => {
+// Reset Password Request Page (GET)
+export const accountResetPasswordRequest = async (req, res, next) => {
   try {
-    res.render('pages/account/change-password', {
-      title: 'Update Password'
+    // if user is already logged in, redirect to the change password page
+    if (res.locals.user) return res.redirect('/account/change-password');
+
+    res.render('pages/account/reset-password-request', {
+      title: 'Reset Password'
     });
   } catch (error) {
     console.error(error.message);

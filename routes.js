@@ -13,15 +13,17 @@ import {
   authVerifyEmail,
   authSendEmailVerification,
   authLogin,
-  authResetPassword,
+  authLogout,
   authChangePassword,
-  authLogout
+  authResetPasswordRequest,
+  authResetPasswordForm,
+  authSetNewResetPassword
 } from './controllers/authController.js';
 import {
   accountPage,
   accountRegister,
   accountLogin,
-  accountResetPassword,
+  accountResetPasswordRequest,
   accountChangePassword,
 } from './controllers/accountController.js';
 
@@ -32,21 +34,25 @@ router.get('/', authenticateUser(false), pageIndex);
 router.get('/login', authenticateUser(false), accountLogin);
 router.get('/register', authenticateUser(false), accountRegister);
 router.get('/account', authenticateUser(true), accountPage);
-router.get('/reset-password', authenticateUser(false), accountResetPassword);
 router.get('/account/change-password', authenticateUser(true), accountChangePassword);
+router.get('/reset-password-request', authenticateUser(false), accountResetPasswordRequest);
 
 // Products
 router.get('/category/:id', authenticateUser(false), productCategory);
 router.get('/product/:id', authenticateUser(false), productDisplay);
 router.post('/api/cart', authenticateUser(false), addToCart);
 
-// Auth API
+// Auth API General
 router.post('/api/auth/register', authRegister);
 router.post('/api/auth/login', authLogin);
+router.get('/logout', authLogout);
 router.get('/api/auth/verify-email/:token', authVerifyEmail);
 router.post('/api/auth/send-email-verification', authSendEmailVerification);
-router.post('/api/auth/reset-password', authResetPassword);
 router.post('/api/auth/change-password', authChangePassword);
-router.get('/logout', authLogout);
+
+// Auth API Reset Password
+router.post('/api/auth/reset-password-request', authResetPasswordRequest);
+router.get('/reset-password/:token', authResetPasswordForm);
+router.post('/api/auth/reset-password/:token', authSetNewResetPassword);
 
 export default router;

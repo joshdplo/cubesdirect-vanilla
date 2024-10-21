@@ -11,6 +11,8 @@
   <main>
     <h1>Account</h1>
     <p>Welcome to your account.</p>
+
+    <% if (global.EMAIL_ENABLED) { %>
     <div class="verification-status <%= user.isVerified ? 'verified' : ''%>">
       <% if (user.isVerified) { %>
       <p>Your email address is verified</p>
@@ -21,6 +23,8 @@
       <div class="send-email-verification-info"></div>
       <% } %>
     </div>
+    <% } %>
+
     <ul>
       <li><a href="/account/change-password">Change Password</a></li>
       <li><a href="/logout">Log Out</a></li>

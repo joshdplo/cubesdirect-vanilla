@@ -1,4 +1,4 @@
-import { getUserDataFromPage } from './formUtils.js';
+import { getUserDataFromPage } from '..user/userUtils.js';
 import extractFields from '../../../validation/extractFields.js';
 
 class FormHandler {
@@ -124,6 +124,10 @@ class FormHandler {
               const result = await response.json();
               errorMessage = result.error ? result.error : 'Email or password is incorrect'
             };
+            if (response.status === 403) {
+              const result = await response.json();
+              errorMessage = result.error ? result.error : 'Error: Forbidden'
+            }
             if (response.status === 429) {
               const result = await response.json();
               errorMessage = result.error ? result.error : 'Too many requests'

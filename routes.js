@@ -40,7 +40,7 @@ router.get('/reset-password-request', authenticateUser(false), accountResetPassw
 // Products
 router.get('/category/:id', authenticateUser(false), productCategory);
 router.get('/product/:id', authenticateUser(false), productDisplay);
-router.post('/api/cart', authenticateUser(false), addToCart);
+router.post('/api/cart/add', authenticateUser(false), addToCart);
 
 // Auth API General
 router.post('/api/auth/register', authRegister);

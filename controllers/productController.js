@@ -6,8 +6,84 @@ import Product from '../models/Product.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/CartItem.js';
 
+/**
+ * Cart Helpers
+ */
+// Add item to user cart
+const handleUserCartAddItem = async (userId, product, quantity) => {
+  try {
+    // get cart or create new
+    let cart = await Cart.findOne({
+      where: {
+        userId,
+        status: 'active'
+      }
+    });
+    if (!cart) cart = await Cart.create({ where: userId });
+
+    // update existing cartItem or create new
+    let cartItem = await CartItem.findOne({
+      where: {
+        cartId: cart.id,
+        productId: product.id
+      }
+    });
+
+    if (cartItem) {
+      cartItem.quantity += quantity || 1;
+      await cartItem.save();
+    } else {
+      await CartItem.create({
+        cartId: cart.id,
+        productId: product.id,
+        quantity: quantity || 1,
+        price: product.price
+      });
+    }
+  } catch (error) {
+    console.error('Error in handleUserCartAddItem', error);
+  }
+};
+
+// Add item to guest cart
+const handleGuestCartAddItem = async (cartToken, product, quantity) => {
+  try {
+    // get cart or create new
+    let cart = await Cart.findOne({
+      where: {
+        token: cartToken,
+        userId: null
+      }
+    });
+    if (!cart) cart = await Cart.create({ token: cartToken });
+
+    let cartItem = await CartItem.findOne({
+      where: {
+        cartId: cart.id,
+        productId: product.id
+      }
+    });
+
+    if (cartItem) {
+      cartItem.quantity += quantity || 1;
+      await cartItem.save();
+    } else {
+      await CartItem.create({
+        cartId: cart.id,
+        productId: product.id,
+        quantity: quantity || 1,
+        price: product.price
+      });
+    }
+  } catch (error) {
+    console.error('Error in handleGuestCartAddItem', error);
+  }
+}
+
+/**
+ * Controllers
+ */
 // Category Page (GET)
-//@TODO XSS check for req.params.name
 export const productCategory = async (req, res, next) => {
   const { id } = req.params;
 
@@ -59,7 +135,6 @@ export const productCategory = async (req, res, next) => {
 };
 
 // Product Page (GET)
-//@TODO XSS check for req.params.id
 export const productDisplay = async (req, res, next) => {
   const { id } = req.params;
 
@@ -88,10 +163,14 @@ export const productDisplay = async (req, res, next) => {
 };
 
 // Add to Cart (POST)
+//@TODO: LEFT OFF HERE
+// - need to implement cart middleware
+//  - look into universal authMiddleware implementation while we're updating middlewares
+// - need to implement cart merges on login (merge the carts wherever we are using `loginUser` from jwtUtils.js)
 export const addToCart = async (req, res, next) => {
   try {
-    const isUser = req.user && req.user.id;
-    const { productId, productQuantity } = req.body;
+    const userId = req.session?.user?.id;
+    const { productId, productQuantity, cartToken } = req.body;
 
     const product = await Product.findByPk(productId);
     // Make sure the product exists + has stock
@@ -99,32 +178,13 @@ export const addToCart = async (req, res, next) => {
     if (!product) return res.status(404).json({ message: 'Product not found' });
     if (product.stock < 1) return res.status(404).json({ message: 'Product out of stock' });
 
-    if (isUser) {
-      const userId = req.user.id;
-
-      // Find active Cart or create one if no active cart exists
-      let cart = await Cart.findOne({ where: { userId, status: 'active' } });
-      if (!cart) cart = await Cart.create({ userId }); //carts have status defaultValue: 'active'
-
-      // Check if product is already in cart - if it is, increase quantity
-      let cartItem = await CartItem.findOne({ where: { cartId: cart.id, productId } });
-      if (cartItem) {
-        cartItem.quantity += 1;
-        await cartItem.save();
-      } else {
-        await CartItem.create({
-          cartId: cart.id,
-          productId: product.id,
-          quantity: productQuantity || 1,
-          price: product.price
-        });
-      }
-
-      return res.status(200).json({ message: 'Product added to cart!' });
+    // Add to cart (either user cart or guest cart if no user)
+    if (userId) {
+      await handleUserCartAddItem(userId, product, productQuantity);
+      return res.status(200).json({ message: 'Product added to user cart!' });
     } else {
-      //@TODO: implement non-user (anonymous) add to cart
-      console.error('No user for addToCart');
-      return res.status(500).json({ message: 'Anonymous add to cart not implemented' });
+      await handleGuestCartAddItem(cartToken, product, productQuantity);
+      return res.status(200).json({ message: 'Product added to guest cart!' });
     }
   } catch (error) {
     console.error(error);

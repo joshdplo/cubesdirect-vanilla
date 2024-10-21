@@ -35,7 +35,8 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",
     "sequelize": "^6.37.4",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.3",

@@ -1,4 +1,4 @@
-import { getUserDataFromPage } from './formUtils.js';
+import { getUserDataFromPage } from '../user/userUtils.js';
 
 // Account: Resend Email Verification
 export function accountResendEmailVerificationButton() {

@@ -3,8 +3,8 @@ import './css/reset.css';
 import './css/style.css';
 import header from './js/header';
 import forms from './js/forms/forms.js';
+import addToCartButtons from './js/cart/addToCartButtons.js';
 import './js/globalMessages.js';
-import addToCartButtons from './js/addToCartButtons';
 
 /**
  * DOM Load

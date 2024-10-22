@@ -2,8 +2,8 @@ import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { sendEmail } from '../services/emailService.js';
 import { Op } from 'sequelize';
+import { sendEmail } from '../services/emailService.js';
 import User from '../models/User.js';
 import extractFields from '../validation/extractFields.js';
 import { userSchema } from '../validation/userSchema.js';
@@ -13,6 +13,7 @@ import {
   logoutUser,
   issueToken
 } from '../util/jwtUtils.js';
+import { mergeGuestCartWithUserCart } from './productController.js';
 
 // Helpers
 const isEmailEnabled = process.env.EMAIL_ENABLED === 'true';
@@ -20,9 +21,10 @@ const { NAME } = process.env;
 
 // Register (POST)
 export const authRegister = async (req, res, next) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+    const cartToken = req.cartToken;
+
     // Joi validation
     const schema = extractFields(userSchema, ['email', 'password']);
     const { error, value } = schema.validate({ email, password });
@@ -61,7 +63,15 @@ export const authRegister = async (req, res, next) => {
     // Log user in
     loginUser(res, newUser);
     addMessage(req, 'Registration successful', 'success');
-    res.json({ success: true, redirect: '/account', message: 'Registration successful' });
+
+    // If we have a guest cart, merge them and clear the cookie
+    if (cartToken) {
+      console.log('Merging guest cart with user cart on register and then clearing the cartToken cookie...');
+      await mergeGuestCartWithUserCart(newUser.id, cartToken);
+      res.clearCookie('cartToken');
+    }
+
+    res.json({ success: true, redirect: '/account', cartMerged: true, message: 'Registration successful' });
   } catch (error) {
     console.error(error.message, error);
     res.status(500).json({ error: error.message });
@@ -70,9 +80,10 @@ export const authRegister = async (req, res, next) => {
 
 // Login (POST)
 export const authLogin = async (req, res, next) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+    const cartToken = req.cartToken;
+
     // Joi validation
     const schema = extractFields(userSchema, ['email', 'password']);
     const { error, value } = schema.validate({ email, password });
@@ -109,10 +120,16 @@ export const authLogin = async (req, res, next) => {
 
     // Login user with JWT
     loginUser(res, user);
-
     addMessage(req, 'Logged in successfully', 'success');
-    //@TODO: this can be cleaned up. can use req.get('Referrer') from the login page (pageLogin controller) (will need to check if it is on current domain; if not, redirect to home or account) 
-    res.json({ success: true, redirect: '/', message: 'Login successful' });
+
+    // If we have a guest cart, merge them and clear the cookie
+    if (cartToken) {
+      console.log('Merging guest cart with user cart on login and then clearing the cartToken cookie...');
+      await mergeGuestCartWithUserCart(user.id, cartToken);
+      res.clearCookie('cartToken');
+    }
+
+    res.json({ success: true, redirect: '/', cartMerged: true, message: 'Login successful' });
   } catch (error) {
     console.error(error.message, error);
     res.status(500).json({ error });
@@ -176,11 +193,12 @@ export const authVerifyEmail = async (req, res, next) => {
 };
 
 // Send Verification Email (POST)
+//@TODO: retest this (using req.user.id instead of sending it through the page with req.body.user.id)
 export const authSendEmailVerification = async (req, res, next) => {
   try {
     if (!isEmailEnabled) return res.status(500).json({ error: 'Email is disabled' });
 
-    const userId = req.body.user.id;
+    const userId = req.user?.id;
     const user = await User.findByPk(userId);
 
     if (!user) return res.status(404).json({ error: 'User not found' });
@@ -217,7 +235,7 @@ export const authSendEmailVerification = async (req, res, next) => {
 export const authChangePassword = async (req, res, next) => {
   try {
     const { password, newPassword } = req.body;
-    const userId = req.body.user.id;
+    const userId = req.user?.id;
 
     // Joi validation
     const schema = extractFields(userSchema, ['password', 'newPassword']);

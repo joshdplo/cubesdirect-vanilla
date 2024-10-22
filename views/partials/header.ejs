@@ -22,7 +22,9 @@
     <a href="/cart">
       Cart
       <span class="nav-main_cart"></span>
-      <span class="nav-main_cart-number"></span>
+      <% if (cart && cart.count) { %>
+      <span class="nav-main_cart-number">(<%= cart.count %>)</span>
+      <% } %>
     </a>
   </div>
 </header>

@@ -13,12 +13,13 @@ import OrderItem from '../models/OrderItem.js';
 
 async function generateUserData() {
   const users = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 1; i < 11; i++) {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(faker.internet.password(), salt);
+    const hashedPassword = await bcrypt.hash('Password123', salt);
 
+    // users will be test1@test.com, test2@test.com, etc
     const user = {
-      email: faker.internet.email(),
+      email: `test${i}@test.com`,
       password: hashedPassword,
       isVerified: faker.datatype.boolean(),
       addresses: [

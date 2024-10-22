@@ -1,14 +1,18 @@
-import { getUserDataFromPage } from '..user/userUtils.js';
 import extractFields from '../../../validation/extractFields.js';
 
 class FormHandler {
   constructor(formElement, schema, endpoint, options) {
+    // Massage endpoint if needed
     let finalEndpoint = endpoint;
-    if (options?.includeLastPath) finalEndpoint = `${endpoint}/${window.location.pathname.split('/')[window.location.pathname.split('/').length - 1]}`;
+    if (options?.useGetParamOnPost) {
+      const locationPathArr = window.location.pathname.split('/');
+      finalEndpoint = `${endpoint}/${locationPathArr[locationPathArr.length - 1]}`;
+    }
 
     this.form = formElement;
     this.schema = schema;
     this.endpoint = finalEndpoint;
+    this.options = options;
     this.messageContainer = formElement.querySelector('.messages');
 
     this.init();
@@ -105,10 +109,6 @@ class FormHandler {
         this.displayErrors(passwordErrors);
       } else {
         console.log('Validation Success:', value);
-
-        // Get user data
-        const userData = getUserDataFromPage();
-        if (userData) value.user = userData;
 
         // Submit form
         try {

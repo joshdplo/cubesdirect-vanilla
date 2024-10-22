@@ -1,11 +1,10 @@
-import { getOrCreateCartToken } from "./cartUtils.js";
+import { showMessage } from "../globalMessages.js";
 
 /**
  * Add to Cart Buttons Mock
  */
 export default function addToCartButtons() {
   const cartButtons = document.querySelectorAll('button.add-to-cart');
-  const cartToken = getOrCreateCartToken();
 
   const onAddToCartClick = (e) => {
     const productId = parseInt(e.target.getAttribute('data-productId'), 10);
@@ -14,14 +13,14 @@ export default function addToCartButtons() {
     // Add to cart POST request
     fetch('/api/cart/add', {
       method: 'POST',
-      body: JSON.stringify({ productId, productQuantity, cartToken }),
+      body: JSON.stringify({ productId, productQuantity }),
       headers: { 'Content-Type': 'application/json' }
     }).then(res => res.json())
       .then(response => {
-        console.log(response);
         if (response.error) {
           // error on add to cart
-
+          console.log('error adding item to cart:', response.error);
+          showMessage(response.error, 'error');
         } else {
           // success on add to cart
           console.log('add to cart success');

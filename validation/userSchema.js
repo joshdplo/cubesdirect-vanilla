@@ -14,6 +14,7 @@ const schemaMap = {
   passwordConfirm: optionalPassword, // front-end only
   newPassword: optionalPassword, // front-end only
   newPasswordConfirm: optionalPassword, // front-end only
+  cartToken: Joi.string().allow(null).optional(), // front-end only
   isVerified: Joi.boolean().default(false),
   isLocked: Joi.boolean().default(false),
   roles: Joi.array().items(

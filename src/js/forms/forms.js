@@ -1,6 +1,6 @@
 import FormHandler from './FormHandler.js';
 import { userSchema } from '../../../validation/userSchema.js';
-import { accountResendEmailVerificationButton } from './accountForms.js';
+import { accountResendEmailVerificationButton } from '../account/accountForms.js';
 
 /**
  * Export forms
@@ -16,7 +16,7 @@ export default function forms() {
   if (loginForm) new FormHandler(loginForm, userSchema, '/api/auth/login');
   if (changePasswordForm) new FormHandler(changePasswordForm, userSchema, '/api/auth/change-password');
   if (resetPasswordRequestForm) new FormHandler(resetPasswordRequestForm, userSchema, '/api/auth/reset-password-request');
-  if (resetPasswordForm) new FormHandler(resetPasswordForm, userSchema, '/api/auth/reset-password', { includeLastPath: true });
+  if (resetPasswordForm) new FormHandler(resetPasswordForm, userSchema, '/api/auth/reset-password', { useGetParamOnPost: true });
 
   accountResendEmailVerificationButton();
 }

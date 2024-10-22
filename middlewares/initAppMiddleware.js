@@ -9,9 +9,10 @@ const initAppData = async (app) => {
 
     app.locals.stringUtils = stringUtils;
     app.locals.categoryData = categoryData;
-    app.locals.title = null; // overridden by res.locals.title
-    app.locals.user = null; // overridden by res.locals.user
-    app.message = null;
+    app.locals.title = null; // overridden by res
+    app.locals.user = null; // overridden by res
+    app.locals.cart = null; // overridden by res
+    app.locals.messages = null; // overridden by res
     app.locals.global = {
       SITE_NAME: process.env.NAME,
       EMAIL_ENABLED: process.env.EMAIL_ENABLED === 'true' ? true : false

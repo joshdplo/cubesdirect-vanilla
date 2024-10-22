@@ -1,12 +1,15 @@
 import express from 'express';
-import authenticateUser from './middlewares/authMiddleware.js';
+import { authenticateUser } from './middlewares/authMiddleware.js';
 const router = express.Router();
 
 import { pageIndex } from './controllers/pageController.js';
 import {
   productCategory,
   productDisplay,
-  addToCart
+  productCart,
+  addToCart,
+  updateCartItem,
+  removeCartItem
 } from './controllers/productController.js';
 import {
   authRegister,
@@ -28,19 +31,24 @@ import {
 } from './controllers/accountController.js';
 
 // General
-router.get('/', authenticateUser(false), pageIndex);
+router.get('/', pageIndex);
 
 // Account
-router.get('/login', authenticateUser(false), accountLogin);
-router.get('/register', authenticateUser(false), accountRegister);
+router.get('/login', accountLogin);
+router.get('/register', accountRegister);
 router.get('/account', authenticateUser(true), accountPage);
 router.get('/account/change-password', authenticateUser(true), accountChangePassword);
-router.get('/reset-password-request', authenticateUser(false), accountResetPasswordRequest);
+router.get('/reset-password-request', accountResetPasswordRequest);
 
 // Products
-router.get('/category/:id', authenticateUser(false), productCategory);
-router.get('/product/:id', authenticateUser(false), productDisplay);
-router.post('/api/cart/add', authenticateUser(false), addToCart);
+router.get('/category/:id', productCategory);
+router.get('/product/:id', productDisplay);
+router.get('/cart', productCart);
+
+// Products API
+router.post('/api/cart/add', addToCart);
+router.post('/api/cart/update', updateCartItem);
+router.post('/api/cart/remove', removeCartItem);
 
 // Auth API General
 router.post('/api/auth/register', authRegister);

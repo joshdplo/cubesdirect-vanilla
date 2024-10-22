@@ -1,10 +1,7 @@
-import { getUserDataFromPage } from '../user/userUtils.js';
-
 // Account: Resend Email Verification
 export function accountResendEmailVerificationButton() {
   const buttonEl = document.querySelector('.page-account button#send-email-verification');
   const infoEl = document.querySelector('.page-account .send-email-verification-info');
-  const userData = getUserDataFromPage();
 
   if (!buttonEl || !infoEl || !userData) return;
 
@@ -13,7 +10,7 @@ export function accountResendEmailVerificationButton() {
       const response = await fetch('/api/auth/send-email-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: userData })
+        // body: JSON.stringify({ user: userData }) // don't need to send anything
       });
 
       if (!response.ok) {

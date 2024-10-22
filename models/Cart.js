@@ -10,13 +10,17 @@ const Cart = sequelize.define('Cart', {
     type: DataTypes.STRING, // 'active', 'ordering', 'completed'
     defaultValue: 'active'
   },
+  token: {
+    type: DataTypes.STRING,
+    allowNull: true
+  }
 }, { timestamps: true });
 
 // Relationships
 Cart.belongsTo(User, {
   foreignKey: {
     name: 'userId',
-    allowNull: false
+    allowNull: true
   },
   onDelete: 'CASCADE'
 });

@@ -1,6 +1,19 @@
 # CubesDirect
 A mock e-commerce site built using Node, Express, SQLite, and (insert FE tech here). This project was created in October 2024.
 
+## Running Locally
+- Nodemailer Setup **(optional)**
+  - when running/developing locally
+  - using mailtrap for email testing (oct 2024)
+    - sign up on mailtrap WITH THE EMAIL YOU WILL BE SENDING TO
+    - review mailtrap's blog post on (how to use mailtrap with nodemailer here)[https://mailtrap.io/blog/sending-emails-with-nodemailer/] (credentials in next bullet point)
+    - go to sending domians > demomailtrap.com > integration > transactional stream
+      - use the host, port, username, and password listed to configure nodemailer's mailOptions object (username will most likely be "api")
+    - you can use `node scripts/email-test.js` to test that emails are sent
+    - NOTE: you can only send mails via mailtrap to the *address you created your mailtrap account with* (you **can** change your mailtrap email account if needed!)
+  - using gmail for email testing
+    - i didn't test gmail sending, but (here is a note from nodemailer on using gmail)[https://nodemailer.com/usage/using-gmail/]. With a potential couple extra steps, it *should* work.
+
 ## Why I made CubesDirect
 I made this project for xxxxxxxxxx
 
@@ -49,16 +62,18 @@ The process for creating CubesDirect was xxxxxxxxxx
     - refresh every hour
   - products = cache all but 'stock' (any others?) + event-based caching
     - refresh every hour
-- implement pagination for category pages (products)
+- ~~implement pagination for category pages (products)~~
 - set up user add address functionality
 - add 'reviewer' role to users after a single purchase
 - ensure cached data is being invalidated properly
   - user modifications
   - product modifications
-- set up email functionality `AFTER BE IS STABLE`
-  - verify ("welcome to cubesdirect")
-  - password reset
-  - order confirmation
+- set up email functionality
+  - ~~welcome/verify~~
+  - ~~resend verification~~
+  - ~~password reset~~
+  - ~~password changed~~
+  - order placed confirmation
   - order shipped
   - order delivered
 
@@ -72,8 +87,8 @@ The process for creating CubesDirect was xxxxxxxxxx
 - create a 'setup' script that is checked on 'npm run dev'
   - check for .env file. if not exist, copy .env.example (or create new .env)
   - this will eliminate the need for people cloning the project to do anything other than npm i / npm start
-- global/shared validation: sequelize models, BE <-> FE user inputs, FE form input error messages  (typescript?)
-- decide if product quantities should be selectable (ie. 1-10 dropdown) or just 1 at a time
+- ~~global/shared validation: sequelize models, BE <-> FE user inputs, FE form input error messages~~
+- ~~decide if product quantities should be selectable (ie. 1-10 dropdown) or just 1 at a time~~
 - product slugs for URLs
 - add 'show password' icon to password fields
 - if user starts an order, refresh their access token
@@ -81,14 +96,3 @@ The process for creating CubesDirect was xxxxxxxxxx
 ### TODO Final
 - create JSON files for live DB seed (and update seed file)
   - include correct product items
-- Nodemailer Setup (optional)
-  - when running/developing locally
-  - using mailtrap for email testing (oct 2024)
-    - sign up on mailtrap WITH THE EMAIL YOU WILL BE SENDING TO
-    - review mailtrap's blog post on (how to use mailtrap with nodemailer here)[https://mailtrap.io/blog/sending-emails-with-nodemailer/] (credentials in next bullet point)
-    - go to sending domians > demomailtrap.com > integration > transactional stream
-      - use the host, port, username, and password listed to configure nodemailer's mailOptions object (username will most likely be "api")
-    - you can use `node scripts/email-test.js` to test that emails are sent
-    - NOTE: you can only send mails via mailtrap to the *address you created your mailtrap account with* (you **can** change your mailtrap email account if needed!)
-  - using gmail for email testing
-    - i didn't test gmail sending, but (here is a note from nodemailer on using gmail)[https://nodemailer.com/usage/using-gmail/]. With a potential couple extra steps, it *should* work.

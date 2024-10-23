@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 import validateModel from '../validation/validateModel.js';
-import categorySchema from '../validation/categorySchema.js';
+import { categorySchema } from '../validation/categorySchema.js';
 import Product from './Product.js';
 
 const Category = sequelize.define('Category', {

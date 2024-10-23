@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 import validateModel from '../validation/validateModel.js';
-import cartSchema from '../validation/cartSchema.js';
+import { cartSchema } from '../validation/cartSchema.js';
 import User from './User.js';
 
 //@TODO: joi validation

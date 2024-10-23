@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export default Joi.object({
+export const orderSchema = Joi.object({
   totalAmount: Joi.number().precision(2).positive().required(),
   paymentStatus: Joi.string().valid('pending', 'completed', 'failed').default('pending'),
   OrderStatus: Joi.string().valid('processing', 'shipped', 'delivered', 'cancelled').default('processing'),

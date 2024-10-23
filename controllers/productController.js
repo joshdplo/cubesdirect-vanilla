@@ -293,12 +293,12 @@ export const addToCart = async (req, res, next) => {
 };
 
 // Update Cart Item (POST)
-//@TODO: convert to res.json + front-end scripts
+//@TODO: redo cartItem.Product.stock and quantity validation
 export const updateCartItem = async (req, res, next) => {
   try {
     const { cartItemId, quantity } = req.body;
 
-    const cartItem = await CartItem.findByPk(cartItemId);
+    const cartItem = await CartItem.findByPk(cartItemId, { include: Product });
     if (!cartItem) return res.status(404).json({ message: 'Item not found' });
 
     const quantityDifference = quantity - cartItem.quantity;
@@ -308,29 +308,28 @@ export const updateCartItem = async (req, res, next) => {
     cartItem.quantity = quantity;
     await cartItem.save();
 
-    res.redirect('/cart');
+    return res.status(200).json({ success: true, redirect: '/cart', message: 'Item quantity updated' });
   } catch (error) {
-    console.error('Error updating cart item:', error);
-    next(error);
+    console.error(error);
+    return res.status(500).json({ message: 'Error updating cart item quantity' });
   }
 };
 
 // Remove Cart Item (POST)
-//@TODO: convert to res.json + front-end scripts
 export const removeCartItem = async (req, res, next) => {
   try {
     const { cartItemId } = req.body;
 
-    const cartItem = await CartItem.findByPk(cartItemId);
+    const cartItem = await CartItem.findByPk(cartItemId, { include: Product });
     if (!cartItem) return res.status(404).json({ message: 'Item not found' });
 
     cartItem.Product.stock += cartItem.quantity;
     await cartItem.Product.save();
 
     await cartItem.destroy();
-    res.redirect('/cart');
+    return res.status(200).json({ success: true, redirect: '/cart', message: 'Item removed from cart' });
   } catch (error) {
-    console.error('Error removing cart item:', error);
-    next(error);
+    console.error(error);
+    return res.status(500).json({ message: 'Error removing from cart' });
   }
 };

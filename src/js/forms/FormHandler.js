@@ -147,6 +147,7 @@ class FormHandler {
 
   // Handle Success
   handleSuccess(result) {
+    console.log(result);
     if (result.success) {
       this.displayMessage(result.message || 'Success!');
       if (result.redirect) window.location.href = result.redirect;

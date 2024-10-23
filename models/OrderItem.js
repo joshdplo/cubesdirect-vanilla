@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 import validateModel from '../validation/validateModel.js';
-import orderItemSchema from '../validation/orderItemSchema.js';
+import { orderItemSchema } from '../validation/orderItemSchema.js';
 import Order from './Order.js';
 import Product from './Product.js';
 

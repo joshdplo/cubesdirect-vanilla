@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export default Joi.object({
+export const productSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().required(),
   price: Joi.number().precision(2).positive().required(),

@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 import validateModel from '../validation/validateModel.js';
-import cartItemSchema from '../validation/cartItemSchema.js';
+import { cartItemSchema } from '../validation/cartItemSchema.js';
 import Cart from './Cart.js';
 import Product from './Product.js';
 

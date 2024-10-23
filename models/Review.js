@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 import validateModel from '../validation/validateModel.js';
-import reviewSchema from '../validation/reviewSchema.js';
+import { reviewSchema } from '../validation/reviewSchema.js';
 import User from './User.js';
 import Product from './Product.js';
 

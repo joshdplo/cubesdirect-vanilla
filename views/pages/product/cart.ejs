@@ -17,17 +17,17 @@
         <img src="<%= item.Product.images[0] %>" alt="<%= item.Product.name %>" width="100">
         <div><%= item.Product.name %></div>
         <div>Price: $<%= item.Product.price %></div>
-        <%# @TODO: move cart api calls into a script %>
-        <form id="cart-item-update" action="/api/cart/update" method="POST">
+        <form class="cart-item-update">
           <input type="hidden" name="cartItemId" id="cartItemId" value="<%= item.id %>">
           <input type="number" name="quantity" id="quantity" value="<%= item.quantity %>" min="1" max="100">
           <input type="submit" value="Update">
+          <div class="messages"></div>
         </form>
-        <form id="cart-item-remove" action="/api/cart/remove" method="POST">
+        <form class="cart-item-remove">
           <input type="hidden" name="cartItemId" id="cartItemId" value="<%= item.id %>">
           <input type="submit" value="Remove">
+          <div class="messages"></div>
         </form>
-        <div class="cart-form-message"></div>
       </li>
       <% }); %>
       <hr>

@@ -38,22 +38,23 @@ export async function getCartItemCount(cartId) {
 }
 
 // Make cart count available on requests (guest and user)
-export async function cartCountMiddleware(req, res, next) {
+export async function cartInfoMiddleware(req, res, next) {
   try {
     const { cartToken } = req;
     const { user } = res.locals;
 
-    res.locals.cart = { count: 0, id: null, type: 'guest' }
+    // set up cart data to modify and pass through via req.cart and res.locals.cart
+    const cartData = { count: 0, id: null, type: 'guest' };
 
     if (user && cartToken) {
       // if both user AND cart token exist, merge the carts
-      console.log('Both user and cartToken exist in cartCountMiddleware - merging.');
+      console.log('Both user and cartToken exist in cartInfoMiddleware - merging.');
       await mergeGuestCartWithUserCart(user.id, cartToken);
       res.clearCookie('cartToken');
     }
 
     if (user) {
-      res.locals.cart.type = 'user';
+      cartData.type = 'user';
 
       // get cart id from user
       const cart = await Cart.findOne({
@@ -62,12 +63,16 @@ export async function cartCountMiddleware(req, res, next) {
           status: 'active'
         }
       });
-      if (!cart) return next();
+      if (!cart) {
+        req.cart = res.locals.cart = cartData;
+        console.log('---cartInfoMiddleware---', req.cart);
+        return next();
+      }
 
       // get cart items count from cart id
       const cartCount = await getCartItemCount(cart.id);
-      res.locals.cart.count = cartCount;
-      res.locals.cart.id = cart.id;
+      cartData.count = cartCount;
+      cartData.id = cart.id;
     } else if (cartToken) {
       // get cart id from token
       const cart = await Cart.findOne({
@@ -76,18 +81,23 @@ export async function cartCountMiddleware(req, res, next) {
           status: 'active'
         }
       });
-      if (!cart) return next();
+      if (!cart) {
+        req.cart = res.locals.cart = cartData;
+        console.log('---cartInfoMiddleware---', req.cart);
+        return next();
+      }
 
       // get cart items count from cart id
       const cartCount = await getCartItemCount(cart.id);
-      res.locals.cart.count = cartCount;
-      res.locals.cart.id = cart.id;
+      cartData.count = cartCount;
+      cartData.id = cart.id;
     }
 
-    req.cart = res.locals.cart;
+    req.cart = res.locals.cart = cartData;
+    console.log('---cartInfoMiddleware---', req.cart);
     next();
   } catch (error) {
-    console.error('Error in cartCountMiddleware:', error);
+    console.error('Error in cartInfoMiddleware:', error);
     throw new Error(error);
   }
 }

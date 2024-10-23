@@ -10,7 +10,7 @@ const SequelizeStore = connectSessionSequelize(session.Store);
 import initAppData from './middlewares/initAppMiddleware.js';
 import { messageMiddleware } from './middlewares/globalMessageMiddleware.js';
 import nonceMiddleware from './middlewares/nonceMiddleware.js';
-import { cartTokenMiddleware, cartCountMiddleware } from './middlewares/cartMiddleware.js';
+import { cartTokenMiddleware, cartInfoMiddleware } from './middlewares/cartMiddleware.js';
 import { loadUser } from './middlewares/authMiddleware.js';
 import routes from './routes.js';
 
@@ -54,7 +54,7 @@ if (process.env.DEBUG === 'true') {
 (async () => { await initAppData(app) })();
 app.use(loadUser);
 app.use(cartTokenMiddleware);
-app.use(cartCountMiddleware);
+app.use(cartInfoMiddleware);
 app.use(messageMiddleware);
 
 // Views

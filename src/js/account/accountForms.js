@@ -3,14 +3,14 @@ export function accountResendEmailVerificationButton() {
   const buttonEl = document.querySelector('.page-account button#send-email-verification');
   const infoEl = document.querySelector('.page-account .send-email-verification-info');
 
-  if (!buttonEl || !infoEl || !userData) return;
+  if (!buttonEl || !infoEl) return;
 
   buttonEl.addEventListener('click', async () => {
     try {
       const response = await fetch('/api/auth/send-email-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify({ user: userData }) // don't need to send anything
+        // body: JSON.stringify({ some: data }) // don't need to send anything
       });
 
       if (!response.ok) {

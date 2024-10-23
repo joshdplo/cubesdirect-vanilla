@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import sequelize from '../config/db.js';
 import bcrypt from 'bcryptjs';
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/en_US';
 import User from '../models/User.js';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
@@ -13,7 +13,9 @@ import OrderItem from '../models/OrderItem.js';
 
 async function generateUserData() {
   const users = [];
+  const addressTitleNouns = ['house', 'appartment', 'business', 'condo', 'townhouse', 'vacation house', 'timeshare'];
   for (let i = 1; i < 11; i++) {
+    const firstName = faker.person.firstName();
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash('Password123', salt);
 
@@ -24,8 +26,9 @@ async function generateUserData() {
       isVerified: faker.datatype.boolean(),
       addresses: [
         {
-          title: faker.animal.bird(),
-          receiverName: faker.person.fullName(),
+          default: true,
+          title: `${firstName} ${addressTitleNouns[Math.floor(Math.random() * addressTitleNouns.length)]}`,
+          receiverName: `${firstName} ${faker.person.lastName()}`,
           street: faker.location.streetAddress(),
           city: faker.location.city(),
           state: faker.location.state(),
@@ -51,11 +54,13 @@ async function generateCategoryData() {
 }
 
 async function generateProductData() {
+  const numberOfProducts = 50;
   const products = [];
-  for (let i = 0; i < 30; i++) {
-    const productName = `${faker.commerce.productName()} Cube`;
+  const uniqueProductNames = faker.helpers.uniqueArray(faker.commerce.productName, numberOfProducts);
+
+  for (let i = 0; i < numberOfProducts; i++) {
     const product = {
-      name: productName,
+      name: `${uniqueProductNames[i]} Cube`,
       description: faker.commerce.productDescription(),
       price: faker.commerce.price(),
       stock: faker.number.int({ min: 0, max: 100 }),

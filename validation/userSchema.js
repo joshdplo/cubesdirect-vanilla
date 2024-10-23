@@ -22,13 +22,13 @@ const schemaMap = {
   ).default(['user']),
   addresses: Joi.array().items(
     Joi.object({
+      default: Joi.boolean().required(),
       title: Joi.string().required(),
       receiverName: Joi.string().required(),
       street: Joi.string().required(),
       city: Joi.string().required(),
       state: Joi.string().required(),
       zip: Joi.string().required(),
-      country: Joi.string().required(),
       phone: Joi.string().required()
     })
   ).optional(),

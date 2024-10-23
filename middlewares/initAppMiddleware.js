@@ -9,10 +9,10 @@ const initAppData = async (app) => {
 
     app.locals.stringUtils = stringUtils;
     app.locals.categoryData = categoryData;
-    app.locals.title = null; // overridden by res
-    app.locals.user = null; // overridden by res
-    app.locals.cart = null; // overridden by res
-    app.locals.messages = null; // overridden by res
+    app.locals.title = null; // overridden by res, needed for error pages
+    app.locals.user = null; // overridden by res, needed for error pages
+    app.locals.cart = null; // overridden by res, needed for error pages
+    app.locals.messages = null; // overridden by res, needed for error pages
     app.locals.global = {
       SITE_NAME: process.env.NAME,
       EMAIL_ENABLED: process.env.EMAIL_ENABLED === 'true' ? true : false

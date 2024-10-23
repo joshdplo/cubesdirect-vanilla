@@ -119,19 +119,8 @@ class FormHandler {
           });
 
           if (!response.ok) {
-            let errorMessage = 'Error with form response';
-            if (response.status === 400) {
-              const result = await response.json();
-              errorMessage = result.error ? result.error : 'Email or password is incorrect'
-            };
-            if (response.status === 403) {
-              const result = await response.json();
-              errorMessage = result.error ? result.error : 'Error: Forbidden'
-            }
-            if (response.status === 429) {
-              const result = await response.json();
-              errorMessage = result.error ? result.error : 'Too many requests'
-            }
+            const result = await response.json();
+            const errorMessage = result.error ? result.error : 'Error with form response'
             throw new Error(errorMessage);
           }
 

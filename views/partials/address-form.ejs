@@ -1,0 +1,53 @@
+<%
+  const isNewAddress = formId === 'new-address';
+
+  function getIndex() {
+    if(isNewAddress) return 'new';
+    return (formIndex || formIndex === 0) ? formIndex : '';
+  }
+%>
+
+<form <% if(formClass) { %> class="<%= formClass %>" <% } %> <% if(formId) { %> id="<%= formId %>" <% } %>>
+  <fieldset>
+    <label for="title<%= getIndex() %>">Address Nickname</label>
+    <input type="text" name="title" id="title<%= getIndex() %>" <%if(address) {%>value="<%=address.title%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="firstName<%= getIndex() %>">First Name</label>
+    <input type="text" name="firstName" id="firstName<%= getIndex() %>" autocomplete="given-name"
+      <%if(address) {%>value="<%=address.firstName%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="lastName<%= getIndex() %>">Last Name</label>
+    <input type="text" name="lastName" id="lastName<%= getIndex() %>" autocomplete="family-name"
+      <%if(address) {%>value="<%=address.lastName%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="street<%= getIndex() %>">Street Address</label>
+    <input type="text" name="street" id="street<%= getIndex() %>" autocomplete="street-address"
+      <%if(address) {%>value="<%=address.street%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="city<%= getIndex() %>">City</label>
+    <input type="text" name="city" id="city<%= getIndex() %>" autocomplete="address-level2"
+      <%if(address) {%>value="<%=address.city%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="state<%= getIndex() %>">State</label>
+    <input type="text" name="state" id="state<%= getIndex() %>" autocomplete="address-level1"
+      <%if(address) {%>value="<%=address.state%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="zip<%= getIndex() %>">Zip Code</label>
+    <input type="text" name="zip" id="zip<%= getIndex() %>" autocomplete="postal-code"
+      <%if(address) {%>value="<%=address.zip%>" <%}%>>
+  </fieldset>
+  <fieldset>
+    <label for="default<%= getIndex() %>">Make this my default address</label>
+    <input type="checkbox" name="default" id="default<%= getIndex() %>"
+      <%if(address && address.default) {%>checked="true" <%}%>>
+  </fieldset>
+  <%if(!isNewAddress) {%><input type="hidden" name="index" value="<%= getIndex() %>"><%}%>
+  <div class="messages"></div>
+  <input type="submit" value="<%= submitText %>">
+</form>

@@ -33,9 +33,15 @@ class FormHandler {
   async validate(data) {
     try {
       const fields = Object.keys(data);
-      const extractedSchema = extractFields(this.schema, fields);
-      const value = await extractedSchema.validateAsync(data, { abortEarly: false }); // validate all fields
 
+      let extractedSchema;
+      if (this.options?.isAddress) {
+        extractedSchema = extractFields(this.schema.extract('addresses').$_terms.items[0], fields);
+      } else {
+        extractedSchema = extractFields(this.schema, fields);
+      }
+
+      const value = await extractedSchema.validateAsync(data, { abortEarly: false }); // validate all fields
       return { value, errors: null };
     } catch (error) {
       console.log('VALIDATION ERROR:', error);
@@ -97,6 +103,9 @@ class FormHandler {
     this.clearErrors();
 
     const data = this.getFormData();
+
+    // if it's an address form, update the 'default' value to be boolean
+    if (this.options?.isAddress && data.default && data.default === 'on') data.default = true;
 
     // validate form data
     const { value, errors } = await this.validate(data);

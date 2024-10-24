@@ -47,8 +47,9 @@ const User = sequelize.define('User', {
     }
   },
   addresses: {
-    type: DataTypes.JSON, // [{default, title, receiverName, street, city, state, zip, phone}, {...}]
+    type: DataTypes.JSON, // [{default, title, firstName, lastName, street, city, state, zip}, {...}]
     allowNull: true,
+    defaultValue: [],
     validate: {
       async isValid(value) {
         validateModel(userSchema, { addresses: value }, true)

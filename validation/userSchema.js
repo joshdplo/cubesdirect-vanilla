@@ -22,14 +22,15 @@ const schemaMap = {
   ).default(['user']),
   addresses: Joi.array().items(
     Joi.object({
-      default: Joi.boolean().required(),
+      index: Joi.number().integer().allow(null).optional(), // front-end only
       title: Joi.string().required(),
-      receiverName: Joi.string().required(),
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
       street: Joi.string().required(),
       city: Joi.string().required(),
       state: Joi.string().required(),
       zip: Joi.string().required(),
-      phone: Joi.string().required()
+      default: Joi.boolean().default(false),
     })
   ).optional(),
   resetPasswordToken: Joi.string().allow(null).optional(),

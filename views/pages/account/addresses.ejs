@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+
+<body>
+  <%- include ('../../partials/header') %>
+
+  <main>
+    <h1>Addresses</h1>
+    <% if (user.addresses.length) { %>
+    <%# Addresses List with forms and remove button %>
+    <ul class="user_addresses">
+      <% user.addresses.forEach((address, idx) => { %>
+      <li>
+        <div class="user_addresses_info">
+          <div><%= address.title %></div>
+          <button class="user_addresses_edit-button">Edit</button>
+          <form class="remove-address">
+            <input type="hidden" name="index" value="<%= idx %>">
+            <div class="messages"></div>
+            <input type="submit" value="Remove">
+          </form>
+        </div>
+        <%- include('../../partials/address-form', {formClass: 'update-address', formIndex: idx, submitText: 'Update Address', address, formId: null}); %>
+      </li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <h2>You haven't added any addresses yet.</h2>
+    <% } %>
+
+    <% if (user.addresses.length <= 4) { %>
+    <%# New Address %>
+    <%- include('../../partials/address-form', {formId: 'new-address', submitText: 'Add Address', formClass: null, formIndex: null, address: null}); %>
+    <% } %>
+  </main>
+
+  <%- include ('../../partials/footer') %>
+  <%- include ('../../partials/end') %>
+</body>
+
+</html>

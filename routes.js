@@ -23,11 +23,15 @@ import {
   authSetNewResetPassword
 } from './controllers/authController.js';
 import {
-  accountPage,
   accountRegister,
   accountLogin,
-  accountResetPasswordRequest,
   accountChangePassword,
+  accountResetPasswordRequest,
+  accountPage,
+  accountAddresses,
+  accountAddAddress,
+  accountUpdateAddress,
+  accountRemoveAddress
 } from './controllers/accountController.js';
 
 // General
@@ -37,8 +41,14 @@ router.get('/', pageIndex);
 router.get('/login', accountLogin);
 router.get('/register', accountRegister);
 router.get('/account', authenticateUser(true), accountPage);
+router.get('/account/addresses', authenticateUser(true), accountAddresses);
 router.get('/account/change-password', authenticateUser(true), accountChangePassword);
 router.get('/reset-password-request', accountResetPasswordRequest);
+
+// Account API
+router.post('/api/addresses/add', accountAddAddress);
+router.post('/api/addresses/update', accountUpdateAddress);
+router.post('/api/addresses/remove', accountRemoveAddress);
 
 // Products
 router.get('/category/:id', productCategory);

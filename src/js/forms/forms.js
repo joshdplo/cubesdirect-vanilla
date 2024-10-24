@@ -15,6 +15,9 @@ export default function forms() {
   const resetPasswordForm = document.querySelector('form#reset-password');
   const cartItemUpdateForm = document.querySelectorAll('form.cart-item-update');
   const cartItemRemoveForm = document.querySelectorAll('form.cart-item-remove');
+  const newAddressForm = document.querySelector('form#new-address');
+  const updateAddressForm = document.querySelectorAll('form.update-address');
+  const removeAddressForm = document.querySelectorAll('form.remove-address');
 
   // Auth forms
   if (registerForm) new FormHandler(registerForm, userSchema, '/api/auth/register');
@@ -22,6 +25,11 @@ export default function forms() {
   if (changePasswordForm) new FormHandler(changePasswordForm, userSchema, '/api/auth/change-password');
   if (resetPasswordRequestForm) new FormHandler(resetPasswordRequestForm, userSchema, '/api/auth/reset-password-request');
   if (resetPasswordForm) new FormHandler(resetPasswordForm, userSchema, '/api/auth/reset-password', { useGetParamOnPost: true });
+
+  // Address forms
+  if (newAddressForm) new FormHandler(newAddressForm, userSchema, '/api/addresses/add', { isAddress: true });
+  if (updateAddressForm.length) [...updateAddressForm].map((formEl) => new FormHandler(formEl, userSchema, '/api/addresses/update', { isAddress: true }));
+  if (removeAddressForm.length) [...removeAddressForm].map((formEl) => new FormHandler(formEl, userSchema, '/api/addresses/remove', { isAddress: true }));
 
   // Cart forms
   if (cartItemUpdateForm.length) [...cartItemUpdateForm].map((formEl) => new FormHandler(formEl, cartItemSchema, '/api/cart/update'));

@@ -28,13 +28,12 @@ async function generateUserData() {
         {
           default: true,
           title: `${firstName} ${addressTitleNouns[Math.floor(Math.random() * addressTitleNouns.length)]}`,
-          receiverName: `${firstName} ${faker.person.lastName()}`,
+          firstName: `${firstName}`,
+          lastName: faker.person.lastName(),
           street: faker.location.streetAddress(),
           city: faker.location.city(),
           state: faker.location.state(),
-          zip: faker.location.zipCode(),
-          country: faker.location.country(),
-          phone: faker.phone.number({ style: 'international' }),
+          zip: faker.location.zipCode()
         }
       ]
     };

@@ -16,15 +16,15 @@
       <li class="product" data-product-id="<%= item.id %>">
         <img src="<%= item.Product.images[0] %>" alt="<%= item.Product.name %>" width="100">
         <div><%= item.Product.name %></div>
-        <div>Price: $<%= item.Product.price %></div>
+        <div>Price: $<%= item.Product.price.toFixed(2) %></div>
         <form class="cart-item-update">
-          <input type="hidden" name="cartItemId" id="cartItemId" value="<%= item.id %>">
-          <input type="number" name="quantity" id="quantity" value="<%= item.quantity %>" min="1" max="100">
+          <input type="hidden" name="cartItemId" value="<%= item.id %>">
+          <input type="number" name="quantity" value="<%= item.quantity %>" min="1" max="100">
           <input type="submit" value="Update">
           <div class="messages"></div>
         </form>
         <form class="cart-item-remove">
-          <input type="hidden" name="cartItemId" id="cartItemId" value="<%= item.id %>">
+          <input type="hidden" name="cartItemId" value="<%= item.id %>">
           <input type="submit" value="Remove">
           <div class="messages"></div>
         </form>

@@ -8,6 +8,8 @@
     "dev": "concurrently --kill-others --names client,server \"vite build --watch\" \"nodemon server.js\"",
     "build": "vite build",
     "prod": "NODE_ENV=production node server.js",
+    "seed-db": "node scripts/seed-db.js",
+    "test-email": "node scripts/test-email.js",
     "json-structure": "npx directory-tree --path ./ --attributes type,extension,size -e \"node_modules|.git\" --pretty -o ./data/cubesdirect-structure.json"
   },
   "nodemonConfig": {

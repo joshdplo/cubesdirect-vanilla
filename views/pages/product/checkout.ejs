@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+
+<body>
+  <%- include ('../../partials/header') %>
+
+  <main>
+    <h1>Checkout</h1>
+
+    <%# Cart Items %>
+    <h2>Your Order</h2>
+    <ul>
+      <% items.forEach(item => {%>
+      <li class="product">
+        <img src="<%= item.Product.images[0] %>" alt="<%= item.Product.name %>" width="100">
+        <div><%= item.Product.name %></div>
+        <div>Quantity: <%= item.quantity %></div>
+        <div>Price: $<%= item.Product.price %></div>
+      </li>
+      <% }); %>
+      <hr>
+      <h2>Subtotal: $<%= subtotal.toFixed(2) %></h2>
+      <br><br>
+    </ul>
+    <hr>
+
+    <%# Shipping Address Forms %>
+    <h2>Shipping Address</h2>
+    <% if (isGuest) { %>
+    <%- include('../../partials/address-form', {formId: 'order-guest-address', submitText: 'Proceed to Payment', formClass: null, formIndex: null, address: null}) %>
+    <% } else { %>
+    <% if (addresses.length) { %>
+    <% let defaultAddressIndex = null; addresses.forEach((addr, index) => { if(addr.default) defaultAddressIndex = index})%>
+    <h3>Select a saved address</h3>
+    <form id="order-user-select-address">
+      <select name="addressIndex"
+        value="<%= (defaultAddressIndex || defaultAddressIndex === 0) ? defaultAddressIndex : 'new' %>">
+        <option value="new">New Address (enter below)</option>
+        <% addresses.forEach((address, index) => { %>
+        <option value="<%= index %>" <%if(index === defaultAddressIndex) {%>selected="true"
+          <%}%>><%= address.title %></option>
+          <% });%>
+      </select>
+    </form>
+    <% } %>
+    <h3><%= addresses.length ? 'Or enter ' : 'Enter ' %>a new address</h3>
+    <%- include('../../partials/address-form', {formId: 'order-user-new-address', submitText: 'Proceed to Payment', formClass: null, formIndex: null, address: null}) %>
+    <% } %>
+  </main>
+
+  <%- include ('../../partials/footer') %>
+  <%- include ('../../partials/end') %>
+</body>
+
+</html>

@@ -7,9 +7,10 @@ import {
   productCategory,
   productDisplay,
   productCart,
+  productCheckout,
   addToCart,
   updateCartItem,
-  removeCartItem
+  removeCartItem,
 } from './controllers/productController.js';
 import {
   authRegister,
@@ -54,6 +55,9 @@ router.post('/api/addresses/remove', accountRemoveAddress);
 router.get('/category/:id', productCategory);
 router.get('/product/:id', productDisplay);
 router.get('/cart', productCart);
+router.get('/checkout', productCheckout);
+// router.get('/checkout/order', productCheckoutPayment);
+// router.get('/checkout/confirmation', productCheckoutConfirmation);
 
 // Products API
 router.post('/api/cart/add', addToCart);

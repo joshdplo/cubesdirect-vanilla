@@ -92,6 +92,14 @@ export const accountAddresses = async (req, res, next) => {
   }
 };
 
+// Account Orders (GET)
+export const accountOrders = async (req, res, next) => {
+  res.render('pages/account/orders', {
+    title: 'Orders',
+    orders: []
+  })
+}
+
 /**
  * Helpers
  */

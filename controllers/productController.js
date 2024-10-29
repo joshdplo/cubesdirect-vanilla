@@ -5,6 +5,8 @@ import Category from '../models/Category.js';
 import Product from '../models/Product.js';
 import Cart from '../models/Cart.js';
 import CartItem from '../models/CartItem.js';
+import Order from '../models/Order.js';
+import OrderItem from '../models/OrderItem.js';
 
 /**
  * Page Controllers
@@ -117,6 +119,36 @@ export const productCart = async (req, res, next) => {
     next(error);
   }
 };
+
+// Checkout Page (GET)
+export const productCheckout = async (req, res, next) => {
+  try {
+    const cartId = req.cart?.id;
+    if (!cartId) return res.redirect('/cart'); // if no cart, return to cart page
+
+    const cartItems = await CartItem.findAll({
+      where: { cartId },
+      include: [{ model: Product, attributes: ['id', 'name', 'price', 'images'] }]
+    });
+
+    const subtotal = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+    let userAddresses = [];
+    if (req.user) userAddresses = req.user.addresses || [];
+
+    res.render('pages/product/checkout', {
+      title: 'Checkout',
+      items: cartItems,
+      subtotal,
+      addresses: userAddresses,
+      isGuest: !req.user
+    });
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
+}
 
 /**
  * Cart Helpers

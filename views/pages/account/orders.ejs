@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+
+<body class="page-account">
+  <%- include ('../../partials/header') %>
+
+  <main>
+    <%- include ('../../partials/account-menu') %>
+
+    <h1>Orders</h1>
+    <% if (orders.length) { %>
+    <ul>
+      <% orders.forEach((order) => { %>
+      <li><%= order.totalAmount %></li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+
+    <% } %>
+  </main>
+
+  <%- include ('../../partials/footer') %>
+  <%- include ('../../partials/end') %>
+</body>
+
+</html>

@@ -5,14 +5,13 @@ export const orderSchema = Joi.object({
   paymentStatus: Joi.string().valid('pending', 'completed', 'failed').default('pending'),
   OrderStatus: Joi.string().valid('processing', 'shipped', 'delivered', 'cancelled').default('processing'),
   deliveryAddress: Joi.object({
-    title: Joi.string().required(),
-    receiverName: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     street: Joi.string().required(),
     city: Joi.string().required(),
     state: Joi.string().required(),
     zip: Joi.string().required(),
-    country: Joi.string().required(),
-    phone: Joi.string().required()
+    default: Joi.boolean().default(false),
   }).required(),
   userId: Joi.number().integer().required()
 });

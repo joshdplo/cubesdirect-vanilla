@@ -9,6 +9,8 @@
   <%- include ('../../partials/header') %>
 
   <main>
+    <%- include ('../../partials/account-menu') %>
+
     <h1>Account</h1>
     <p>Welcome to your account.</p>
 
@@ -24,20 +26,6 @@
       <% } %>
     </div>
     <% } %>
-
-    <ul>
-      <li>
-        <% if (user.addresses.length) { %>
-        Default Address: <%= user.addresses.find((address) => address.default === true).title %><br>
-        <a href="/account/addresses">Edit Addresses</a>
-        <% } else { %>
-        No addresses added yet.
-        <a href="/account/addresses">Add an address</a>
-        <% } %>
-      </li>
-      <li><a href="/account/change-password">Change Password</a></li>
-      <li><a href="/logout">Log Out</a></li>
-    </ul>
   </main>
 
   <%- include ('../../partials/footer') %>

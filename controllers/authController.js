@@ -363,7 +363,11 @@ export const authResetPasswordForm = async (req, res, next) => {
       return next(error);
     }
 
-    res.render('pages/account/reset-password-form', { token });
+    res.render('pages/account/reset-password-form', {
+      title: 'Reset Password',
+      bundle: 'account',
+      token
+    });
   } catch (error) {
     console.error(error.message, error);
     next(error);

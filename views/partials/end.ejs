@@ -10,6 +10,9 @@
 
 <%# Main Scripts %>
 <script type="module" src="/main.js" defer></script>
+<%if(bundle) { %>
+<script type="module" src="/<%= bundle %>Bundle.js" defer></script>
+<% } %>
 
 <%# Global Messages %>
 <% if (messages.length) { %>

@@ -70,7 +70,8 @@ export const accountResetPasswordRequest = async (req, res, next) => {
 export const accountPage = async (req, res, next) => {
   try {
     res.render('pages/account/account', {
-      title: 'Account'
+      title: 'Account',
+      bundle: 'account'
     });
   } catch (error) {
     console.error(error.message);
@@ -83,7 +84,8 @@ export const accountPage = async (req, res, next) => {
 export const accountAddresses = async (req, res, next) => {
   try {
     res.render('pages/account/addresses', {
-      title: 'Addresses'
+      title: 'Addresses',
+      bundle: 'account'
     });
   } catch (error) {
     console.error(error.message);
@@ -122,6 +124,7 @@ const removeAddressesDefaults = (addresses) => {
 /**
  * API Controllers
  */
+// Add Address (POST)
 export const accountAddAddress = async (req, res, next) => {
   try {
     // validate form data
@@ -153,6 +156,7 @@ export const accountAddAddress = async (req, res, next) => {
   }
 }
 
+// Update Address (POST)
 export const accountUpdateAddress = async (req, res, next) => {
   try {
     const { index, ...updatedAddress } = req.body;
@@ -178,6 +182,7 @@ export const accountUpdateAddress = async (req, res, next) => {
   }
 }
 
+// Remove Address (POST)
 export const accountRemoveAddress = async (req, res, next) => {
   try {
     const { index } = req.body;

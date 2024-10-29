@@ -1,11 +1,10 @@
 /**
  * Global Messages
  */
-const globalMessagesContainerId = 'global-messages';
+const messageContainer = document.getElementById('global-messages');
 const durationDefault = 3500;
 
 export const showMessage = (text, type = 'info', duration = durationDefault) => {
-  const messageContainer = document.getElementById(globalMessagesContainerId);
   const message = document.createElement('div');
   message.className = `message ${type}`;
   message.innerText = text;

@@ -26,8 +26,8 @@
       <%= product.stock %> in stock
       $<%= product.price %>
 
-      <button class="add-to-cart" data-productId="<%= product.id %>" <% if (product.stock <= 0) { %> disabled="true"
-        <% } %>>
+      <button class="add-to-cart" data-cmp="addToCartButton" data-productId="<%= product.id %>"
+        <% if (product.stock <= 0) { %> disabled="true" <% } %>>
         Add to Cart
       </button>
     </div>

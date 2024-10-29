@@ -1,19 +1,19 @@
-import { showMessage } from "../globalMessages.js";
+import './AddToCartButton.css';
+import { BaseComponent } from "../componentSystem.js";
 
-/**
- * Add to Cart Buttons Mock
- */
-export default function addToCartButtons() {
-  const cartButtons = document.querySelectorAll('button.add-to-cart');
+export default class AddToCartButton extends BaseComponent {
+  init() {
+    this.productId = this.element.getAttribute('data-productId');
+    this.quantity = 1;
 
-  const onAddToCartClick = (e) => {
-    const productId = parseInt(e.target.getAttribute('data-productId'), 10);
-    const productQuantity = 1;
+    this.addEventListener(this.element, 'click', this.click.bind(this));
+  }
 
+  click() {
     // Add to cart POST request
     fetch('/api/cart/add', {
       method: 'POST',
-      body: JSON.stringify({ productId, productQuantity }),
+      body: JSON.stringify({ productId: this.productId, productQuantity: this.quantity }),
       headers: { 'Content-Type': 'application/json' }
     }).then(res => res.json())
       .then(response => {
@@ -31,6 +31,4 @@ export default function addToCartButtons() {
         console.error('Error on add to cart post:', error);
       });
   }
-
-  cartButtons.forEach((el) => el.addEventListener('click', onAddToCartClick));
 }

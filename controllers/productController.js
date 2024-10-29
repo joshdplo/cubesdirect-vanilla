@@ -46,6 +46,7 @@ export const productCategory = async (req, res, next) => {
 
     res.render('pages/product/category', {
       title: `${stringUtils.titleCase(category.name)} Cubes`,
+      bundle: 'category',
       category,
       products,
       currentPage: page,
@@ -79,6 +80,7 @@ export const productDisplay = async (req, res, next) => {
     res.render('pages/product/product', {
       //@TODO: shorten name to x characters
       title: stringUtils.titleCase(product.name),
+      bundle: 'product',
       product
     });
   } catch (error) {
@@ -108,6 +110,7 @@ export const productCart = async (req, res, next) => {
 
     res.render('pages/product/cart', {
       title: 'Cart',
+      bundle: 'cart',
       items: cartData.items,
       subtotal: cartData.subtotal
     });

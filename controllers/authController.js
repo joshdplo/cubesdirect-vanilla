@@ -202,7 +202,10 @@ export const authSendEmailVerification = async (req, res, next) => {
     const user = await User.findByPk(userId);
 
     if (!user) return res.status(404).json({ error: 'User not found' });
-    if (user.isVerified) return res.status(400).json({ error: 'User Already verified' });
+    if (user.isVerified) return res.status(400).json({
+      error: 'Your email address has already been verified.',
+      redirect: '/account'
+    });
 
     // Check if email was sent recently
     const lastSent = req.session.lastVerificationEmailSent;
@@ -224,7 +227,7 @@ export const authSendEmailVerification = async (req, res, next) => {
     });
 
     req.session.lastVerificationEmailSent = Date.now();
-    res.status(200).json({ message: 'Verification email has been sent' });
+    res.status(200).json({ success: true, message: 'Verification email has been sent - check your email for a verification link.' });
   } catch (error) {
     console.error(error.message, error);
     res.status(500).json({ error: error.message });

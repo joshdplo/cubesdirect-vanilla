@@ -1,7 +1,13 @@
+import { registerComponent, initComponents } from '../../components/componentSystem.js';
+import AccountVerificationResend from '../../components/AccountVerificationResend/AccountVerificationResend.js';
+
 import FormHandler from '../FormHandler.js';
 import { userSchema } from '../../../validation/userSchema.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Account Components
+  registerComponent('accountVerificationResend', AccountVerificationResend);
+
   // Account Forms
   const changePasswordForm = document.querySelector('form#change-password');
   const newAddressForm = document.querySelector('form#new-address');
@@ -13,5 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (updateAddressForm.length) [...updateAddressForm].map((formEl) => new FormHandler(formEl, userSchema, '/api/addresses/update', { isAddress: true }));
   if (removeAddressForm.length) [...removeAddressForm].map((formEl) => new FormHandler(formEl, userSchema, '/api/addresses/remove', { isAddress: true }));
 
+  initComponents();
   console.log('-> account bundle loaded');
 });

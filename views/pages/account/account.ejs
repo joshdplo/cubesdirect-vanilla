@@ -5,7 +5,7 @@
   <%- include('../../partials/head'); %>
 </head>
 
-<body class="page-account">
+<body>
   <%- include ('../../partials/header') %>
 
   <main>
@@ -13,14 +13,16 @@
     <p>Welcome to your account.</p>
 
     <% if (global.EMAIL_ENABLED) { %>
-    <div class="verification-status <%= user.isVerified ? 'verified' : ''%>">
+    <div class="account_verification <%= user.isVerified ? 'verified' : ''%>">
       <% if (user.isVerified) { %>
       <p>Your email address is verified</p>
       <% } else { %>
       <p>Your email address is not verified. Verifying your email address allows you to write reviews for products. You
         can re-send your verification email by clicking the below button at any time.</p>
-      <button id="send-email-verification">Re-send Email Verification</button>
-      <div class="send-email-verification-info"></div>
+      <div class="account_verification_resend" data-cmp="accountVerificationResend">
+        <button>Re-send Email Verification</button>
+        <div class="messages"></div>
+      </div>
       <% } %>
     </div>
     <% } %>

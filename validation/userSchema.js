@@ -1,5 +1,8 @@
 import Joi from "joi";
 
+/**
+ * User Schema
+ */
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$/;
 export const passwordRegexMessages = { 'string.pattern.base': 'Password must be 8-30 characters long and include at least one uppercase letter, one lowercase letter, and one number.' };
 
@@ -39,3 +42,20 @@ const schemaMap = {
 };
 
 export const userSchema = Joi.object(schemaMap);
+
+/**
+ * Validate Address helper
+ */
+export const validateAddress = async (addressData) => {
+  try {
+    const addressSchema = userSchema.extract('addresses').$_terms.items[0]; // extract address item schema
+    const value = await addressSchema.validateAsync(addressData, { abortEarly: false });
+    return { value, errors: null };
+  } catch (error) {
+    const errors = error.details.reduce((acc, err) => {
+      acc[err.path[0]] = err.message;
+      return acc;
+    }, {});
+    return { value: null, errors };
+  }
+};

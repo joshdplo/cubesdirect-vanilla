@@ -3,6 +3,10 @@ body {
   color: #111;
 }
 
+.hide {
+  display: none;
+}
+
 /**
  * Global Message
  * @TODO: accessibility (if error, aria-role=alert),

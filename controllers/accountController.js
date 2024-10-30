@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import { userSchema } from "../validation/userSchema.js";
+import { validateAddress } from "../validation/userSchema.js";
 import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 
 /**
@@ -41,7 +41,8 @@ export const accountLogin = async (req, res, next) => {
 export const accountChangePassword = async (req, res, next) => {
   try {
     res.render('pages/account/change-password', {
-      title: 'Update Password'
+      title: 'Update Password',
+      bundle: 'account'
     });
   } catch (error) {
     console.error(error.message);
@@ -89,21 +90,6 @@ export const accountOrders = async (req, res, next) => {
 /**
  * Helpers
  */
-// address validation helper
-const validateAddress = async (addressData) => {
-  try {
-    const addressSchema = userSchema.extract('addresses').$_terms.items[0]; // extract address item schema
-    const value = await addressSchema.validateAsync(addressData, { abortEarly: false });
-    return { value, errors: null };
-  } catch (error) {
-    const errors = error.details.reduce((acc, err) => {
-      acc[err.path[0]] = err.message;
-      return acc;
-    }, {});
-    return { value: null, errors };
-  }
-};
-
 // handle 'default' address value: if there are existing addresses and the
 // new address is set as default, make all other addresses' 'default' values false
 const removeAddressesDefaults = (addresses) => {

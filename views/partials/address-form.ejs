@@ -1,5 +1,5 @@
 <%
-  const isNewAddress = formId === 'new-address';
+  const isNewAddress = formId?.includes('new-address');
 
   function getIndex() {
     if(isNewAddress) return 'new';

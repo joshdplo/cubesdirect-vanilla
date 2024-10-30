@@ -1,4 +1,5 @@
 import stringUtils from '../util/stringUtils.js';
+import { validateAddress } from '../validation/userSchema.js';
 import categoryCache from '../services/categoryCache.js';
 import productCache from '../services/productCache.js';
 import Category from '../models/Category.js';
@@ -48,7 +49,6 @@ export const productCategory = async (req, res, next) => {
 
     res.render('pages/product/category', {
       title: `${stringUtils.titleCase(category.name)} Cubes`,
-      bundle: 'category',
       category,
       products,
       currentPage: page,
@@ -57,7 +57,6 @@ export const productCategory = async (req, res, next) => {
     });
   } catch (error) {
     console.error(error);
-    console.error(error.message);
     error.status = 500;
     next(error);
   }
@@ -82,7 +81,6 @@ export const productDisplay = async (req, res, next) => {
     res.render('pages/product/product', {
       //@TODO: shorten name to x characters
       title: stringUtils.titleCase(product.name),
-      bundle: 'product',
       product
     });
   } catch (error) {
@@ -112,7 +110,6 @@ export const productCart = async (req, res, next) => {
 
     res.render('pages/product/cart', {
       title: 'Cart',
-      bundle: 'cart',
       items: cartData.items,
       subtotal: cartData.subtotal
     });
@@ -139,6 +136,8 @@ export const productCheckout = async (req, res, next) => {
     let userAddresses = [];
     if (req.user) userAddresses = req.user.addresses || [];
 
+    //@TODO: handle case where we already have req.session.shippingAddress (user left the checkout flow before payment)
+
     res.render('pages/product/checkout', {
       title: 'Checkout',
       items: cartItems,
@@ -148,6 +147,34 @@ export const productCheckout = async (req, res, next) => {
     });
   } catch (error) {
     console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
+}
+
+// Checkout Payment Page (GET)
+export const productCheckoutPayment = async (req, res, next) => {
+  try {
+    res.render('pages/product/checkout-payment', {
+      title: 'Checkout - Payment',
+      isGuest: !req.user
+    });
+  } catch (error) {
+    console.error(error);
+    error.status = 500;
+    next(error);
+  }
+}
+
+// Checkout Confirmation Page (GET)
+export const productCheckoutConfirmation = async (req, res, next) => {
+  try {
+    res.render('pages/product/checkout-confirmation', {
+      title: 'Checkout - Confirmation',
+      isGuest: !req.user
+    });
+  } catch (error) {
+    console.error(error);
     error.status = 500;
     next(error);
   }
@@ -378,3 +405,31 @@ export const removeCartItem = async (req, res, next) => {
     return res.status(500).json({ error: 'Error removing from cart' });
   }
 };
+
+// Checkout Shipping Submit (POST)
+export const productCheckoutShippingSubmit = async (req, res, next) => {
+  try {
+    const { addressIndex, ...newAddress } = req.body;
+
+    let shippingAddress;
+    if (req.user && addressIndex !== undefined) {
+      shippingAddress = req.user.addresses[addressIndex];
+    } else if (newAddress) {
+      const { value: address, errors } = await validateAddress(newAddress);
+      if (errors) {
+        console.error('Validation error in productCheckoutShippingSubmit:', errors);
+        return res.status(400).json({ error: 'Error validating form data for new address' });
+      }
+
+      shippingAddress = address;
+    } else {
+      return res.status(400).json({ error: 'Insufficient data sent in checkout shipping' });
+    }
+
+    req.session.shippingAddress = shippingAddress; // store shipping address in session
+    return res.status(200).json({ success: true, redirect: '/checkout/payment', message: 'Shipping information confirmed' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Error with shipping info in checkout' });
+  }
+}

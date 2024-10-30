@@ -8,9 +8,13 @@ import {
   productDisplay,
   productCart,
   productCheckout,
+  productCheckoutPayment,
+  productCheckoutConfirmation,
   addToCart,
   updateCartItem,
   removeCartItem,
+  productCheckoutShippingSubmit,
+  // productCheckoutPaymentSubmit
 } from './controllers/productController.js';
 import {
   authRegister,
@@ -55,13 +59,15 @@ router.get('/category/:id', productCategory);
 router.get('/product/:id', productDisplay);
 router.get('/cart', productCart);
 router.get('/checkout', productCheckout);
-// router.get('/checkout/order', productCheckoutPayment);
-// router.get('/checkout/confirmation', productCheckoutConfirmation);
+router.get('/checkout/payment', productCheckoutPayment);
+router.get('/checkout/confirmation', productCheckoutConfirmation);
 
 // Products API
 router.post('/api/cart/add', addToCart);
 router.post('/api/cart/update', updateCartItem);
 router.post('/api/cart/remove', removeCartItem);
+router.post('/api/checkout/shipping', productCheckoutShippingSubmit);
+// router.post('/api/checkout/payment', productCheckoutPaymentSubmit);
 
 // Auth API General
 router.post('/api/auth/register', authRegister);

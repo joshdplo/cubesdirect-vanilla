@@ -20,7 +20,7 @@ export default class AddToCartButton extends BaseComponent {
         if (response.error) {
           // error on add to cart
           console.log('error adding item to cart:', response.error);
-          winow._UTIL.showGlobalMessage(response.error, 'error');
+          window._UTIL.showGlobalMessage(response.error, 'error');
         } else {
           // success on add to cart
           console.log('add to cart success');

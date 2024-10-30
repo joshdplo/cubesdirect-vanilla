@@ -51,7 +51,7 @@ if (process.env.DEBUG === 'true') {
 }
 
 // Custom Middlewares
-(async () => { await initAppData(app) })();
+initAppData(app);
 app.use(loadUser);
 app.use(cartTokenMiddleware);
 app.use(cartInfoMiddleware);
@@ -88,4 +88,14 @@ app.use((error, req, res, next) => {
 // Server Start
 const PORT = process.env.PORT || 5000;
 const NAME = process.env.NAME;
-app.listen(PORT, () => console.log(`${NAME} Server running on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`${NAME} Server running on port ${PORT}`));
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. You can change the server's port by editing the .env file. Exiting...`)
+  } else {
+    console.error('Server error:', err.message);
+  }
+
+  process.exit(1);
+});

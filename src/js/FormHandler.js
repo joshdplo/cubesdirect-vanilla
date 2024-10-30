@@ -1,4 +1,4 @@
-import extractFields from '../../../validation/extractFields.js';
+import extractFields from '../../validation/extractFields.js';
 
 class FormHandler {
   constructor(formElement, schema, endpoint, options) {

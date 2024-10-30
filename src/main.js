@@ -3,7 +3,7 @@ import './css/reset.css';
 import './css/style.css';
 import './js/globalMessages.js';
 
-import globalBundle from './components/bundles/globalBundle.js';
+import globalBundle from './js/bundles/globalBundle.js';
 
 /**
  * DOM Load

@@ -50,22 +50,6 @@ export const accountChangePassword = async (req, res, next) => {
   }
 }
 
-// Reset Password Request Page (GET)
-export const accountResetPasswordRequest = async (req, res, next) => {
-  try {
-    // if user is already logged in, redirect to the change password page
-    if (req.user) return res.redirect('/account/change-password');
-
-    res.render('pages/account/reset-password-request', {
-      title: 'Reset Password'
-    });
-  } catch (error) {
-    console.error(error.message);
-    error.status = 500;
-    next(error);
-  }
-}
-
 // Account Page (GET)
 export const accountPage = async (req, res, next) => {
   try {

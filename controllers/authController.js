@@ -340,8 +340,25 @@ export const authResetPasswordRequest = async (req, res, next) => {
   }
 };
 
+// Reset Password Request Page (GET)
+export const authResetPasswordRequestPage = async (req, res, next) => {
+  try {
+    // if user is already logged in, redirect to the change password page
+    if (req.user) return res.redirect('/account/change-password');
+
+    res.render('pages/account/reset-password-request', {
+      title: 'Reset Password',
+      bundle: 'resetPassword'
+    });
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
+}
+
 // Reset Password Form (GET)
-export const authResetPasswordForm = async (req, res, next) => {
+export const authResetPasswordFormPage = async (req, res, next) => {
   try {
     if (!isEmailEnabled) {
       addMessage(req, 'Email is not enabled, redirected to home page', 'error');
@@ -365,7 +382,7 @@ export const authResetPasswordForm = async (req, res, next) => {
 
     res.render('pages/account/reset-password-form', {
       title: 'Reset Password',
-      bundle: 'account',
+      bundle: 'resetPassword',
       token
     });
   } catch (error) {

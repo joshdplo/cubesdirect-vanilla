@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { defineConfig } from 'vite';
 
-const bundleFiles = fs.readdirSync('./src/components/bundles').map((file) => `src/components/bundles/${file}`);
+const bundleFiles = fs.readdirSync('./src/js/bundles').map((file) => `src/js/bundles/${file}`);
 console.log('----Bundle Files----');
 console.log(bundleFiles);
 

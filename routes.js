@@ -20,14 +20,14 @@ import {
   authLogout,
   authChangePassword,
   authResetPasswordRequest,
-  authResetPasswordForm,
+  authResetPasswordRequestPage,
+  authResetPasswordFormPage,
   authSetNewResetPassword
 } from './controllers/authController.js';
 import {
   accountRegister,
   accountLogin,
   accountChangePassword,
-  accountResetPasswordRequest,
   accountPage,
   accountAddresses,
   accountAddAddress,
@@ -44,7 +44,6 @@ router.get('/register', accountRegister);
 router.get('/account', authenticateUser(true), accountPage);
 router.get('/account/addresses', authenticateUser(true), accountAddresses);
 router.get('/account/change-password', authenticateUser(true), accountChangePassword);
-router.get('/reset-password-request', accountResetPasswordRequest);
 
 // Account API
 router.post('/api/addresses/add', accountAddAddress);
@@ -73,8 +72,9 @@ router.post('/api/auth/send-email-verification', authSendEmailVerification);
 router.post('/api/auth/change-password', authChangePassword);
 
 // Auth API Reset Password
+router.get('/reset-password-request', authResetPasswordRequestPage);
 router.post('/api/auth/reset-password-request', authResetPasswordRequest);
-router.get('/reset-password/:token', authResetPasswordForm);
+router.get('/reset-password/:token', authResetPasswordFormPage);
 router.post('/api/auth/reset-password/:token', authSetNewResetPassword);
 
 export default router;

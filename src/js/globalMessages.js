@@ -1,11 +1,10 @@
 /**
  * Global Messages
  */
-const globalMessagesContainerId = 'global-messages';
+const messageContainer = document.getElementById('global-messages');
 const durationDefault = 3500;
 
-export const showMessage = (text, type = 'info', duration = durationDefault) => {
-  const messageContainer = document.getElementById(globalMessagesContainerId);
+export const showGlobalMessage = (text, type = 'info', duration = durationDefault) => {
   const message = document.createElement('div');
   message.className = `message ${type}`;
   message.innerText = text;
@@ -23,7 +22,7 @@ export const showMessage = (text, type = 'info', duration = durationDefault) => 
 }
 
 if (window._UTIL) {
-  window._UTIL.showMessage = showMessage;
+  window._UTIL.showGlobalMessage = showGlobalMessage;
 } else {
-  console.log('window._UTIL is not available to add globalMessages.js');
+  console.log('window._UTIL is not available to add globalMessages');
 }

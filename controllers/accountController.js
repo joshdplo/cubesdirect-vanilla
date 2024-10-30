@@ -50,27 +50,12 @@ export const accountChangePassword = async (req, res, next) => {
   }
 }
 
-// Reset Password Request Page (GET)
-export const accountResetPasswordRequest = async (req, res, next) => {
-  try {
-    // if user is already logged in, redirect to the change password page
-    if (req.user) return res.redirect('/account/change-password');
-
-    res.render('pages/account/reset-password-request', {
-      title: 'Reset Password'
-    });
-  } catch (error) {
-    console.error(error.message);
-    error.status = 500;
-    next(error);
-  }
-}
-
 // Account Page (GET)
 export const accountPage = async (req, res, next) => {
   try {
     res.render('pages/account/account', {
-      title: 'Account'
+      title: 'Account',
+      bundle: 'account'
     });
   } catch (error) {
     console.error(error.message);
@@ -83,7 +68,8 @@ export const accountPage = async (req, res, next) => {
 export const accountAddresses = async (req, res, next) => {
   try {
     res.render('pages/account/addresses', {
-      title: 'Addresses'
+      title: 'Addresses',
+      bundle: 'account'
     });
   } catch (error) {
     console.error(error.message);
@@ -130,6 +116,7 @@ const removeAddressesDefaults = (addresses) => {
 /**
  * API Controllers
  */
+// Add Address (POST)
 export const accountAddAddress = async (req, res, next) => {
   try {
     // validate form data
@@ -161,6 +148,7 @@ export const accountAddAddress = async (req, res, next) => {
   }
 }
 
+// Update Address (POST)
 export const accountUpdateAddress = async (req, res, next) => {
   try {
     const { index, ...updatedAddress } = req.body;
@@ -186,6 +174,7 @@ export const accountUpdateAddress = async (req, res, next) => {
   }
 }
 
+// Remove Address (POST)
 export const accountRemoveAddress = async (req, res, next) => {
   try {
     const { index } = req.body;

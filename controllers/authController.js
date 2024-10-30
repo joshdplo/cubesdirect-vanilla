@@ -202,7 +202,10 @@ export const authSendEmailVerification = async (req, res, next) => {
     const user = await User.findByPk(userId);
 
     if (!user) return res.status(404).json({ error: 'User not found' });
-    if (user.isVerified) return res.status(400).json({ error: 'User Already verified' });
+    if (user.isVerified) return res.status(400).json({
+      error: 'Your email address has already been verified.',
+      redirect: '/account'
+    });
 
     // Check if email was sent recently
     const lastSent = req.session.lastVerificationEmailSent;
@@ -224,7 +227,7 @@ export const authSendEmailVerification = async (req, res, next) => {
     });
 
     req.session.lastVerificationEmailSent = Date.now();
-    res.status(200).json({ message: 'Verification email has been sent' });
+    res.status(200).json({ success: true, message: 'Verification email has been sent - check your email for a verification link.' });
   } catch (error) {
     console.error(error.message, error);
     res.status(500).json({ error: error.message });
@@ -340,8 +343,25 @@ export const authResetPasswordRequest = async (req, res, next) => {
   }
 };
 
+// Reset Password Request Page (GET)
+export const authResetPasswordRequestPage = async (req, res, next) => {
+  try {
+    // if user is already logged in, redirect to the change password page
+    if (req.user) return res.redirect('/account/change-password');
+
+    res.render('pages/account/reset-password-request', {
+      title: 'Reset Password',
+      bundle: 'resetPassword'
+    });
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
+}
+
 // Reset Password Form (GET)
-export const authResetPasswordForm = async (req, res, next) => {
+export const authResetPasswordFormPage = async (req, res, next) => {
   try {
     if (!isEmailEnabled) {
       addMessage(req, 'Email is not enabled, redirected to home page', 'error');
@@ -363,7 +383,11 @@ export const authResetPasswordForm = async (req, res, next) => {
       return next(error);
     }
 
-    res.render('pages/account/reset-password-form', { token });
+    res.render('pages/account/reset-password-form', {
+      title: 'Reset Password',
+      bundle: 'resetPassword',
+      token
+    });
   } catch (error) {
     console.error(error.message, error);
     next(error);

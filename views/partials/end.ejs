@@ -10,13 +10,16 @@
 
 <%# Main Scripts %>
 <script type="module" src="/main.js" defer></script>
+<%if(bundle) { %>
+<script type="module" src="/<%= bundle %>Bundle.js" defer></script>
+<% } %>
 
 <%# Global Messages %>
 <% if (messages.length) { %>
 <script nonce="<%= nonce %>">
   document.addEventListener('DOMContentLoaded', () => {
     <% messages.forEach((message) => { %>
-    window._UTIL.showMessage('<%= message.text %>', '<%= message.type %>');
+    window._UTIL.showGlobalMessage('<%= message.text %>', '<%= message.type %>');
     <% }) %>
   });
 </script>

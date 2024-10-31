@@ -1,4 +1,5 @@
 import stringUtils from '../util/stringUtils.js';
+import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 import { validateAddress } from '../validation/userSchema.js';
 import categoryCache from '../services/categoryCache.js';
 import productCache from '../services/productCache.js';
@@ -136,13 +137,14 @@ export const productCheckout = async (req, res, next) => {
     let userAddresses = [];
     if (req.user) userAddresses = req.user.addresses || [];
 
-    //@TODO: handle case where we already have req.session.shippingAddress (user left the checkout flow before payment)
+    const shippingAddress = req.session.shippingAddress || null;
 
     res.render('pages/product/checkout', {
       title: 'Checkout',
       items: cartItems,
       subtotal,
       addresses: userAddresses,
+      shippingAddress,
       isGuest: !req.user
     });
   } catch (error) {
@@ -155,8 +157,33 @@ export const productCheckout = async (req, res, next) => {
 // Checkout Payment Page (GET)
 export const productCheckoutPayment = async (req, res, next) => {
   try {
+    if (!req.session.shippingAddress) {
+      addMessage(req, `Error with shipping address on checkout payment. Please enter${req.user ? ' or select' : ''} a shipping address`, 'error');
+      return res.redirect('/checkout');
+    }
+
+    const cartId = req.cart?.id;
+    if (!cartId) {
+      addMessage(req, 'Error with cart on checkout payment.', 'error');
+      return res.redirect('/cart');
+    }
+
+    const cartItems = await CartItem.findAll({
+      where: { cartId },
+      include: [{ model: Product, attributes: ['id', 'name', 'price', 'images'] }]
+    });
+
+    const subtotal = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0)
+
+    let userAddresses = [];
+    if (req.user) userAddresses = req.user.addresses || [];
+
     res.render('pages/product/checkout-payment', {
       title: 'Checkout - Payment',
+      items: cartItems,
+      subtotal,
+      addresses: userAddresses,
+      shippingAddress: req.session.shippingAddress,
       isGuest: !req.user
     });
   } catch (error) {
@@ -409,7 +436,12 @@ export const removeCartItem = async (req, res, next) => {
 // Checkout Shipping Submit (POST)
 export const productCheckoutShippingSubmit = async (req, res, next) => {
   try {
-    const { addressIndex, ...newAddress } = req.body;
+    const { changeAddress, addressIndex, ...newAddress } = req.body;
+
+    if (changeAddress) {
+      delete req.session.shippingAddress;
+      return res.status(200).json({ success: true, redirect: '/checkout', message: 'You can now choose a new address for your order' });
+    }
 
     let shippingAddress;
     if (req.user && addressIndex !== undefined) {
@@ -432,4 +464,25 @@ export const productCheckoutShippingSubmit = async (req, res, next) => {
     console.error(error);
     return res.status(500).json({ error: 'Error with shipping info in checkout' });
   }
-}
+};
+
+// Checkout Payment Submit (POST)
+export const productCheckoutPaymentSubmit = async (req, res, next) => {
+  try {
+    const { changeAddress, paymentData } = req.body;
+
+    if (!req.session.shippingAddress) {
+      return res.status(400).json({ error: 'No shipping address available in payment submit' });
+    }
+
+    if (changeAddress) {
+      delete req.session.shippingAddress;
+      return res.status(200).json({ success: true, redirect: '/checkout', message: 'You can now choose a new address for your order' });
+    }
+
+    return res.status(200).json({ test: 'order' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Error with payment info in checkout' });
+  }
+};

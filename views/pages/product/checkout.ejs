@@ -28,39 +28,65 @@
     </ul>
     <hr>
 
-    <%# Shipping Address Forms %>
+    <%# Checkout Step 1: Shipping address %>
     <h2>Shipping Address</h2>
-    <% let defaultAddressIndex = null; %>
-    <% if (!isGuest && addresses?.length) { %>
-    <% addresses.forEach((addr, index) => { if(addr.default) defaultAddressIndex = index})%>
-    <button class="checkout_show-address-form <%= defaultAddressIndex === null ? 'hide' : '' %>">Enter a New
-      Address</button><br>
-    <h3>Or select a saved address below</h3>
-    <form id="checkout-user-address">
-      <select name="addressIndex"
-        value="<%= (defaultAddressIndex || defaultAddressIndex === 0) ? defaultAddressIndex : 'new' %>">
-        <option value="new">Enter New Address</option>
-        <% addresses.forEach((address, index) => { %>
-        <option value="<%= index %>" <%if(index === defaultAddressIndex) {%>selected="true"
-          <%}%>><%= address.title %></option>
-          <% });%>
-      </select>
-      <div class="checkout_user-addresses">
-        <% addresses.forEach((address, index) => { %>
-        <div data-index="<%= index %>" <% if(defaultAddressIndex !== index) { %>class="hide" <% } %>>
-          <%= `${address.firstName} ${address.lastName}` %><br>
-          <%= address.street %><br>
-          <%= `${address.city}, ${address.state} ${address.zip}` %>
-        </div>
-        <% });%>
+    <% let defaultAddressIndex = null;%>
+
+    <%# 
+      If User has already completed shipping address (step 1), show their
+      selected address from the session and allow them to change it
+    %>
+    <% if(shippingAddress) { %>
+    <div class="checkout_returning">
+      <b>Your shipping address:</b>
+      <p>
+        <%= `${shippingAddress.firstName} ${shippingAddress.lastName}` %><br>
+        <%= shippingAddress.street %><br>
+        <%= `${shippingAddress.city}, ${shippingAddress.state} ${shippingAddress.zip}` %>
+      </p>
+      <div class="checkout_change-shipping-address">
+        <div class="messages"></div>
+        <button>Change Address</button>
       </div>
-      <div class="messages"></div>
-      <input type="submit" value="Proceed to Payment">
-    </form>
-    <% } %>
-    <div class="checkout_new-address <%= defaultAddressIndex !== null ? 'hide' : '' %>">
-      <%- include('../../partials/address-form', {formId: 'checkout-new-address', submitText: 'Proceed to Payment', formClass: null, formIndex: null, address: null}) %>
+      <a href="/checkout/payment">Proceed to Payment</a>
     </div>
+    <% } else { %>
+    <%# Default address forms %>
+    <div class="checkout_new">
+      <% if (!isGuest && addresses?.length) { %>
+      <% addresses.forEach((addr, index) => { if(addr.default) defaultAddressIndex = index})%>
+      <button class="checkout_show-address-form <%= defaultAddressIndex === null ? 'hide' : '' %>">
+        Enter a New Address
+      </button><br>
+      <h3>Or select a saved address below</h3>
+      <form id="checkout-user-address">
+        <select name="addressIndex"
+          value="<%= (defaultAddressIndex || defaultAddressIndex === 0) ? defaultAddressIndex : 'new' %>">
+          <option value="new">Enter New Address</option>
+          <% addresses.forEach((address, index) => { %>
+          <option value="<%= index %>" <%if(index === defaultAddressIndex) {%>selected="true" data-default="true"
+            <%}%>><%= address.title %></option>
+            <% });%>
+        </select>
+        <div class="checkout_user-addresses">
+          <% addresses.forEach((address, index) => { %>
+          <div data-index="<%= index %>" <% if(defaultAddressIndex !== index) { %>class="hide" <% } %>>
+            <%= `${address.firstName} ${address.lastName}` %><br>
+            <%= address.street %><br>
+            <%= `${address.city}, ${address.state} ${address.zip}` %>
+          </div>
+          <% });%>
+        </div>
+        <div class="messages"></div>
+        <input type="submit" value="Proceed to Payment">
+      </form>
+      <% } %>
+      <div class="checkout_new-address <%= defaultAddressIndex !== null ? 'hide' : '' %>">
+        <%- include('../../partials/address-form', {formId: 'checkout-new-address', submitText: 'Proceed to Payment', isGuest, formClass: null, formIndex: null, address: null}) %>
+      </div>
+    </div>
+
+    <% } %>
   </main>
 
   <%- include ('../../partials/footer') %>

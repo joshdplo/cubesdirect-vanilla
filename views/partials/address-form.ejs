@@ -8,11 +8,14 @@
 %>
 
 <form <% if(formClass) { %> class="<%= formClass %>" <% } %> <% if(formId) { %> id="<%= formId %>" <% } %>>
+  <% if(isGuest) { %>
+  <input type="hidden" name="title" value="guest">
+  <% } else { %>
   <fieldset>
     <label for="title<%= getIndex() %>">Address Nickname</label>
     <input type="text" name="title" id="title<%= getIndex() %>" <%if(address) {%>value="<%=address.title%>" <%}%>>
-  </fieldset>
-  <fieldset>
+    </fieldset>
+  <% } %> <fieldset>
     <label for="firstName<%= getIndex() %>">First Name</label>
     <input type="text" name="firstName" id="firstName<%= getIndex() %>" autocomplete="given-name"
       <%if(address) {%>value="<%=address.firstName%>" <%}%>>
@@ -42,12 +45,15 @@
     <input type="text" name="zip" id="zip<%= getIndex() %>" autocomplete="postal-code"
       <%if(address) {%>value="<%=address.zip%>" <%}%>>
   </fieldset>
-  <fieldset>
-    <label for="default<%= getIndex() %>">Make this my default address</label>
-    <input type="checkbox" name="default" id="default<%= getIndex() %>"
-      <%if(address && address.default) {%>checked="true" <%}%>>
+
+  <% if(isGuest) { %> <input type="hidden" name="default" value="false">
+    <% } else { %>
+    <fieldset>
+      <label for="default<%= getIndex() %>">Make this my default address</label>
+      <input type="checkbox" name="default" id="default<%= getIndex() %>"
+        <%if(address && address.default) {%>checked="true" <%}%>>
   </fieldset>
-  <%if(!isNewAddress) {%><input type="hidden" name="index" value="<%= getIndex() %>"><%}%>
+  <% } %> <%if(!isNewAddress) {%><input type="hidden" name="index" value="<%= getIndex() %>"><%}%>
   <div class="messages"></div>
   <input type="submit" value="<%= submitText %>">
 </form>

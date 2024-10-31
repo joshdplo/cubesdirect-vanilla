@@ -10,6 +10,47 @@
 
   <main data-cmp="checkout">
     <h1>Checkout - Payment</h1>
+
+    <%# Shipping Address %>
+    <div class="checkout_shipping-address">
+      <h3>Shipping address:</h3>
+      <p>
+        <%= `${shippingAddress.firstName} ${shippingAddress.lastName}` %><br>
+        <%= shippingAddress.street %><br>
+        <%= `${shippingAddress.city}, ${shippingAddress.state} ${shippingAddress.zip}` %>
+      </p>
+      <div class="checkout_change-shipping-address">
+        <div class="messages"></div>
+        <button>Change Address</button>
+      </div>
+    </div>
+
+    <%# Billing Address %>
+    <div class="checkout_billing-address">
+      <h3>Billing Address</h3>
+    </div>
+
+    <%# Payment %>
+    <div class="checkout_credit-card">
+      <h3>Payment</h3>
+      <b>Subtotal: $<%= subtotal.toFixed(2) %></b>
+      <form id="checkout-credit-card">
+        <fieldset>
+          <label for="cardNumber">Card Number</label>
+          <input type="text" name="cardNumber" id="cardNumber">
+        </fieldset>
+        <fieldset>
+          <label for="cardExpiry">Card Expiration</label>
+          <input type="text" name="cardExpiry" id="cardExpiry" placeholder="MM/YY">
+        </fieldset>
+        <fieldset>
+          <label for="cardCVC">Card CVC</label>
+          <input type="text" name="cardCVC" id="cardCVC">
+        </fieldset>
+        <input type="submit" value="Place Order">
+      </form>
+    </div>
+
   </main>
 
   <%- include ('../../partials/footer') %>

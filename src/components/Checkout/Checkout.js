@@ -11,13 +11,19 @@ export default class Checkout extends BaseComponent {
       userAddressesItems: this.element.querySelectorAll('form#checkout-user-address .checkout_user-addresses [data-index]'),
       userAddressFormMessages: this.element.querySelector('form#checkout-user-address .messages'),
       newAddressWrapper: this.element.querySelector('.checkout_new-address'),
-      enterNewAddressButton: this.element.querySelector('button.checkout_show-address-form')
+      enterNewAddressButton: this.element.querySelector('button.checkout_show-address-form'),
+      changeShippingAddressButton: this.element.querySelector('.checkout_change-shipping-address button'),
+      changeShippingAddressMessages: this.element.querySelector('.checkout_change-shipping-address .messages'),
     }
 
     if (this.dom.userAddressForm && this.dom.newAddressWrapper && this.dom.userAddressFormMessages) {
       this.addEventListener(this.dom.enterNewAddressButton, 'click', this.onEnterNewAddressClick.bind(this));
-      this.addEventListener(this.dom.userAddressForm, 'change', this.onUserAddressChange.bind(this));
+      this.addEventListener(this.dom.userAddressForm, 'change', this.onUserAddressSelectChange.bind(this));
       this.addEventListener(this.dom.userAddressForm, 'submit', this.onUserAddressSubmit.bind(this));
+    }
+
+    if (this.dom.changeShippingAddressButton && this.dom.changeShippingAddressMessages) {
+      this.addEventListener(this.dom.changeShippingAddressButton, 'click', this.onChangeShippingAddressClick.bind(this));
     }
   }
 
@@ -38,7 +44,7 @@ export default class Checkout extends BaseComponent {
     this.toggleUserAddressVisibility();
   }
 
-  onUserAddressChange(e) {
+  onUserAddressSelectChange(e) {
     const isNewAddress = e.target.value === 'new';
     this.toggleUserAddressVisibility(isNewAddress, e.target.value);
   }
@@ -61,11 +67,36 @@ export default class Checkout extends BaseComponent {
         } else {
           // success
           console.log('user address submit success');
-          if (response.redirect) window.location.href = response.redirect;
         }
+
+        if (response.redirect) window.location.href = response.redirect;
       })
       .catch(error => {
         console.error('Error on add to cart post:', error);
+      });
+  }
+
+  onChangeShippingAddressClick() {
+    // Change Address POST
+    fetch('/api/checkout/shipping', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ changeAddress: true })
+    }).then(res => res.json())
+      .then(response => {
+        if (response.error) {
+          // error
+          console.log('error changing user address:', response.error);
+          window._UTIL.showGlobalMessage(response.error, 'error');
+        } else {
+          // success
+          console.log('change address submit success');
+        }
+
+        if (response.redirect) window.location.href = response.redirect;
+      })
+      .catch(error => {
+        console.error('Error on change address:', error);
       });
   }
 }

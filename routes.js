@@ -14,7 +14,7 @@ import {
   updateCartItem,
   removeCartItem,
   productCheckoutShippingSubmit,
-  // productCheckoutPaymentSubmit
+  productCheckoutPaymentSubmit
 } from './controllers/productController.js';
 import {
   authRegister,
@@ -67,7 +67,7 @@ router.post('/api/cart/add', addToCart);
 router.post('/api/cart/update', updateCartItem);
 router.post('/api/cart/remove', removeCartItem);
 router.post('/api/checkout/shipping', productCheckoutShippingSubmit);
-// router.post('/api/checkout/payment', productCheckoutPaymentSubmit);
+router.post('/api/checkout/payment', productCheckoutPaymentSubmit);
 
 // Auth API General
 router.post('/api/auth/register', authRegister);

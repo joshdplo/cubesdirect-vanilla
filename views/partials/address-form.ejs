@@ -55,5 +55,5 @@
   </fieldset>
   <% } %> <%if(!isNewAddress) {%><input type="hidden" name="index" value="<%= getIndex() %>"><%}%>
   <div class="messages"></div>
-  <input type="submit" value="<%= submitText %>">
+  <% if(!hideSubmit) { %><input type="submit" value="<%= submitText %>"><% } %>
 </form>

@@ -1,7 +1,6 @@
 import stringUtils from '../util/stringUtils.js';
 import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 import { validateAddress } from '../validation/userSchema.js';
-import { creditCardPaymentSchema } from '../validation/creditCardPaymentSchema.js';
 import categoryCache from '../services/categoryCache.js';
 import productCache from '../services/productCache.js';
 import Category from '../models/Category.js';
@@ -126,7 +125,10 @@ export const productCart = async (req, res, next) => {
 export const productCheckout = async (req, res, next) => {
   try {
     const cartId = req.cart?.id;
-    if (!cartId) return res.redirect('/cart'); // if no cart, return to cart page
+    if (!cartId) {
+      addMessage(req, 'Erorr confirming cart - you have been redirected to the cart page', 'error');
+      return res.redirect('/cart');
+    }
 
     const cartItems = await CartItem.findAll({
       where: { cartId },
@@ -165,7 +167,7 @@ export const productCheckoutPayment = async (req, res, next) => {
 
     const cartId = req.cart?.id;
     if (!cartId) {
-      addMessage(req, 'Error with cart on checkout payment.', 'error');
+      addMessage(req, 'Erorr confirming cart - you have been redirected to the cart page', 'error');
       return res.redirect('/cart');
     }
 
@@ -197,6 +199,12 @@ export const productCheckoutPayment = async (req, res, next) => {
 // Checkout Confirmation Page (GET)
 export const productCheckoutConfirmation = async (req, res, next) => {
   try {
+    const { orderId } = req.params;
+
+    if (!orderId) {
+      addMessage(req, 'Order not found')
+    }
+
     res.render('pages/product/checkout-confirmation', {
       title: 'Checkout - Confirmation',
       isGuest: !req.user
@@ -470,20 +478,76 @@ export const productCheckoutShippingSubmit = async (req, res, next) => {
 // Checkout Payment Submit (POST)
 export const productCheckoutPaymentSubmit = async (req, res, next) => {
   try {
-    const { changeAddress, paymentData } = req.body;
+    const { changeAddress, addressIndex, paymentData, newAddress } = req.body;
 
+    // ensure we have a shipping address in the session
     if (!req.session.shippingAddress) {
       return res.status(400).json({ error: 'No shipping address available in payment submit' });
     }
 
+    // if user wants to change address, redirect them to checkout shipping step
     if (changeAddress) {
       delete req.session.shippingAddress;
       return res.status(200).json({ success: true, redirect: '/checkout', message: 'You can now choose a new address for your order' });
     }
 
-    // creditCardPaymentSchema validation is imported
+    // get user billing address and validate it (via newAddress or addressIndex)
+    let billingAddress;
+    if (req.user && addressIndex !== undefined && addressIndex !== 'new') {
+      billingAddress = req.user.addresses[addressIndex];
+    } else if (newAddress) {
+      const { value: address, errors } = await validateAddress(newAddress);
+      if (errors) {
+        console.error('Validation error in productCheckoutShippingSubmit:', errors);
+        return res.status(400).json({ newBillingAddressErrors: errors, error: 'Error validating billing address form data for new address' });
+      }
 
-    return res.status(200).json({ test: 'order' });
+      billingAddress = address;
+    } else {
+      return res.status(400).json({ error: 'Insufficient billing address data sent in checkout payment' });
+    }
+
+    // validate cc payment information (mock)
+    if (!paymentData.cardNumber || !paymentData.cardExpiry || !paymentData.cardCVC) {
+      return res.status(400).json({ ccErrors: true, error: 'Error validating credit card information' });
+    }
+
+    // create the order
+    const cartId = req.cart?.id;
+    if (!cartId) {
+      addMessage(req, 'Erorr confirming cart - you have been redirected to the cart page', 'error');
+      return res.redirect('/cart');
+    }
+
+    const cartItems = await CartItem.findAll({ where: { cartId } });
+    const totalAmount = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+    const newOrder = await Order.create({
+      userId: req.user?.id || null,
+      shippingAddress: req.session.shippingAddress,
+      billingAddress,
+      status: 'processing',
+      totalAmount
+    });
+
+    // create OrderItems from CartItems
+    await Promise.all(
+      cartItems.map(item => OrderItem.create({
+        orderId: newOrder.id,
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.price
+      }))
+    );
+
+    // delete the cart after order creation
+    await Cart.destroy({ where: { id: cartId } });
+
+    // clear session
+    delete req.session.shippingAddress;
+
+    //@TODO: send confirmation email
+
+    return res.status(200).json({ success: true, redirect: `/order/confirmation?orderId=${newOrder.id}`, message: 'Order submitted! You will be redirected to the confirmation page shortly.' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Error with payment info in checkout' });

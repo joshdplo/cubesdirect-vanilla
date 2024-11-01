@@ -28,7 +28,7 @@ const Order = sequelize.define('Order', {
 Order.belongsTo(User, {
   foreignKey: {
     name: 'userId',
-    allowNull: false
+    allowNull: true
   },
   onDelete: 'CASCADE'
 });

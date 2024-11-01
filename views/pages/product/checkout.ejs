@@ -37,7 +37,7 @@
       selected address from the session and allow them to change it
     %>
     <% if(shippingAddress) { %>
-    <div class="checkout_returning">
+    <div class="checkout_shipping-returning">
       <b>Your shipping address:</b>
       <p>
         <%= `${shippingAddress.firstName} ${shippingAddress.lastName}` %><br>
@@ -82,7 +82,7 @@
       </form>
       <% } %>
       <div class="checkout_new-address <%= defaultAddressIndex !== null ? 'hide' : '' %>">
-        <%- include('../../partials/address-form', {formId: 'checkout-new-address', submitText: 'Proceed to Payment', isGuest, formClass: null, formIndex: null, address: null}) %>
+        <%- include('../../partials/address-form', {formId: 'checkout-new-address', submitText: 'Proceed to Payment', isGuest, formClass: null, formIndex: null, address: null, hideSubmit: false}) %>
       </div>
     </div>
 

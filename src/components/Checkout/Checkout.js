@@ -5,6 +5,8 @@ export default class Checkout extends BaseComponent {
   init() {
     this.dom = {
       // shipping address UI
+      newAddressForm: this.element.querySelector('form#checkout-new-address'),
+      newAddressFormMessages: this.element.querySelector('form#checkout-new-address .messages'),
       userAddressForm: this.element.querySelector('form#checkout-user-address'),
       userAddressFormSelect: this.element.querySelector('form#checkout-user-address select'),
       userAddressFormSubmit: this.element.querySelector('form#checkout-user-address input[type="submit"]'),
@@ -34,13 +36,18 @@ export default class Checkout extends BaseComponent {
     if (this.dom.changeShippingAddressButton && this.dom.changeShippingAddressMessages) {
       this.addEventListener(this.dom.changeShippingAddressButton, 'click', this.onChangeShippingAddressClick.bind(this));
     }
+
+    if (this.dom.paymentCCForm && this.dom.paymentCCFormMessages) {
+      this.addEventListener(this.dom.paymentCCForm, 'submit', this.onPaymentSubmit.bind(this));
+    }
   }
 
   toggleUserAddressVisibility(isNewAddress = true, selectedIndex = 'new') {
+    const submitButton = this.dom.userAddressFormSubmit;
     this.dom.newAddressWrapper.classList[isNewAddress ? 'remove' : 'add']('hide');
     this.dom.enterNewAddressButton.classList[isNewAddress ? 'add' : 'remove']('hide');
-    this.dom.userAddressFormSubmit.classList[isNewAddress ? 'add' : 'remove']('hide');
     this.dom.userAddressesList.classList[isNewAddress ? 'add' : 'remove']('hide');
+    if (submitButton) submitButton.classList[isNewAddress ? 'add' : 'remove']('hide');
 
     if (!isNewAddress) this.dom.userAddressesItems.forEach((el) => {
       const isSelectedAddress = el.getAttribute('data-index') === selectedIndex;
@@ -106,6 +113,61 @@ export default class Checkout extends BaseComponent {
       })
       .catch(error => {
         console.error('Error on change address:', error);
+      });
+  }
+
+  onPaymentSubmit(e) {
+    e.preventDefault();
+
+    const userAddressFormData = Object.fromEntries(new FormData(this.dom.userAddressForm));
+    let newAddressFormData = Object.fromEntries(new FormData(this.dom.newAddressForm));
+    const ccFormData = Object.fromEntries(new FormData(this.dom.paymentCCForm));
+
+    const isNewAddress = userAddressFormData.addressIndex === 'new';
+    if (!isNewAddress) newAddressFormData = null;
+
+    const submitData = JSON.stringify({
+      addressIndex: userAddressFormData.addressIndex,
+      paymentData: ccFormData,
+      newAddress: newAddressFormData
+    });
+
+    console.log('userAddressFormData:', userAddressFormData);
+    console.log('newAddressFormData:', newAddressFormData);
+    console.log('ccFormData:', ccFormData);
+    console.log(`new address? ${isNewAddress}`)
+
+    // Submit payment + billing address POST
+    fetch('/api/checkout/payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: submitData
+    }).then(res => res.json())
+      .then(response => {
+        if (response.error) {
+          if (response.newBillingAddressErrors) {
+            // error with new billing address
+            this.dom.newAddressFormMessages.innerHTML = Object.values(response.newBillingAddressErrors)
+              .map((err) => `<p>${err}</p>`)
+              .join('');
+          } else if (response.ccErrors) {
+            // error with credit card info
+            this.dom.paymentCCFormMessages.innerText = 'Ensure all payment credit card fields are filled in. This is just a mock credit card, so the values can be anything.';
+          } else {
+            // error
+            console.log('error submitting user address:', response.error);
+            window._UTIL.showGlobalMessage(response.error, 'error');
+          }
+        } else {
+          // success
+          console.log('user address submit success');
+          console.log(response);
+        }
+
+        if (response.redirect) window.location.href = response.redirect;
+      })
+      .catch(error => {
+        console.error('Error on add to cart post:', error);
       });
   }
 }

@@ -8,9 +8,11 @@
     "dev": "concurrently --kill-others --names client,server \"vite build --watch\" \"nodemon server.js\"",
     "build": "vite build",
     "prod": "NODE_ENV=production node server.js",
+    "sync-db": "node scripts/sync-db.js",
     "seed-db": "node scripts/seed-db.js",
     "test-email": "node scripts/test-email.js",
-    "json-structure": "npx directory-tree --path ./ --attributes type,extension,size -e \"node_modules|.git|public\" --pretty -o ./data/cubesdirect-structure.json"
+    "json-structure": "npx directory-tree --path ./ --attributes type,extension,size -e \"node_modules|.git|public\" --pretty -o ./data/cubesdirect-structure.json",
+    "cloc": "npx cloc . --exclude-dir=data,.git,node_modules --not-match-f=package-lock.json"
   },
   "nodemonConfig": {
     "ext": "js,ejs",

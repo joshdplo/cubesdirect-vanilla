@@ -4,6 +4,7 @@ import { BaseComponent } from "../componentSystem.js";
 export default class Checkout extends BaseComponent {
   init() {
     this.dom = {
+      // shipping address UI
       userAddressForm: this.element.querySelector('form#checkout-user-address'),
       userAddressFormSelect: this.element.querySelector('form#checkout-user-address select'),
       userAddressFormSubmit: this.element.querySelector('form#checkout-user-address input[type="submit"]'),
@@ -12,8 +13,16 @@ export default class Checkout extends BaseComponent {
       userAddressFormMessages: this.element.querySelector('form#checkout-user-address .messages'),
       newAddressWrapper: this.element.querySelector('.checkout_new-address'),
       enterNewAddressButton: this.element.querySelector('button.checkout_show-address-form'),
+
+      // change shipping address UI
       changeShippingAddressButton: this.element.querySelector('.checkout_change-shipping-address button'),
       changeShippingAddressMessages: this.element.querySelector('.checkout_change-shipping-address .messages'),
+
+      // billing address UI
+
+      // payment UI
+      paymentCCForm: this.element.querySelector('form#checkout-credit-card'),
+      paymentCCFormMessages: this.element.querySelector('form#checkout-credit-card .messages')
     }
 
     if (this.dom.userAddressForm && this.dom.newAddressWrapper && this.dom.userAddressFormMessages) {

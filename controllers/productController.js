@@ -1,6 +1,7 @@
 import stringUtils from '../util/stringUtils.js';
 import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 import { validateAddress } from '../validation/userSchema.js';
+import { creditCardPaymentSchema } from '../validation/creditCardPaymentSchema.js';
 import categoryCache from '../services/categoryCache.js';
 import productCache from '../services/productCache.js';
 import Category from '../models/Category.js';
@@ -479,6 +480,8 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
       delete req.session.shippingAddress;
       return res.status(200).json({ success: true, redirect: '/checkout', message: 'You can now choose a new address for your order' });
     }
+
+    // creditCardPaymentSchema validation is imported
 
     return res.status(200).json({ test: 'order' });
   } catch (error) {

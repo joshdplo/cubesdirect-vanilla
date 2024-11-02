@@ -142,9 +142,9 @@ export default class Checkout extends BaseComponent {
     if (this.dom.guestEmailForm) guestEmailFormData = Object.fromEntries(new FormData(this.dom.guestEmailForm));
 
     const submitData = JSON.stringify({
-      addressIndex: userAddressFormData?.addressIndex,
       paymentData: ccFormData,
       newAddress: newAddressFormData,
+      addressIndex: userAddressFormData?.addressIndex,
       guestEmail: guestEmailFormData?.guestEmail
     });
 

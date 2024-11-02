@@ -4,7 +4,7 @@ import { BaseComponent } from "../componentSystem.js";
 export default class Checkout extends BaseComponent {
   init() {
     this.dom = {
-      // shipping address UI
+      // shipping address
       newAddressForm: this.element.querySelector('form#checkout-new-address'),
       newAddressFormMessages: this.element.querySelector('form#checkout-new-address .messages'),
       userAddressForm: this.element.querySelector('form#checkout-user-address'),
@@ -16,13 +16,15 @@ export default class Checkout extends BaseComponent {
       newAddressWrapper: this.element.querySelector('.checkout_new-address'),
       enterNewAddressButton: this.element.querySelector('button.checkout_show-address-form'),
 
-      // change shipping address UI
+      // change shipping
       changeShippingAddressButton: this.element.querySelector('.checkout_change-shipping-address button'),
       changeShippingAddressMessages: this.element.querySelector('.checkout_change-shipping-address .messages'),
 
-      // billing address UI
+      // guest email
+      guestEmailForm: this.element.querySelector('form#checkout-guest-email'),
+      guestEmailFormMessages: this.element.querySelector('form#checkout-guest-email .messages'),
 
-      // payment UI
+      // payment
       paymentCCForm: this.element.querySelector('form#checkout-credit-card'),
       paymentCCFormMessages: this.element.querySelector('form#checkout-credit-card .messages')
     }
@@ -35,6 +37,10 @@ export default class Checkout extends BaseComponent {
 
     if (this.dom.changeShippingAddressButton && this.dom.changeShippingAddressMessages) {
       this.addEventListener(this.dom.changeShippingAddressButton, 'click', this.onChangeShippingAddressClick.bind(this));
+    }
+
+    if (this.dom.guestEmailForm && this.dom.guestEmailFormMessages) {
+      this.addEventListener(this.dom.guestEmailForm, 'submit', this.onGuestEmailSubmit.bind(this));
     }
 
     if (this.dom.paymentCCForm && this.dom.paymentCCFormMessages) {
@@ -116,26 +122,36 @@ export default class Checkout extends BaseComponent {
       });
   }
 
+  onGuestEmailSubmit(e) {
+    e.preventDefault();
+  }
+
   onPaymentSubmit(e) {
     e.preventDefault();
 
-    const userAddressFormData = Object.fromEntries(new FormData(this.dom.userAddressForm));
-    let newAddressFormData = Object.fromEntries(new FormData(this.dom.newAddressForm));
     const ccFormData = Object.fromEntries(new FormData(this.dom.paymentCCForm));
+    let newAddressFormData = newAddressFormData = Object.fromEntries(new FormData(this.dom.newAddressForm));
+    let userAddressFormData = null;
+    let guestEmailFormData = null;
 
-    const isNewAddress = userAddressFormData.addressIndex === 'new';
-    if (!isNewAddress) newAddressFormData = null;
+    if (this.dom.userAddressForm) {
+      userAddressFormData = Object.fromEntries(new FormData(this.dom.userAddressForm));
+      if (userAddressFormData.addressIndex !== 'new') newAddressFormData = null;
+    }
+
+    if (this.dom.guestEmailForm) guestEmailFormData = Object.fromEntries(new FormData(this.dom.guestEmailForm));
 
     const submitData = JSON.stringify({
-      addressIndex: userAddressFormData.addressIndex,
+      addressIndex: userAddressFormData?.addressIndex,
       paymentData: ccFormData,
-      newAddress: newAddressFormData
+      newAddress: newAddressFormData,
+      guestEmail: guestEmailFormData?.guestEmail
     });
 
     console.log('userAddressFormData:', userAddressFormData);
     console.log('newAddressFormData:', newAddressFormData);
     console.log('ccFormData:', ccFormData);
-    console.log(`new address? ${isNewAddress}`)
+    console.log('guestEmail:', guestEmailFormData);
 
     // Submit payment + billing address POST
     fetch('/api/checkout/payment', {
@@ -148,6 +164,11 @@ export default class Checkout extends BaseComponent {
           if (response.newBillingAddressErrors) {
             // error with new billing address
             this.dom.newAddressFormMessages.innerHTML = Object.values(response.newBillingAddressErrors)
+              .map((err) => `<p>${err}</p>`)
+              .join('');
+          } else if (response.guestEmailErrors) {
+            console.log(response.guestEmailErrors);
+            this.dom.guestEmailFormMessages.innerHTML = Object.values(response.guestEmailErrors)
               .map((err) => `<p>${err}</p>`)
               .join('');
           } else if (response.ccErrors) {

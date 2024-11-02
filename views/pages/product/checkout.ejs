@@ -82,7 +82,7 @@
       </form>
       <% } %>
       <div class="checkout_new-address <%= defaultAddressIndex !== null ? 'hide' : '' %>">
-        <%- include('../../partials/address-form', {formId: 'checkout-new-address', submitText: 'Proceed to Payment', isGuest, formClass: null, formIndex: null, address: null, hideSubmit: false}) %>
+        <%- include('../../partials/address-form', {formId: 'checkout-new-address', submitText: 'Proceed to Payment', isGuest: true, formClass: null, formIndex: null, address: null, hideSubmit: false}) %>
       </div>
     </div>
 

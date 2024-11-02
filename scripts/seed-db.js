@@ -130,14 +130,23 @@ const seedDB = async () => {
       const order = await Order.create({
         userId: user.id,
         totalAmount: faker.commerce.price(50, 300, 2),
-        paymentStatus: 'Paid',
-        orderStatus: 'Delivered',
-        deliveryAddress: {
+        paymentStatus: 'paid',
+        orderStatus: 'delivered',
+        shippingAddress: {
+          firstName: faker.person.firstName(),
+          lastName: faker.person.lastName(),
           street: faker.location.streetAddress(),
           city: faker.location.city(),
           state: faker.location.state(),
-          zip: faker.location.zipCode(),
-          country: faker.location.country(),
+          zip: faker.location.zipCode()
+        },
+        billingAddress: {
+          firstName: faker.person.firstName(),
+          lastName: faker.person.lastName(),
+          street: faker.location.streetAddress(),
+          city: faker.location.city(),
+          state: faker.location.state(),
+          zip: faker.location.zipCode()
         }
       });
 

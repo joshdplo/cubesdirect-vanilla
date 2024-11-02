@@ -59,3 +59,20 @@ export const validateAddress = async (addressData) => {
     return { value: null, errors };
   }
 };
+
+/**
+ * Validate Email helper
+ */
+export const validateEmail = async (email) => {
+  try {
+    const emailSchema = userSchema.extract('email');
+    const value = await emailSchema.validateAsync(email, { abortEarly: false });
+    return { value, errors: null };
+  } catch (error) {
+    const errors = error.details.reduce((acc, err) => {
+      acc[err.path[0]] = err.message;
+      return acc;
+    }, {});
+    return { value: null, errors };
+  }
+}

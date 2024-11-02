@@ -168,8 +168,9 @@ export const authVerifyEmail = async (req, res, next) => {
       return next(error);
     }
 
-    // Update user verification status and save user
+    // Update user verification status + roles and save user
     user.isVerified = true;
+    user.roles = ['user', 'reviewer'];
     await user.save();
 
     // Log user in and redirect to account page

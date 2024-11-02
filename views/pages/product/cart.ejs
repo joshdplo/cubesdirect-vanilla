@@ -13,9 +13,10 @@
     <% if (items.length) { %>
     <ul>
       <% items.forEach(item => {%>
-      <li class="product" data-product-id="<%= item.id %>">
-        <img src="<%= item.Product.images[0] %>" alt="<%= item.Product.name %>" width="100">
-        <div><%= item.Product.name %></div>
+      <li class="product">
+        <a href="/product/<%= item.Product.id %>"><img src="<%= item.Product.images[0] %>"
+            alt="<%= item.Product.name %>" width="100"></a>
+        <div><a href="/product/<%= item.Product.id %>"><%= item.Product.name %></a></div>
         <div>Price: $<%= item.Product.price.toFixed(2) %></div>
         <form class="cart-item-update">
           <input type="hidden" name="cartItemId" value="<%= item.id %>">

@@ -18,9 +18,17 @@ const Order = sequelize.define('Order', {
     type: DataTypes.STRING, // 'processing', 'shipped', 'delivered', 'cancelled'
     defaultValue: 'processing'
   },
-  deliveryAddress: {
+  shippingAddress: {
     type: DataTypes.JSON, // same as User address!
     allowNull: false,
+  },
+  billingAddress: {
+    type: DataTypes.JSON, // same as User address!
+    allowNull: false,
+  },
+  guestEmail: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, { timestamps: true });
 

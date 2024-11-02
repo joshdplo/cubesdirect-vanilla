@@ -63,6 +63,19 @@
       </div>
     </div>
 
+    <%# Guest Email %>
+    <% if(isGuest) { %>
+    <div class="checkout_guest-email">
+      <form id="checkout-guest-email">
+        <fieldset>
+          <label for="guestEmail">Email</label>
+          <input type="email" name="guestEmail" id="guestEmail" autocomplete="email">
+        </fieldset>
+        <div class="messages"></div>
+      </form>
+    </div>
+    <% } %>
+
     <%# Payment %>
     <div class="checkout_credit-card">
       <h3>Payment</h3>

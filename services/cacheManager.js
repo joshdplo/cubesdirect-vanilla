@@ -60,7 +60,7 @@ const cacheManager = (model, options) => {
   };
 
   // Invalidate the cache
-  const invalidateCache = (queryType, primaryKey = null, additionalQueryOptions = {}) => {
+  const invalidateCache = ({ queryType, primaryKey = null, ...additionalQueryOptions } = {}) => {
     const cacheKey = getCacheKey(queryType, primaryKey, additionalQueryOptions);
     delete cache[cacheKey];
     delete lastCacheUpdate[cacheKey];

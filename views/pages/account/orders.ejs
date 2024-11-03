@@ -15,11 +15,15 @@
     <% if (orders.length) { %>
     <ul>
       <% orders.forEach((order) => { %>
-      <li><%= order.totalAmount %></li>
+      <li>
+        Total: $<%= order.totalAmount.toFixed(2) %><br>
+        <a href="/account/order/<%= order.id %>">View Order Details</a>
+      </li>
       <% }) %>
     </ul>
     <% } else { %>
-
+    <h2>You have not placed any orders yet.</h2>
+    <p>If you place an order, you can view its details by coming to this page.</p>
     <% } %>
   </main>
 

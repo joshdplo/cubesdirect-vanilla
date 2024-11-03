@@ -9,7 +9,7 @@ import {
   productCart,
   productCheckout,
   productCheckoutPayment,
-  productCheckoutConfirmation,
+  productGuestOrder,
   addToCart,
   updateCartItem,
   removeCartItem,
@@ -36,7 +36,9 @@ import {
   accountAddresses,
   accountAddAddress,
   accountUpdateAddress,
-  accountRemoveAddress
+  accountRemoveAddress,
+  accountOrders,
+  accountOrder
 } from './controllers/accountController.js';
 
 // General
@@ -48,6 +50,8 @@ router.get('/register', accountRegister);
 router.get('/account', authenticateUser(true), accountPage);
 router.get('/account/addresses', authenticateUser(true), accountAddresses);
 router.get('/account/change-password', authenticateUser(true), accountChangePassword);
+router.get('/account/orders', authenticateUser(true), accountOrders);
+router.get('/account/order/:id', authenticateUser(true), accountOrder);
 
 // Account API
 router.post('/api/addresses/add', accountAddAddress);
@@ -60,7 +64,7 @@ router.get('/product/:id', productDisplay);
 router.get('/cart', productCart);
 router.get('/checkout', productCheckout);
 router.get('/checkout/payment', productCheckoutPayment);
-router.get('/checkout/confirmation', productCheckoutConfirmation);
+router.get('/guest-order/:token', productGuestOrder);
 
 // Products API
 router.post('/api/cart/add', addToCart);

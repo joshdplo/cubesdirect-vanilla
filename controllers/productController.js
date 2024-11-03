@@ -2,6 +2,7 @@ import 'dotenv/config';
 import stringUtils from '../util/stringUtils.js';
 import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 import { validateAddress, validateEmail } from '../validation/userSchema.js';
+import { issueOrderToken } from '../util/jwtUtils.js';
 import { sendEmail } from '../services/emailService.js';
 import categoryCache from '../services/categoryCache.js';
 import productCache from '../services/productCache.js';
@@ -201,16 +202,29 @@ export const productCheckoutPayment = async (req, res, next) => {
 }
 
 // Checkout Confirmation Page (GET)
-export const productCheckoutConfirmation = async (req, res, next) => {
+export const productGuestOrder = async (req, res, next) => {
   try {
-    const { orderId } = req.params;
+    const { token } = req.params;
 
-    // check that status is 'processing', any other status should not be viewed here
+    if (!token) {
+      console.error('no token param provided on /guest-order!');
+      res.status(404);
+      next();
+    }
 
+    const decoded = jwt.verify(token, process.env.JWT_ORDER_SECRET);
+    const order = await Order.findOne({ where: { id: decoded.orderId, email: decoded.email } });
 
-    res.render('pages/product/checkout-confirmation', {
-      title: 'Checkout - Confirmation',
-      isGuest: !req.user
+    if (!order) {
+      console.error('no order found on /guest-order!');
+      res.status(404);
+      next();
+    }
+
+    res.render('pages/product/order', {
+      title: 'Guest Order',
+      isGuest: true,
+      order
     });
   } catch (error) {
     console.error(error);
@@ -581,17 +595,28 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
     // clear session
     delete req.session.shippingAddress;
 
+    let redirect = `/account/orders/${newOrder.id}`;
+
     if (isEmailEnabled) {
       const userEmail = isGuest ? guestEmail : req.user.email;
+      let emailText = `You can view your order in your account at any time, or you can use the below link:\nhttp://${req.headers.host}/account/orders/${newOrder.id}`;
+
+      if (isGuest) {
+        const token = issueOrderToken(newOrder.id, guestEmail);
+        const orderLink = `http://${req.headers.host}/guest-order/${token}`;
+        emailText = `Please use the below link to access your order details:\n${orderLink}`;
+        redirect = `/guest-order/${token}`;
+      }
+
       await sendEmail({
         to: userEmail,
-        subject: `Welcome to ${NAME}!`,
-        text: `Your ${NAME} is confirmed. MORE GOES HERE`
+        subject: `Your ${NAME} Order`,
+        text: `Your ${NAME} order has been confirmed and is being processed.\n${emailText}\n\nTotal: $${newOrder.totalAmount.toFixed(2)}\nNumber of items: ${cartItems.length}\n\nThank you for shopping ${NAME}!`
       });
     }
 
     addMessage(req, 'Your order has been placed!', 'success');
-    return res.status(200).json({ success: true, redirect: `/order/confirmation?orderId=${newOrder.id}`, message: 'Order submitted! You will be redirected to the confirmation page shortly.' });
+    return res.status(200).json({ success: true, redirect, message: 'Order submitted! You will be redirected to the confirmation page shortly.' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Error with payment info in checkout' });

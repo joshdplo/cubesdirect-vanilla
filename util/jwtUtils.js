@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 
-// Issue Token
+// Issue Standard Token
 export const issueToken = (user, type = 'access') => {
   const payload = {
     id: user.id,
@@ -23,6 +23,15 @@ export const issueToken = (user, type = 'access') => {
 
   return jwt.sign(payload, secret, { expiresIn });
 };
+
+// Issue Order Token
+export const issueOrderToken = (orderId, email) => {
+  const payload = { orderId, email };
+  const secret = process.env.JWT_ORDER_SECRET;
+  const expiresIn = process.env.JWT_ORDER_EXPIRATION;
+
+  return jwt.sign(payload, secret, { expiresIn });
+}
 
 // Login User
 export const loginUser = (res, user) => {

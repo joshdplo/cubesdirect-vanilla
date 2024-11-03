@@ -19,7 +19,7 @@ export const accountRegister = async (req, res, next) => {
     error.status = 500;
     next(error);
   }
-}
+};
 
 // Login Page (GET)
 export const accountLogin = async (req, res, next) => {
@@ -35,7 +35,7 @@ export const accountLogin = async (req, res, next) => {
     error.status = 500;
     next(error);
   }
-}
+};
 
 // Change Password Page (GET)
 export const accountChangePassword = async (req, res, next) => {
@@ -49,7 +49,7 @@ export const accountChangePassword = async (req, res, next) => {
     error.status = 500;
     next(error);
   }
-}
+};
 
 // Account Page (GET)
 export const accountPage = async (req, res, next) => {
@@ -85,7 +85,17 @@ export const accountOrders = async (req, res, next) => {
     title: 'Orders',
     orders: []
   })
-}
+};
+
+// Account Order (GET)
+export const accountOrder = async (req, res, next) => {
+  const { id } = req.params;
+
+  res.render('pages/account/order', {
+    title: 'Order',
+    isGuest: false
+  })
+};
 
 /**
  * Helpers
@@ -97,7 +107,7 @@ const removeAddressesDefaults = (addresses) => {
     address.default = false;
     return address;
   });
-}
+};
 
 /**
  * API Controllers
@@ -132,7 +142,7 @@ export const accountAddAddress = async (req, res, next) => {
     console.error('Error adding address:', error);
     return res.json({ error });
   }
-}
+};
 
 // Update Address (POST)
 export const accountUpdateAddress = async (req, res, next) => {
@@ -158,7 +168,7 @@ export const accountUpdateAddress = async (req, res, next) => {
     console.error('Error updating address:', error);
     return res.json({ error });
   }
-}
+};
 
 // Remove Address (POST)
 export const accountRemoveAddress = async (req, res, next) => {
@@ -186,4 +196,4 @@ export const accountRemoveAddress = async (req, res, next) => {
     console.error('Error removing address:', error);
     return res.json({ error });
   }
-}
+};

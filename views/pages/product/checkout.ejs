@@ -19,11 +19,11 @@
         <img src="<%= item.Product.images[0] %>" alt="<%= item.Product.name %>" width="100">
         <div><%= item.Product.name %></div>
         <div>Quantity: <%= item.quantity %></div>
-        <div>Price: $<%= item.Product.price.toFixed(2) %></div>
+        <div>Price: <%= stringUtils.formatUsd(item.Product.price) %></div>
       </li>
       <% }); %>
       <hr>
-      <h2>Subtotal: $<%= subtotal.toFixed(2) %></h2>
+      <h2>Subtotal: <%= stringUtils.formatUsd(subtotal) %></h2>
       <br><br>
     </ul>
     <hr>

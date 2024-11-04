@@ -65,7 +65,8 @@ export async function cartInfoMiddleware(req, res, next) {
       });
       if (!cart) {
         req.cart = res.locals.cart = cartData;
-        console.log('---cartInfoMiddleware---', req.cart);
+        console.log('---cartInfoMiddleware---');
+        console.log(req.cart);
         return next();
       }
 
@@ -83,7 +84,8 @@ export async function cartInfoMiddleware(req, res, next) {
       });
       if (!cart) {
         req.cart = res.locals.cart = cartData;
-        console.log('---cartInfoMiddleware---', req.cart);
+        console.log('---cartInfoMiddleware---');
+        console.log(req.cart);
         return next();
       }
 
@@ -94,7 +96,8 @@ export async function cartInfoMiddleware(req, res, next) {
     }
 
     req.cart = res.locals.cart = cartData;
-    console.log('---cartInfoMiddleware---', req.cart);
+    console.log('---cartInfoMiddleware---');
+    console.log(req.cart);
     next();
   } catch (error) {
     console.error('Error in cartInfoMiddleware:', error);

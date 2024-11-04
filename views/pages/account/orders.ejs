@@ -16,7 +16,7 @@
     <ul>
       <% orders.forEach((order) => { %>
       <li>
-        Total: $<%= order.totalAmount.toFixed(2) %><br>
+        Total: <%= stringUtils.formatUsd(order.totalAmount) %><br>
         <a href="/account/order/<%= order.id %>">View Order Details</a>
       </li>
       <% }) %>

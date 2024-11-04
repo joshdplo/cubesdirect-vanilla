@@ -14,17 +14,14 @@ export default {
     });
   },
 
-  validateEmail: (email) => {
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { valid: true, message: 'Email is valid' };
-    return { valid: false, message: 'Please enter a valid email' };
-  },
+  formatUsd: (n) => {
+    let output = n;
+    if (typeof n !== 'number') {
+      if (typeof n === 'string') output = parseInt(n, 10);
+      throw new Error('formatUsd requires a number or a string that can be parsed into a number');
+    }
 
-  validatePasswords: (password1, password2) => {
-    if (password1 !== password2) return { valid: false, message: 'Passwords do not match' };
-    if (password1.length < 8) return { valid: false, message: 'Passwords must be at least 8 characters' };
-    if (!/[A-Z]/.test(password1)) return { valid: false, message: 'Passwords must contain at least one uppercase letter' };
-    if (!/[a-z]/.test(password1)) return { valid: false, message: 'Password must contain at least one lowercase letter' };
-    if (!/\d/.test(password1)) return { valid: false, message: 'Password must contain at least one number' };
-    return { valid: true, message: 'Password is valid' };
+    output = output.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return `$${output}`;
   }
 }

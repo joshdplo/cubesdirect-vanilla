@@ -79,7 +79,7 @@
     <%# Payment %>
     <div class="checkout_credit-card">
       <h3>Payment</h3>
-      <b>Subtotal: $<%= subtotal.toFixed(2) %></b>
+      <b>Subtotal: <%= stringUtils.formatUsd(subtotal) %></b>
       <form id="checkout-credit-card">
         <fieldset>
           <label for="cardNumber">Card Number</label>

@@ -24,7 +24,7 @@
         <%= product.description %>
       </p>
       <%= product.stock %> in stock
-      $<%= product.price %>
+      <%= stringUtils.formatUsd(product.price) %>
 
       <button class="add-to-cart" data-cmp="addToCartButton" data-productId="<%= product.id %>"
         <% if (product.stock <= 0) { %> disabled="true" <% } %>>

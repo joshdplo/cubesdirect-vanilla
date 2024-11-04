@@ -35,7 +35,7 @@ export const issueOrderToken = (orderId, email) => {
 }
 
 // Login User
-export const loginUser = (res, user) => {
+export const loginUser = (req, res, user) => {
   // Create access + refresh tokens
   const accessToken = issueToken(user, 'access');
   const refreshToken = issueToken(user, 'refresh');
@@ -44,11 +44,13 @@ export const loginUser = (res, user) => {
   res.cookie('accessToken', accessToken, { httpOnly: true });
   res.cookie('refreshToken', refreshToken, { httpOnly: true });
 
+  if (req.session.shippingAddress) delete req.session.shippingAddress;
   return { accessToken, refreshToken };
 };
 
 // Logout User (clear tokens)
-export const logoutUser = (res) => {
+export const logoutUser = (req, res) => {
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
+  if (req.session.shippingAddress) delete req.session.shippingAddress;
 };

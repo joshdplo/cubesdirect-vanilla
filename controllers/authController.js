@@ -61,7 +61,7 @@ export const authRegister = async (req, res, next) => {
     }
 
     // Log user in
-    loginUser(res, newUser);
+    loginUser(req, res, newUser);
     addMessage(req, 'Registration successful', 'success');
 
     // If we have a guest cart, merge them and clear the cookie
@@ -119,7 +119,7 @@ export const authLogin = async (req, res, next) => {
     }
 
     // Login user with JWT
-    loginUser(res, user);
+    loginUser(req, res, user);
     addMessage(req, 'Logged in successfully', 'success');
 
     // If we have a guest cart, merge them and clear the cookie
@@ -138,7 +138,7 @@ export const authLogin = async (req, res, next) => {
 
 // Logout (GET)
 export const authLogout = (req, res, next) => {
-  logoutUser(res);
+  logoutUser(req, res);
   addMessage(req, 'Logged out successfully', 'success');
   res.redirect('/');
 };
@@ -174,7 +174,7 @@ export const authVerifyEmail = async (req, res, next) => {
     await user.save();
 
     // Log user in and redirect to account page
-    loginUser(res, user);
+    loginUser(req, res, user);
     addMessage(req, 'Successfully verified email', 'success');
     res.redirect('/account');
   } catch (error) {
@@ -278,7 +278,7 @@ export const authChangePassword = async (req, res, next) => {
     }
 
     // Log the user out and send json with redirect key
-    logoutUser(res);
+    logoutUser(req, res);
     addMessage(req, 'Password successfully changed. Please log in again.', 'success');
     return res.json({ success: true, redirect: '/login', message: 'Password change successful' });
   } catch (error) {

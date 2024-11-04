@@ -1,5 +1,12 @@
 import 'dotenv/config';
 import sequelize from '../config/db.js';
+import session from 'express-session';
+import connectSessionSequelize from 'connect-session-sequelize';
+
+// initialize sequelize session store (so we can delete its contents later)
+const SequelizeStore = connectSessionSequelize(session.Store);
+const sessionStore = new SequelizeStore({ db: sequelize });
+
 import bcrypt from 'bcryptjs';
 import { faker } from '@faker-js/faker/locale/en_US';
 import User from '../models/User.js';
@@ -176,6 +183,15 @@ const seedDB = async () => {
       }
     }
     console.log('-> Reviews complete!');
+
+    // Remove Session Data
+    console.log('-> Deleting session data...');
+    await sequelize.models.Session.destroy({
+      where: {},
+      truncate: true
+    });
+    console.log('-> Session data deleted!');
+
   } catch (err) {
     console.error('ERROR seeding database:', err);
   } finally {

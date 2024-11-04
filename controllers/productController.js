@@ -14,6 +14,7 @@ import CartItem from '../models/CartItem.js';
 import Order from '../models/Order.js';
 import OrderItem from '../models/OrderItem.js';
 
+const NAME = process.env.NAME;
 const isEmailEnabled = process.env.EMAIL_ENABLED === 'true';
 
 /**
@@ -574,7 +575,7 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
         console.log(`original product ${product.id} stock: ${product.stock}`);
         console.log(`new product ${product.id} stock (${product.stock} - ${item.quantity}): ${newStock}`);
 
-        product.sock = newStock;
+        product.stock = newStock;
         await product.save();
 
         // invalidate individual product cache
@@ -594,8 +595,8 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
     delete req.session.shippingAddress;
 
     // set up final redirect and email
-    let redirect = `/account/orders/${newOrder.id}`;
-    let emailText = `You can view your order in your account at any time, or you can use the below link:\nhttp://${req.headers.host}/account/orders/${newOrder.id}`;
+    let redirect = `/account/order/${newOrder.id}`;
+    let emailText = `You can view your order in your account at any time, or you can use the below link:\nhttp://${req.headers.host}/account/order/${newOrder.id}`;
     if (isGuest) {
       const token = issueOrderToken(newOrder.id, guestEmail);
       const orderLink = `http://${req.headers.host}/guest-order/${token}`;
@@ -607,7 +608,7 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
       await sendEmail({
         to: isGuest ? guestEmail : req.user.email,
         subject: `Your ${NAME} Order`,
-        text: `Your ${NAME} order has been confirmed and is being processed.\n${emailText}\n\nTotal: $${newOrder.totalAmount.toFixed(2)}\nNumber of items: ${cartItems.length}\n\nThank you for shopping ${NAME}!`
+        text: `Your ${NAME} order has been confirmed and is being processed.\n${emailText}\n\nTotal: ${stringUtils.formatUsd(newOrder.totalAmount)}\nNumber of items: ${cartItems.length}\n\nThank you for shopping ${NAME}!`
       });
     }
 

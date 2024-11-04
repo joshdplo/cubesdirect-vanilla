@@ -54,7 +54,7 @@ export const loadUser = async (req, res, next) => {
     if (refreshToken) {
       try {
         const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-        const { accessToken: newAccesToken } = loginUser(res, decoded);
+        const { accessToken: newAccesToken } = loginUser(req, res, decoded);
         await attachUserData(req, res, decoded.id);
         return next();
       } catch (refreshError) {
@@ -62,7 +62,7 @@ export const loadUser = async (req, res, next) => {
           console.log('ACCESS + REFRESH TOKENS EXPIRED - AUTOMATIC LOGOUT');
         }
         console.error('Refresh token error:', refreshError);
-        logoutUser(res);
+        logoutUser(req, res);
         req.user = res.locals.user = null;
         return next();
       }

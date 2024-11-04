@@ -24,11 +24,11 @@
             alt="<%= item.Product.name %>" width="100"></a><br>
         <a href="/product/<%= item.Product.id %>"><%= stringUtils.titleCase(item.Product.name) %></a>
         (x<%= item.quantity %>)<br>
-        Price: $<%= item.price.toFixed(2) %><br>
+        Price: <%= stringUtils.formatUsd(item.price) %><br>
       </li>
       <% }) %>
     </ul>
-    <h4>Order Total: $<%= order.totalAmount.toFixed(2) %></h4>
+    <h4>Order Total: <%= stringUtils.formatUsd(order.totalAmount) %></h4>
   </main>
 
   <%- include ('../../partials/footer') %>

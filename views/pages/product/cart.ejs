@@ -17,7 +17,7 @@
         <a href="/product/<%= item.Product.id %>"><img src="<%= item.Product.images[0] %>"
             alt="<%= item.Product.name %>" width="100"></a>
         <div><a href="/product/<%= item.Product.id %>"><%= item.Product.name %></a></div>
-        <div>Price: $<%= item.Product.price.toFixed(2) %></div>
+        <div>Price: <%= stringUtils.formatUsd(item.Product.price) %></div>
         <form class="cart-item-update">
           <input type="hidden" name="cartItemId" value="<%= item.id %>">
           <input type="number" name="quantity" value="<%= item.quantity %>" min="1" max="100">
@@ -32,7 +32,7 @@
       </li>
       <% }); %>
       <hr>
-      <h2>Subtotal: $<%= subtotal.toFixed(2) %></h2>
+      <h2>Subtotal: <%= stringUtils.formatUsd(subtotal) %></h2>
       <br><br>
       <a href="/checkout">Proceed to Checkout</a>
     </ul>

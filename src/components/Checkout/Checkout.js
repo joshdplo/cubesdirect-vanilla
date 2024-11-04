@@ -130,7 +130,7 @@ export default class Checkout extends BaseComponent {
     e.preventDefault();
 
     const ccFormData = Object.fromEntries(new FormData(this.dom.paymentCCForm));
-    let newAddressFormData = newAddressFormData = Object.fromEntries(new FormData(this.dom.newAddressForm));
+    let newAddressFormData = Object.fromEntries(new FormData(this.dom.newAddressForm));
     let userAddressFormData = null;
     let guestEmailFormData = null;
 

@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import jwt from 'jsonwebtoken';
 import stringUtils from '../util/stringUtils.js';
 import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 import { validateAddress, validateEmail } from '../validation/userSchema.js';
@@ -213,7 +214,7 @@ export const productGuestOrder = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_ORDER_SECRET);
-    const order = await Order.findOne({ where: { id: decoded.orderId, email: decoded.email } });
+    const order = await Order.findOne({ where: { id: decoded.orderId, guestEmail: decoded.email } });
 
     if (!order) {
       console.error('no order found on /guest-order!');
@@ -221,10 +222,16 @@ export const productGuestOrder = async (req, res, next) => {
       next();
     }
 
-    res.render('pages/product/order', {
+    const orderItems = await OrderItem.findAll({
+      where: { orderId: order.id },
+      include: [{ model: Product }]
+    });
+
+    res.render('pages/account/order', {
       title: 'Guest Order',
       isGuest: true,
-      order
+      order,
+      orderItems
     });
   } catch (error) {
     console.error(error);
@@ -272,10 +279,6 @@ const handleUserCartAddItem = async (userId, product, quantity) => {
         price: product.price
       });
     }
-
-    // // disabling quantity updates on add to cart - this will only happen on checkout complete now
-    // product.stock -= quantity;
-    // await product.save();
   } catch (error) {
     console.error('Error in handleUserCartAddItem', error);
   }
@@ -420,17 +423,9 @@ export const updateCartItem = async (req, res, next) => {
     const cartItem = await CartItem.findByPk(cartItemId, { include: Product });
     if (!cartItem) return res.status(404).json({ error: 'Item not found' });
 
-    // update stock, return error if
+    // return error if not enough stock is avilable
     const product = cartItem.Product;
-    const quantityDifference = quantity - cartItem.quantity;
-
-    if (quantityDifference > 0) {
-      if (product.stock < quantityDifference) return res.status(400).json({ error: 'Not enough stock available' });
-      product.stock -= quantityDifference;
-    } else {
-      product.stock += Math.abs(quantityDifference);
-    }
-    await product.save();
+    if (product.stock - quantity < 0) return res.status(400).json({ error: 'Not enough stock available' });
 
     cartItem.quantity = quantity;
     await cartItem.save();
@@ -447,11 +442,8 @@ export const removeCartItem = async (req, res, next) => {
   try {
     const { cartItemId } = req.body;
 
-    const cartItem = await CartItem.findByPk(cartItemId, { include: Product });
+    const cartItem = await CartItem.findByPk(cartItemId);
     if (!cartItem) return res.status(404).json({ error: 'Item not found' });
-
-    cartItem.Product.stock += cartItem.quantity;
-    await cartItem.Product.save();
 
     await cartItem.destroy();
     return res.status(200).json({ success: true, redirect: '/cart', message: 'Item removed from cart' });
@@ -576,7 +568,13 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
 
       const product = item.Product;
       if (product.stock >= item.quantity) {
-        product.stock -= item.quantity;
+        const newStock = product.stock - item.quantity;
+        console.log('------------');
+        console.log(`item quantity: ${item.quantity}`);
+        console.log(`original product ${product.id} stock: ${product.stock}`);
+        console.log(`new product ${product.id} stock (${product.stock} - ${item.quantity}): ${newStock}`);
+
+        product.sock = newStock;
         await product.save();
 
         // invalidate individual product cache
@@ -595,21 +593,19 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
     // clear session
     delete req.session.shippingAddress;
 
+    // set up final redirect and email
     let redirect = `/account/orders/${newOrder.id}`;
+    let emailText = `You can view your order in your account at any time, or you can use the below link:\nhttp://${req.headers.host}/account/orders/${newOrder.id}`;
+    if (isGuest) {
+      const token = issueOrderToken(newOrder.id, guestEmail);
+      const orderLink = `http://${req.headers.host}/guest-order/${token}`;
+      emailText = `Please use the below link to access your order details:\n${orderLink}`;
+      redirect = `/guest-order/${token}`;
+    }
 
     if (isEmailEnabled) {
-      const userEmail = isGuest ? guestEmail : req.user.email;
-      let emailText = `You can view your order in your account at any time, or you can use the below link:\nhttp://${req.headers.host}/account/orders/${newOrder.id}`;
-
-      if (isGuest) {
-        const token = issueOrderToken(newOrder.id, guestEmail);
-        const orderLink = `http://${req.headers.host}/guest-order/${token}`;
-        emailText = `Please use the below link to access your order details:\n${orderLink}`;
-        redirect = `/guest-order/${token}`;
-      }
-
       await sendEmail({
-        to: userEmail,
+        to: isGuest ? guestEmail : req.user.email,
         subject: `Your ${NAME} Order`,
         text: `Your ${NAME} order has been confirmed and is being processed.\n${emailText}\n\nTotal: $${newOrder.totalAmount.toFixed(2)}\nNumber of items: ${cartItems.length}\n\nThank you for shopping ${NAME}!`
       });
@@ -619,6 +615,6 @@ export const productCheckoutPaymentSubmit = async (req, res, next) => {
     return res.status(200).json({ success: true, redirect, message: 'Order submitted! You will be redirected to the confirmation page shortly.' });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Error with payment info in checkout' });
+    return res.status(500).json({ error: error.message });
   }
 };

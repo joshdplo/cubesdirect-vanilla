@@ -18,10 +18,12 @@
 
     <h3>Order Items</h3>
     <ul>
-      <% order.items.forEach(item => { %>
-      <%= JSON.stringify(item) %>
+      <% orderItems.forEach(item => { %>
       <li>
-        <a href="/product/<%= item.id %>"><%= stringUtils.titleCase(item.productName) %></a> (x<%= item.quantity %>)<br>
+        <a href="/product/<%= item.Product.id %>"><img src="<%= item.Product.images[0] %>"
+            alt="<%= item.Product.name %>" width="100"></a><br>
+        <a href="/product/<%= item.Product.id %>"><%= stringUtils.titleCase(item.Product.name) %></a>
+        (x<%= item.quantity %>)<br>
         Price: $<%= item.price.toFixed(2) %><br>
       </li>
       <% }) %>

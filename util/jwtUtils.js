@@ -30,7 +30,8 @@ export const issueOrderToken = (orderId, email) => {
   const secret = process.env.JWT_ORDER_SECRET;
   const expiresIn = process.env.JWT_ORDER_EXPIRATION;
 
-  return jwt.sign(payload, secret, { expiresIn });
+  // return jwt.sign(payload, secret, { expiresIn });
+  return jwt.sign(payload, secret); // leaving out expiresIn for no expiration
 }
 
 // Login User

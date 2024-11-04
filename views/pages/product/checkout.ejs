@@ -19,7 +19,7 @@
         <img src="<%= item.Product.images[0] %>" alt="<%= item.Product.name %>" width="100">
         <div><%= item.Product.name %></div>
         <div>Quantity: <%= item.quantity %></div>
-        <div>Price: $<%= item.Product.price %></div>
+        <div>Price: $<%= item.Product.price.toFixed(2) %></div>
       </li>
       <% }); %>
       <hr>

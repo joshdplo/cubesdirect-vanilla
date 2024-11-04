@@ -1,4 +1,7 @@
 import User from "../models/User.js";
+import Order from "../models/Order.js";
+import OrderItem from "../models/OrderItem.js";
+import Product from "../models/Product.js";
 import { validateAddress } from "../validation/userSchema.js";
 import { addMessage } from '../middlewares/globalMessageMiddleware.js';
 
@@ -81,20 +84,48 @@ export const accountAddresses = async (req, res, next) => {
 
 // Account Orders (GET)
 export const accountOrders = async (req, res, next) => {
-  res.render('pages/account/orders', {
-    title: 'Orders',
-    orders: []
-  })
+  try {
+    const orders = await Order.findAll({ where: { userId: req.user.id } });
+
+    res.render('pages/account/orders', {
+      title: 'Orders',
+      orders: orders || []
+    });
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
 };
 
 // Account Order (GET)
 export const accountOrder = async (req, res, next) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const order = await Order.findOne({ where: { id, userId: req.user.id } });
 
-  res.render('pages/account/order', {
-    title: 'Order',
-    isGuest: false
-  })
+    if (!order) {
+      console.error('no order found in accountOrder');
+      res.status(404);
+      next();
+    }
+
+    const orderItems = await OrderItem.findAll({
+      where: { orderId: order.id },
+      include: [{ model: Product }]
+    });
+
+    res.render('pages/account/order', {
+      title: 'Order',
+      isGuest: false,
+      order,
+      orderItems
+    });
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
 };
 
 /**

@@ -89,6 +89,7 @@ export const accountOrders = async (req, res, next) => {
 
     res.render('pages/account/orders', {
       title: 'Orders',
+      bundle: 'account',
       orders: orders || []
     });
   } catch (error) {
@@ -117,6 +118,7 @@ export const accountOrder = async (req, res, next) => {
 
     res.render('pages/account/order', {
       title: 'Order',
+      bundle: 'account',
       isGuest: false,
       order,
       orderItems

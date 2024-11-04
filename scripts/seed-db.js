@@ -70,7 +70,7 @@ async function generateProductData() {
       description: faker.commerce.productDescription(),
       price: faker.commerce.price(),
       stock: faker.number.int({ min: 0, max: 100 }),
-      images: ['/images/product/placeholder.webp'],
+      images: ['/images/products/placeholder.webp'],
       featured: faker.datatype.boolean(),
     };
 

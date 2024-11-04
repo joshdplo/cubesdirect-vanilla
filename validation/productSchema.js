@@ -8,6 +8,6 @@ export const productSchema = Joi.object({
   stock: Joi.number().integer().min(0).default(0),
   images: Joi.array().items(
     Joi.string().uri()
-  ).default(['/images/product/placeholder.webp']),
+  ).default(['/images/products/placeholder.webp']),
   featured: Joi.boolean().default(false)
 });

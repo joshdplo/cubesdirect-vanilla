@@ -32,10 +32,36 @@ const Category = sequelize.define('Category', {
       }
     }
   },
+  parentId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'Categories',
+      key: 'id'
+    }
+  }
 }, { timestamps: true });
 
-// Relationships
-Category.belongsToMany(Product, { through: 'ProductCategory' });
-Product.belongsToMany(Category, { through: 'ProductCategory' });
+// Product Relationships
+Category.belongsToMany(Product, {
+  through: 'ProductCategory',
+  foreignKey: 'categoryId',
+  otherKey: 'productId'
+});
+Product.belongsToMany(Category, {
+  through: 'ProductCategory',
+  foreignKey: 'productId',
+  otherKey: 'categoryId'
+});
+
+// Self-referential association for subcategories
+Category.hasMany(Category, {
+  foreignKey: 'parentId',
+  as: 'subcategories'
+});
+Category.belongsTo(Category, {
+  foreignKey: 'parentId',
+  as: 'parentCategory'
+});
 
 export default Category;

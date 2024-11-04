@@ -30,7 +30,7 @@ const Product = sequelize.define('Product', {
   images: {
     type: DataTypes.JSON, // array of URL strings
     allowNull: false,
-    defaultValue: ['/images/product/placeholder.webp']
+    defaultValue: ['/images/products/placeholder.webp']
   },
   featured: {
     type: DataTypes.BOOLEAN,

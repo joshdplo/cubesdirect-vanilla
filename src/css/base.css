@@ -1,12 +1,27 @@
+/**
+ * Base Styling
+ * - font sizes using VW clamps
+ * - using feather icons via sprites: https://github.com/feathericons/feather?tab=readme-ov-file#svg-sprite
+ * --- don't forget to remove unused sprite definitions to reduce file size!
+ */
+
 /*
  * Mobile + Default Vars
  */
 :root {
   --c-light: #f9f9f9;
-  --c-dark: #4a4a4a;
+  --c-dark: #2d2d2d;
+  --c-gray-dark: #4a4a4a;
   --c-gray: #e5e5e5;
   --c-primary: #1f78b4;
   --c-accent: #88c057;
+
+  --c-error: #a6192e;
+  --c-error-font: #fff;
+  --c-warning: #ff9900;
+  --c-warning-font: #000;
+  --c-success: #04b34f;
+  --c-success-font: #000;
 
   --font-title: Raleway, Tahoma, Verdana, Arial, sans-serif;
   --font-default: Nunito, Tahoma, Verdana, Arial, sans-serif;
@@ -21,7 +36,8 @@
   --padding-global: .75rem;
   --spacer-1: 2rem;
   --spacer-2: 4rem;
-  --spacer-3: 3.5rem;
+  --spacer-3: 6rem;
+  --spacer-4: 8rem;
 }
 
 /*
@@ -40,6 +56,10 @@
   h4,
   h5 {
     line-height: 1.3;
+  }
+
+  .desktop-hide {
+    display: none;
   }
 }
 
@@ -98,14 +118,65 @@ h5 {
 /*
  * Helpers
  */
+.sr-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .hide {
   display: none;
+}
+
+.error {
+  background-color: var(--c-error);
+  color: var(--c-error-font);
+}
+
+.warning {
+  background-color: var(--c-warning);
+  color: var(--c-warning-font);
+}
+
+.success {
+  background-color: var(--c-success);
+  color: var(--c-success-font);
+}
+
+.spacer-1,
+.spacer-2,
+.spacer-3,
+.spacer-4 {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.spacer-1 {
+  height: var(--spacer-1);
+}
+
+.spacer-2 {
+  height: var(--spacer-2);
+}
+
+.spacer-3 {
+  height: var(--spacer-3);
+}
+
+.spacer-4 {
+  height: var(--spacer-4);
 }
 
 /*
  * Generics
  */
 .box {
+  position: relative;
   padding: 0 var(--padding-global);
 }
 

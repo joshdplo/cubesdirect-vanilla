@@ -1,30 +1,52 @@
 <div id="global-messages"></div>
 <header class="nav-main" data-cmp="header">
   <div class="nav-main_left">
-    <button id="hamburger" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button id="hamburger" aria-expanded="false" aria-label="Toggle navigation menu" aria-controls="nav-main_menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <use href="/images/site/feather-sprite.svg#menu" />
+      </svg>
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <use href="/images/site/feather-sprite.svg#x" />
+      </svg>
     </button>
     <a href="/">
       <img src="" alt="<%= global.SITE_NAME %> site logo">
     </a>
   </div>
-  <nav aria-hidden="true">
+  <nav id="nav-main_menu">
     <%- include ('./category-nav') %>
   </nav>
   <div class="nav-main_right">
     <% if (user) { %>
-    <a href="/account">Account</a>
+    <a href="/account">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <use href="/images/site/feather-sprite.svg#user" />
+      </svg>
+      <span class="sr-only">Account</span>
+    </a>
     <% } else { %>
-    <a href="/login">Log In</a>
+    <a href="/login">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <use href="/images/site/feather-sprite.svg#user" />
+      </svg>
+      <span class="sr-only">Log In</span>
+    </a>
     <% } %>
     <a href="/cart">
-      Cart
-      <span class="nav-main_cart"></span>
-      <% if (cart && cart.count) { %>
-      <span class="nav-main_cart-number">(<%= cart.count %>)</span>
-      <% } %>
+      <span class="sr-only">Cart</span>
+      <span class="nav-main_cart">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <use href="/images/site/feather-sprite.svg#shopping-cart" />
+        </svg>
+        <% if (cart && cart.count) { %>
+        <span class="nav-main_cart-number">(<%= cart.count %>)</span>
+        <% } %>
+      </span>
     </a>
   </div>
 </header>

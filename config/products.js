@@ -24,17 +24,25 @@
 export const products = [
   // CLASSIC
   {
-    name: "Classic Single Color",
+    name: "Single Color",
     description: "",
     price: 4.99,
     stock: 1000,
     custom: {
-      colors: 1,
-      engraving: true
+      singleColor: ''
     }
   },
   {
-    name: "Classic Custom Colors",
+    name: "Single Color with Engraving",
+    description: "",
+    price: 4.99,
+    stock: 1000,
+    custom: {
+      colors: []
+    }
+  },
+  {
+    name: "Custom Colors",
     description: "",
     price: 6.99,
     stock: 1000,

@@ -1,6 +1,6 @@
 import './js/globalSetup.js';
 import './css/reset.css';
-import './css/style.css';
+import './css/base.css';
 import './js/globalMessages.js';
 
 import globalBundle from './js/bundles/globalBundle.js';

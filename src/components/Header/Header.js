@@ -13,10 +13,24 @@ export default class Header extends BaseComponent {
     this.addEventListener(this.dom.hamburger, 'click', this.toggle.bind(this));
   }
 
+  openMenu() {
+    this.dom.nav.classList.add('showing');
+    this.dom.nav.offsetHeight; // force reflow
+    requestAnimationFrame(() => { this.dom.nav.classList.add('animated') });
+  }
+
+  closeMenu() {
+    this.dom.nav.classList.remove('animated');
+    this.dom.nav.addEventListener('transitionend', () => {
+      this.dom.nav.classList.remove('showing');
+    }, { once: true });
+  }
+
   toggle() {
     const showing = this.dom.hamburger.getAttribute('aria-expanded') === 'true';
     this.isOpen = showing;
+
     this.dom.hamburger.setAttribute('aria-expanded', showing ? 'false' : 'true');
-    this.dom.nav.setAttribute('aria-hidden', showing ? 'true' : 'false');
+    showing ? this.closeMenu() : this.openMenu();
   }
 }

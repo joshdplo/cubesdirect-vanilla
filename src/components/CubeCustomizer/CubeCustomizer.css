@@ -15,6 +15,18 @@
   align-items: center;
 }
 
+.cube-customizer .scene-wrapper {
+  padding: 60px 0;
+}
+
+.cube-customizer .selections {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  padding: 8px;
+}
+
 .cube-customizer .scene {
   width: 200px;
   height: 200px;
@@ -25,7 +37,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transform: translateZ(-100px) rotateY(30deg);
+  transform: translateZ(-100px) rotateX(-22deg) rotateY(40deg);
   transform-style: preserve-3d;
 }
 
@@ -44,10 +56,57 @@
   padding: 8px;
   background-color: var(--c-gray-dark);
   color: var(--c-light);
+  transition: .15s linear;
+}
+
+.cube-customizer .face span,
+.cube-customizer .face i {
+  pointer-events: none;
+  user-select: none;
+}
+
+.cube-customizer .face span {
+  font-size: 2rem;
+  opacity: .2;
+  margin-top: -75px;
+}
+
+.cube-customizer .face i {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: flex-end;
+  padding: 5px 8px;
+  font-size: .9rem;
+}
+
+.cube-customizer .face i.top {
+  align-items: flex-start;
+}
+
+.cube-customizer .face i.middle {
+  align-items: center;
+}
+
+.cube-customizer .face i.bottom {
+  align-items: flex-end;
+}
+
+.cube-customizer .face i.left {
+  justify-content: flex-start;
+}
+
+.cube-customizer .face i.right {
+  justify-content: flex-end;
+}
+
+.cube-customizer .face i.center {
+  justify-content: center;
 }
 
 .cube-customizer .face:hover {
-  background-color: #f0f;
+  filter: contrast(200%);
 }
 
 .cube-customizer .face.front {
@@ -73,5 +132,3 @@
 .cube-customizer .face.bottom {
   transform: rotateX(-90deg) translateZ(100px);
 }
-
-.cube-customizer .cube-customizer_secondary {}

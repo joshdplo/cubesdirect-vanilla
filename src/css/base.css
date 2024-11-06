@@ -115,6 +115,24 @@ h5 {
   line-height: 1.4;
 }
 
+a {
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  text-decoration: none;
+}
+
+p a,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a {
+  text-decoration: underline;
+  text-decoration-thickness: .125em;
+  text-underline-offset: 1.5px;
+}
+
 /*
  * Helpers
  */

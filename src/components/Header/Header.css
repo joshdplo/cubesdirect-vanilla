@@ -1,0 +1,131 @@
+/*
+ * Header Desktop + Defaults
+ * - desktop-first css reduces complexity and promotes readability for the header
+ */
+.nav-main {
+  --header-height-desktop: 50px;
+  --header-height-mobile: 40px;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  height: var(--header-height-desktop);
+  background-color: #fff;
+}
+
+.nav-main_wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#hamburger {
+  display: none;
+}
+
+.nav-main a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-main_left,
+.nav-main_right {
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.nav-main_right a {
+  padding: 0 .25rem;
+}
+
+.nav-main_right a:last-child {
+  padding-right: calc(var(--padding-global) + 2px);
+}
+
+.nav-main_right .nav-main_cart-number {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-size: .75rem;
+}
+
+#nav-main_menu ul {
+  position: relative;
+  display: flex;
+  list-style: none;
+}
+
+/*
+ * Header Mobile
+ */
+@media screen and (max-width: 799px) {
+  .nav-main {
+    height: var(--header-height-mobile);
+    border-bottom: 1px solid var(--c-gray);
+  }
+
+  #hamburger {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 0 var(--padding-global);
+    z-index: 10;
+  }
+
+  #hamburger .close {
+    display: none;
+  }
+
+  #hamburger[aria-expanded="true"] .close {
+    display: block;
+  }
+
+  #hamburger[aria-expanded="true"] .open {
+    display: none;
+  }
+
+  #nav-main_menu {
+    position: fixed;
+    display: none;
+    left: 0;
+    top: 40px;
+    width: 100vw;
+    height: calc(100vh - var(--header-height-mobile));
+    flex-direction: column;
+    transform: translateX(-110%);
+    opacity: 0;
+    transition: transform .3s ease, opacity .3s ease;
+    z-index: 9;
+    background-color: var(--c-light);
+  }
+
+  #nav-main_menu.showing {
+    display: flex;
+  }
+
+  #nav-main_menu.animated {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  #nav-main_menu ul {
+    flex-direction: column;
+  }
+
+  #nav-main_menu a {
+    justify-content: flex-start;
+    padding: .4rem 1.2rem;
+  }
+
+  #nav-main_menu ul li:first-child a {
+    padding-top: .8rem;
+  }
+}

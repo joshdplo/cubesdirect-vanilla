@@ -16,12 +16,12 @@ export default class CubeCustomizer extends BaseComponent {
       bottomFace: this.element.querySelector('.cube .face.bottom'),
     };
 
-    this.defaultTransform = 'translateZ(-100px) rotateY(30deg)';
+    this.defaultTransform = 'translateZ(-100px) rotateX(-22deg) rotateY(40deg)';
     this.isPointerDown = false;
-    this.currentX = 0;
-    this.currentY = 0;
-    this.lastX = 0;
-    this.lastY = 0;
+    this.currentX = -22;
+    this.currentY = 40;
+    this.lastX = -22;
+    this.lastY = 40;
 
     this.addEventListener(this.dom.resetButton, 'click', this.onResetClick.bind(this));
     this.addEventListener(this.dom.scene, 'pointerdown', this.onPointerDown.bind(this));
@@ -33,10 +33,10 @@ export default class CubeCustomizer extends BaseComponent {
   onResetClick() {
     this.dom.cube.classList.add('animating');
     this.dom.cube.style.transform = this.defaultTransform;
-    this.currentX = 0;
-    this.currentY = 0;
-    this.lastX = 0;
-    this.lastY = 0;
+    this.currentX = -22;
+    this.currentY = 40;
+    this.lastX = -22;
+    this.lastY = 40;
   }
 
   // Pointer Logic

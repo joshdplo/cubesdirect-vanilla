@@ -76,4 +76,4 @@ The process for creating CubesDirect was xxxxxxxxxx
   - check for `data/db.sqlite` and seed db if not exist
 
 ### TODO Optional
-- basic address validation
+- basic address validation?

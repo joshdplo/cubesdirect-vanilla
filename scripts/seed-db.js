@@ -18,6 +18,99 @@ import Review from '../models/Review.js';
 import CartItem from '../models/CartItem.js';
 import OrderItem from '../models/OrderItem.js';
 
+async function generateCategoryData() {
+  const categories = [
+    {
+      id: 1,
+      name: 'Classic',
+      description: 'Cubes fit for any occasion',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 2,
+      name: 'Seasonal',
+      description: 'Celebrate the seasons with cubes',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 3,
+      parentId: 2,
+      name: 'Christmas',
+      description: 'Have a holly-jolly cubesmas',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 4,
+      parentId: 2,
+      name: 'Halloween',
+      description: 'Creepy, crawly, spooky cubes',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 5,
+      name: 'Sports',
+      description: 'Your favorites sports teams...on cubes',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 6,
+      parentId: 5,
+      name: 'NFL',
+      description: 'Cubes of the NFL',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 7,
+      parentId: 5,
+      name: 'NHL',
+      description: 'Cubes of the NHL',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 8,
+      parentId: 5,
+      name: 'NBA',
+      description: 'Cubes of the NBA',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 9,
+      name: 'Culture',
+      description: 'Culture and media shrunk down to cube size',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 10,
+      parentId: 9,
+      name: 'Star Trek',
+      description: 'Cube resistance is futile',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 11,
+      parentId: 9,
+      name: 'Orphan Black',
+      description: 'Cube sisters',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 12,
+      parentId: 9,
+      name: 'Dragonball Z',
+      description: 'Kame hame cube',
+      featured: faker.datatype.boolean()
+    },
+    {
+      id: 13,
+      name: 'Backers',
+      description: 'The true cube heroes',
+      featured: faker.datatype.boolean()
+    },
+  ];
+
+  return categories;
+}
+
 async function generateUserData() {
   const users = [];
   const addressTitleNouns = ['house', 'appartment', 'business', 'condo', 'townhouse', 'vacation house', 'timeshare'];
@@ -48,15 +141,6 @@ async function generateUserData() {
   }
 
   return users;
-}
-
-async function generateCategoryData() {
-  const categories = ['Classic', 'Deluxe', 'Nature', 'Fashion', 'Seasonal', 'International', 'Pop'].map((category) => ({
-    name: category.toLowerCase(),
-    description: faker.lorem.sentence(),
-    featured: faker.datatype.boolean()
-  }));
-  return categories;
 }
 
 async function generateProductData() {

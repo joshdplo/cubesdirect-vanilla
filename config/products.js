@@ -7,14 +7,77 @@
 - 
 
 +++ CATEGORIES +++
-1. Classic (colors) - CUSTOMIZABLE
-2. Patterns (patterns ie. plaid/zebra/leopard/checkered/circles) - CUSTOMIZABLE
-
-3. Media (better name? culture?) (tv show characters, movie characters, bands, etc)
-4. Seasonal (winter, summer, fall, spring, christmas, halloween, easter, etc)
-5. Sports (nfl, nhl, nba)
+- Classic (colors, materials, patterns, etc) - CUSTOMIZABLE
+- Seasonal (winter, summer, fall, spring, christmas, halloween, easter, etc)
+- Media (better name? culture?) (tv show characters, movie characters, bands, etc)
+- Sports (nfl, nhl, nba)
 99. Backers (super special) ie/. mini, mom, dad
  */
+
+/**
+ * Product Customizations
+ */
+const singleColor = (color) => ({
+  front: color,
+  back: color,
+  left: color,
+  right: color,
+  top: color,
+  bottom: color
+});
+
+const colors = (colorsObj) => {
+  const { front, back, left, right, top, bottom } = colorsObj;
+  return {
+    front,
+    back,
+    left,
+    right,
+    top,
+    bottom,
+  };
+};
+
+const engraving = (message, position) => ({
+  message,
+  position,
+});
+
+const size = [
+  '2in',
+  '3in',
+  '4in',
+  '5in',
+];
+
+const finish = [
+  'matte',
+  'glossy',
+];
+
+const metal = [
+  'aluminum',
+  'copper',
+  'silver',
+  'gold',
+];
+
+const wood = [
+  'birch',
+  'oak',
+];
+
+const pattern = [
+  'plaid',
+  'stripes-horizontal',
+  'stripes-vertical',
+  'cheetah',
+  'leopard',
+  'zebra',
+  'cow'
+];
+
+
 
 /**
  * Generate Products
@@ -24,48 +87,132 @@
 export const products = [
   // CLASSIC
   {
-    name: "Single Color",
-    description: "",
-    price: 4.99,
+    name: 'Color Cube',
+    description: '',
+    price: 3.99,
     stock: 1000,
-    custom: {
-      singleColor: ''
-    }
+    customizations: ['size', 'finish', 'singleColor', 'colors', 'engraving']
   },
   {
-    name: "Single Color with Engraving",
-    description: "",
+    name: 'Pattern Cube',
+    description: '',
     price: 4.99,
     stock: 1000,
-    custom: {
-      colors: []
-    }
+    customizations: ['size', 'finish', 'singleColor', 'colors', 'pattern', 'engraving']
   },
   {
-    name: "Custom Colors",
-    description: "",
-    price: 6.99,
+    name: 'Metal Cube (2")',
+    description: '',
+    price: 9.99,
     stock: 1000,
+    customizations: ['metal', 'engraving']
+  },
+  {
+    name: 'Wood Cube (2")',
+    description: '',
+    price: 7.99,
+    stock: 1000,
+    customizations: ['wood', 'engraving']
+  },
+  {
+    name: 'Light Cube (2")',
+    description: 'A translucent cube with a LED light inside. The cube\'s colors determine the light color! ',
+    price: 5.99,
+    stock: 1000,
+    customizations: ['singleColor', 'colors', 'engraving']
   },
 
-  // PATTERNS
+  // SEASONAL:CHRISTMAS
   {
-    name: "Plaid",
-    description: "",
-    price: 6.99,
+    name: 'Christmas Tree Cube',
+    description: '',
+    price: 3.99,
     stock: 1000,
+    customizations: ['size', 'engraving']
   },
   {
-    name: "Stripes (Horizontal)",
-    description: "",
-    price: 6.99,
+    name: 'Santa Cube',
+    description: '',
+    price: 3.99,
     stock: 1000,
+    customizations: ['size', 'engraving']
   },
   {
-    name: "Stripes (Vertical)",
-    description: "",
-    price: 6.99,
+    name: 'Santa Sleigh Cube',
+    description: '',
+    price: 3.99,
     stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Elf Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Rudolph Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Candy Cane Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Wreath Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Ornament Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Christmas Lights Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Gingerbead Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Nutcracker Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Christmas Angel Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
+  },
+  {
+    name: 'Nativity Cube',
+    description: '',
+    price: 3.99,
+    stock: 1000,
+    customizations: ['size', 'engraving']
   },
 
 ];

@@ -2,7 +2,7 @@ import express from 'express';
 import { authenticateUser } from './middlewares/authMiddleware.js';
 const router = express.Router();
 
-import { pageIndex } from './controllers/pageController.js';
+import { pageIndex, pageCustomizer } from './controllers/pageController.js';
 import {
   productCategory,
   productDisplay,
@@ -43,6 +43,7 @@ import {
 
 // General
 router.get('/', pageIndex);
+router.get('/customizer', pageCustomizer);
 
 // Account
 router.get('/login', accountLogin);

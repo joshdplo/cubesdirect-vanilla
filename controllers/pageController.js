@@ -16,3 +16,16 @@ export const pageIndex = async (req, res, next) => {
     next(error);
   }
 };
+
+// Customizer Page Test (GET)
+export const pageCustomizer = async (req, res, next) => {
+  try {
+    res.render('pages/product/customizer', {
+      title: 'Cube Customizer'
+    })
+  } catch (error) {
+    console.error(error.message);
+    error.status = 500;
+    next(error);
+  }
+}

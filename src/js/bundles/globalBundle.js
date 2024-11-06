@@ -1,5 +1,6 @@
 import { registerComponent, initComponents } from "../../components/componentSystem.js";
 import Header from "../../components/Header/Header.js";
+import CubeCustomizer from "../../components/CubeCustomizer/CubeCustomizer.js";
 import AddToCartButton from "../../components/AddToCartButton/AddToCartButton";
 import Checkout from "../../components/Checkout/Checkout.js";
 
@@ -10,6 +11,7 @@ import { cartItemSchema } from "../../../validation/cartItemSchema.js";
 export default function globalBundle() {
   // Global Components
   registerComponent('header', Header);
+  registerComponent('cubeCustomizer', CubeCustomizer);
   registerComponent('addToCartButton', AddToCartButton);
   registerComponent('checkout', Checkout);
 

@@ -1,6 +1,9 @@
 <ul>
   <% for( let index = 0; index < categoryData.length; index++ ) { %>
-  <li><a href="/category/<%= categoryData[index].id %>"><%= stringUtils.titleCase(categoryData[index].name) %></a>
+  <% if(!categoryData[index].parentId) { %>
+  <li>
+    <a href="/category/<%= categoryData[index].id %>"><%= stringUtils.titleCase(categoryData[index].name) %></a>
   </li>
+  <% } %>
   <% } %>
 </ul>

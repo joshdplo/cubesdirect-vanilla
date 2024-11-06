@@ -5,3 +5,69 @@
  * - implement ability to click a face (front, back, left, right, top, bottom)
  * - implement engraving (choose face, enter text)
  */
+
+.cube-customizer .cube-customizer_primary,
+.cube-customizer .scene-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cube-customizer .scene {
+  width: 200px;
+  height: 200px;
+  perspective: 600px;
+}
+
+.cube-customizer .cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(-100px) rotateY(30deg);
+  transform-style: preserve-3d;
+}
+
+.cube-customizer .face {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--c-gray);
+  padding: 8px;
+  background-color: var(--c-gray-dark);
+  color: var(--c-light);
+}
+
+.cube-customizer .face:hover {
+  background-color: #f0f;
+}
+
+.cube-customizer .face.front {
+  transform: rotateY(0deg) translateZ(100px);
+}
+
+.cube-customizer .face.back {
+  transform: rotateY(180deg) translateZ(100px);
+}
+
+.cube-customizer .face.left {
+  transform: rotateY(-90deg) translateZ(100px);
+}
+
+.cube-customizer .face.right {
+  transform: rotateY(90deg) translateZ(100px);
+}
+
+.cube-customizer .face.top {
+  transform: rotateX(90deg) translateZ(100px);
+}
+
+.cube-customizer .face.bottom {
+  transform: rotateX(-90deg) translateZ(100px);
+}
+
+.cube-customizer .cube-customizer_secondary {}

@@ -11,8 +11,9 @@
 :root {
   --c-light: #f9f9f9;
   --c-dark: #2d2d2d;
-  --c-gray-dark: #4a4a4a;
   --c-gray: #e5e5e5;
+  --c-gray-light: #efefef;
+  --c-gray-dark: #4a4a4a;
   --c-primary: #1f78b4;
   --c-accent: #88c057;
 
@@ -33,7 +34,11 @@
   --font-size-h4: clamp(1.44rem, 3vw + 0.5rem, 1.777rem);
   --font-size-h5: clamp(1.2rem, 2vw + 0.5rem, 1.333rem);
 
-  --padding-global: .75rem;
+  --padding-global: 1rem;
+  --desktop-content-width: 1250px;
+  --header-height-desktop: 60px;
+  --header-height-mobile: 40px;
+
   --spacer-1: 2rem;
   --spacer-2: 4rem;
   --spacer-3: 6rem;
@@ -47,8 +52,6 @@
   :root {
     --font-size-default: clamp(1.125rem, 0.75vw + 1rem, 1.2rem);
     --line-height-default: 1.5;
-
-    --padding-global: 1rem;
   }
 
   h2,
@@ -60,6 +63,10 @@
 
   .desktop-hide {
     display: none;
+  }
+
+  .full-page {
+    min-height: calc(100vh - var(--header-height-desktop));
   }
 }
 
@@ -76,6 +83,36 @@ body {
   font-family: var(--font-default);
   font-size: var(--font-size-default);
   line-height: var(--line-height-default);
+}
+
+main>h1,
+main.heading {
+  margin-bottom: 1rem;
+}
+
+/*
+ * Helpers
+ */
+.sr-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.hide {
+  display: none;
+}
+
+.flex-center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /*
@@ -128,26 +165,33 @@ h2 a,
 h3 a,
 h4 a,
 h5 a {
+  font-weight: bold;
   text-decoration: underline;
+  text-decoration-skip-ink: auto;
   text-decoration-thickness: .125em;
   text-underline-offset: 1.5px;
+  text-decoration-color: var(--c-primary);
 }
 
 /*
- * Helpers
+ * Generics
  */
-.sr-only:not(:focus):not(:active) {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+.box {
+  position: relative;
+  max-width: var(--desktop-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--padding-global);
+  padding-right: var(--padding-global);
 }
 
-.hide {
-  display: none;
+.box.full {
+  padding: 0;
+}
+
+.callout-area {
+  padding: .75rem;
+  background-color: var(--c-gray-light);
 }
 
 .error {
@@ -163,6 +207,16 @@ h5 a {
 .success {
   background-color: var(--c-success);
   color: var(--c-success-font);
+}
+
+.minimal-content {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.full-page {
+  width: 100%;
+  min-height: calc(100vh - var(--header-height-mobile));
 }
 
 .spacer-1,
@@ -190,14 +244,64 @@ h5 a {
   height: var(--spacer-4);
 }
 
-/*
- * Generics
+/**
+ * Buttons
  */
-.box {
-  position: relative;
-  padding: 0 var(--padding-global);
+button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
-.box.full {
-  padding: 0;
+button.btn,
+button[type="submit"] {
+  position: relative;
+  padding: 1rem 2rem;
+  border: 0;
+  background: var(--c-primary);
+  color: #fff;
+  font-size: .9rem;
+  line-height: 1;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/**
+ * Forms
+ */
+form,
+fieldset,
+select,
+input:not([type="submit"]) {
+  width: 100%;
+}
+
+input:not([type="submit"]) {
+  padding: .25rem .5rem;
+}
+
+form,
+.form-area {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form fieldset {
+  border: 0;
+  margin-bottom: 1rem;
+}
+
+form label {
+  display: block;
+  line-height: 1.15;
+  cursor: pointer;
+}
+
+form input[type="submit"],
+form button[type="submit"] {
+  margin-top: .35rem;
 }

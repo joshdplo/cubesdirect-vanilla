@@ -12,7 +12,7 @@
           <use href="/images/site/feather-sprite.svg#x" />
         </svg>
       </button>
-      <a href="/">
+      <a class="nav-main_logo" href="/">
         CubesDirect
         <!-- <img src="" alt="<%= global.SITE_NAME %> logo"> -->
       </a>
@@ -22,20 +22,20 @@
     </nav>
     <div class="nav-main_right">
       <a href="<%= user ? '/account' : '/login' %>">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        <svg width="1.2rem" height="1.2rem" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
           stroke-linejoin="round">
           <use href="/images/site/feather-sprite.svg#user" />
         </svg>
         <span class="sr-only"><%= user ? 'Account' : 'Login' %></span>
       </a>
-      <a class="nav-main_cart" href="/cart">
+      <a href="/cart">
         <span class="sr-only">Cart</span>
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round">
+        <svg width="1.125rem" height="1.125rem" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
           <use href="/images/site/feather-sprite.svg#shopping-cart" />
         </svg>
         <% if (cart && cart.count) { %>
-        <span class="nav-main_cart-number">(<%= cart.count %>)</span>
+        <span class="nav-main_cart-number <%= cart.count > 99 ? 'xl' : '' %>"><%= cart.count %></span>
         <% } %>
       </a>
     </div>

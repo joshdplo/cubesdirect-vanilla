@@ -1,5 +1,5 @@
-# CubesDirect
-A mock e-commerce site built using Node, Express, SQLite, and (insert FE tech here). This project was created in October 2024.
+# CubesDirect (Vanilla)
+A mock e-commerce site built using Node, Express, SQLite, EJS, vanilla JavaScript and vanilla CSS.
 
 ## Running Locally
 - Nodemailer Setup **(optional)**
@@ -28,71 +28,52 @@ The process for creating CubesDirect was xxxxxxxxxx
 4. Deploying
   - @TODO
 
-### What I Learned from this project
-
-#### Blender
-- General lighting
-- Area lighting for products
-- PBR textures basics
+### What I learned & improved on from this project
 
 #### Node
-- Basic authentication with JWT
+- Introduction to basic authentication with JWT
 - Introduction to SQLite via Sequelize
-- Introduction to sessions in express via express-session + connect-session-sequelize
+- Introduction to sessions in express in general + via express-session + connect-session-sequelize
 - Migrating from MongoDB/Mongoose to SQLite/Sequelize
-- Introduction to database seeding with faker.js (both mongodb and sqlite)
+- Introduction to database seeding with faker.js
 
 #### Front End
-- ??Product image optimization??
+- Experiment with bundling code based on pages' components
+- Cube Customizer
 
-### TODO Dev
-- ~~create initial db seed (random is fine for now)~~
-- ~~decide on templating engine~~
-- ~~migrate models and db code from mongodb/mongoose to sqlite/sequelize~~
-- ~~better error handling in server.js, test non-404 errors~~
-- ~~check that req.id is added/accessible to newly-registered users~~
-- ~~if a new account is registered, req.user.id is not available in the req.user object =/~~
-- ~~make user data available to locals with checkAuth middleware (or new middleware if needed)~~
-- ~~change repo name & folder names to "cubesdirect"~~
-- ~~investigate calls happening twice (ie. getUser middleware called twice even on index page)~~
-  - ~~missing image triggered multiple calls~~
-- ~~reset the jwt access expiration time to 15m in .env~~
-- create caching strategy
-  - categories = in-memory cache
-    - refresh every hour
-  - products = cache all but 'stock' (any others?) + event-based caching
-    - refresh every hour
-- ~~implement pagination for category pages (products)~~
-- set up user add address functionality
-- add 'reviewer' role to users after a single purchase
-- ensure cached data is being invalidated properly
-  - user modifications
-  - product modifications
-- set up email functionality
-  - ~~welcome/verify~~
-  - ~~resend verification~~
-  - ~~password reset~~
-  - ~~password changed~~
-  - order placed confirmation
-  - order shipped
-  - order delivered
+#### Devops
+- Continue practicing basic linux server setup & operation
+- Continue practicing basic nginx/node setup & configuration
+- Continue practicing using letsencrypt via certbot for nginx
+- Introduction to setting up postfix as a send-only mail server for transactional emails
 
-### TODO Design
-- ??hamburger thick verts with 1-2px border radius - sharp, subtle drop shadows??
-- ??incorporate very sharp, subtle drop shadows in the UI to feel more cubey??
-- global message accessibility
-- banner/advert for low-stock items (1-5)
+#### Blender
+- Practice general lighting
+- Introduction to area lighting for products
+- Introduction to PBR textures basics
 
-### TODO Cleanup
-- create a 'setup' script that is checked on 'npm run dev'
-  - check for .env file. if not exist, copy .env.example (or create new .env)
-  - this will eliminate the need for people cloning the project to do anything other than npm i / npm start
-- ~~global/shared validation: sequelize models, BE <-> FE user inputs, FE form input error messages~~
-- ~~decide if product quantities should be selectable (ie. 1-10 dropdown) or just 1 at a time~~
-- product slugs for URLs
-- add 'show password' icon to password fields
+------------------
+
+### TODO FE
+- ensure svg icons are scaling with zoom (move away from feathericons?)
+- revisit/refine font size clamping
+- global message accessibility (error = aria-role="alert")
+- header accessibility (if introducing dropdowns)
+- add 'show password' functionality to password fields
+
+### TODO BE
+- guest user shipping address should be able to be re-used for guest billing address
 - if user starts an order, refresh their access token
+- implement joi validation on all models
+- product slugs for URLs and categories
+- revisit caching strategy, where can it be used to better affect as we get closer to launch?
+- mock up order shipped + order delivered logic + emails (after 1 minute each)
 
 ### TODO Final
-- create JSON files for live DB seed (and update seed file)
-  - include correct product items
+- finalize product/category data + images (`products.js`)
+- create a setup script that is checked on `npm start` (should be lightweight enough)
+  - check for env file and copy if not exist (DONE)
+  - check for `data/db.sqlite` and seed db if not exist
+
+### TODO Optional
+- basic address validation

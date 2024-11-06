@@ -1,12 +1,18 @@
 /*
- * Header Desktop + Defaults
- * - desktop-first css reduces complexity and promotes readability for the header
+ * Header Desktop + Base
+ * - desktop-first css used for readability
+ * - using fixed position, body offset needed (defined here)
  */
-.nav-main {
-  --header-height-desktop: 50px;
-  --header-height-mobile: 40px;
+body {
+  padding-top: var(--header-height-desktop);
+}
 
-  position: relative;
+.nav-main {
+  --header-mobile-link-padding-x: 1.2rem;
+  --header-mobile-link-padding-y: .75rem;
+
+  position: fixed;
+  top: 0;
   display: block;
   width: 100%;
   height: var(--header-height-desktop);
@@ -17,9 +23,15 @@
   position: relative;
   display: flex;
   width: 100%;
+  max-width: var(--desktop-content-width);
   height: 100%;
   justify-content: space-between;
   align-items: center;
+  margin: auto;
+}
+
+.nav-main_logo {
+  padding: 0 var(--padding-global);
 }
 
 #hamburger {
@@ -32,6 +44,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  line-height: 1;
 }
 
 .nav-main_left,
@@ -52,9 +65,27 @@
 
 .nav-main_right .nav-main_cart-number {
   position: absolute;
-  top: 2px;
+  display: flex;
+  top: 3px;
   right: 5px;
-  font-size: .75rem;
+  justify-content: center;
+  align-items: center;
+  font-size: .6rem;
+  font-weight: bold;
+  line-height: 1;
+  width: 1.05rem;
+  height: 1.05rem;
+  background-color: var(--c-dark);
+  color: var(--c-light);
+  border-radius: .525rem;
+}
+
+.nav-main_right .nav-main_cart-number.xl {
+  font-size: .5rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  padding-top: 2px;
+  border-radius: .55rem;
 }
 
 #nav-main_menu ul {
@@ -63,13 +94,26 @@
   list-style: none;
 }
 
+#nav-main_menu a {
+  font-size: .9rem;
+  text-transform: uppercase;
+}
+
 /*
  * Header Mobile
  */
 @media screen and (max-width: 799px) {
+  body {
+    padding-top: var(--header-height-mobile);
+  }
+
   .nav-main {
     height: var(--header-height-mobile);
     border-bottom: 1px solid var(--c-gray);
+  }
+
+  .nav-main_logo {
+    padding-left: 0;
   }
 
   #hamburger {
@@ -122,10 +166,16 @@
 
   #nav-main_menu a {
     justify-content: flex-start;
-    padding: .4rem 1.2rem;
+    padding: var(--header-mobile-link-padding-y) var(--header-mobile-link-padding-x);
   }
 
-  #nav-main_menu ul li:first-child a {
-    padding-top: .8rem;
+  #nav-main_menu a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - var(--header-mobile-link-padding-x) * 2);
+    height: 1px;
+    margin: auto;
+    background-color: var(--c-gray);
   }
 }

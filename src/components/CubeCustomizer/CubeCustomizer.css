@@ -29,6 +29,10 @@
   transform-style: preserve-3d;
 }
 
+.cube-customizer .cube.animating {
+  transition: transform .5s;
+}
+
 .cube-customizer .face {
   position: absolute;
   display: flex;

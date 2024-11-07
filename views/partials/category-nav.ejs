@@ -1,9 +1,14 @@
 <ul>
-  <% for( let index = 0; index < categoryData.length; index++ ) { %>
-  <% if(!categoryData[index].parentId) { %>
-  <li>
-    <a href="/category/<%= categoryData[index].id %>"><%= stringUtils.titleCase(categoryData[index].name) %></a>
+  <% categories.forEach(cat => {  %>
+  <li <%= cat.subcategories.length ? 'class=parent' : '' %>>
+    <a href="/category/<%= cat.id %>"><%= stringUtils.titleCase(cat.name) %></a>
+    <% if(cat.subcategories.length) { %>
+    <ul class="l2">
+      <% cat.subcategories.forEach(subcat => { %>
+      <li><a href="/category/<%= subcat.id %>"><%= stringUtils.titleCase(subcat.name) %></a></li>
+      <% }) %>
+    </ul>
+    <% } %>
   </li>
-  <% } %>
-  <% } %>
+  <% }) %>
 </ul>

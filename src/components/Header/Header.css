@@ -8,6 +8,7 @@ body {
 }
 
 .nav-main {
+  --header-desktop-link-padding-x: 1rem;
   --header-mobile-link-padding-x: 1.2rem;
   --header-mobile-link-padding-y: .75rem;
 
@@ -17,6 +18,7 @@ body {
   width: 100%;
   height: var(--header-height-desktop);
   background-color: #fff;
+  z-index: 10;
 }
 
 .nav-main_wrapper {
@@ -88,15 +90,38 @@ body {
   border-radius: .55rem;
 }
 
+/* Main Menu desktop */
 #nav-main_menu ul {
   position: relative;
   display: flex;
   list-style: none;
 }
 
+#nav-main_menu li {
+  position: relative;
+}
+
 #nav-main_menu a {
   font-size: .9rem;
   text-transform: uppercase;
+  padding: 0 var(--header-desktop-link-padding-x);
+}
+
+#nav-main_menu ul.l2 {
+  position: absolute;
+  display: none;
+  top: 100%;
+  left: var(--header-desktop-link-padding-x);
+  width: calc(100% + 1rem);
+  flex-direction: column;
+  padding-top: .5rem;
+}
+
+#nav-main_menu ul.l2 a {
+  height: auto;
+  justify-content: flex-start;
+  padding: .5rem .4rem;
+  background-color: #fff;
 }
 
 /*
@@ -121,7 +146,6 @@ body {
     height: 100%;
     align-items: center;
     padding: 0 var(--padding-global);
-    z-index: 10;
   }
 
   #hamburger .close {
@@ -136,19 +160,20 @@ body {
     display: none;
   }
 
+  /* Main Menu mobile */
   #nav-main_menu {
     position: fixed;
     display: none;
     left: 0;
     top: 40px;
-    width: 100vw;
+    width: 300px;
     height: calc(100vh - var(--header-height-mobile));
     flex-direction: column;
     transform: translateX(-110%);
     opacity: 0;
     transition: transform .3s ease, opacity .3s ease;
-    z-index: 9;
     background-color: var(--c-light);
+    border-right: 1px solid var(--c-gray);
   }
 
   #nav-main_menu.showing {
@@ -167,6 +192,7 @@ body {
   #nav-main_menu a {
     justify-content: flex-start;
     padding: var(--header-mobile-link-padding-y) var(--header-mobile-link-padding-x);
+    height: auto;
   }
 
   #nav-main_menu a::after {
@@ -177,5 +203,13 @@ body {
     height: 1px;
     margin: auto;
     background-color: var(--c-gray);
+  }
+
+  #nav-main_menu ul.l2 a {
+    padding-left: calc(var(--header-mobile-link-padding-x) * 2);
+  }
+
+  #nav-main_menu ul.l2 a::after {
+    width: calc(100% - var(--header-mobile-link-padding-x) * 3);
   }
 }

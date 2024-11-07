@@ -1,14 +1,37 @@
 import 'dotenv/config';
-import categoryCache from '../services/categoryCache.js';
+import Category from '../models/Category.js';
 import stringUtils from '../util/stringUtils.js';
 
 // Populate app.locals with initial data
 const initAppData = async (app) => {
   try {
-    const categoryData = await categoryCache.getCache({ queryType: 'findAll' });
+    const categoryData = await Category.findAll({
+      where: { parentId: null },
+      include: [
+        {
+          model: Category,
+          as: 'subcategories'
+        }
+      ]
+    });
+
+    const formattedCategories = categoryData.map(category => ({
+      id: category.id,
+      parentId: category.parentId || null,
+      name: category.name,
+      description: category.description,
+      featured: category.featured,
+      subcategories: category.subcategories.map(subcat => ({
+        id: subcat.id,
+        parentId: subcat.parentId || null,
+        name: subcat.name,
+        description: subcat.description,
+        featured: subcat.featured
+      }))
+    }));
 
     app.locals.stringUtils = stringUtils;
-    app.locals.categoryData = categoryData;
+    app.locals.categories = formattedCategories;
     app.locals.title = null; // overridden by res, needed for all pages
     app.locals.bundle = null; // overridden by res, needed for all pages
     app.locals.user = null; // overridden by res, needed for all pages

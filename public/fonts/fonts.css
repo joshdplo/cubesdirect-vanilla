@@ -1,8 +1,28 @@
+/* Body Font */
+@font-face {
+  font-family: 'Nunito';
+  src: url('Nunito-Regular.woff2') format('woff2'),
+    url('Nunito-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Nunito';
   src: url('Nunito-Bold.woff2') format('woff2'),
     url('Nunito-Bold.woff') format('woff');
   font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Title Font */
+@font-face {
+  font-family: 'Raleway';
+  src: url('Raleway-Regular.woff2') format('woff2'),
+    url('Raleway-Regular.woff') format('woff');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
@@ -16,20 +36,375 @@
   font-display: swap;
 }
 
+/* Icon Font + Icon Styles */
 @font-face {
-  font-family: 'Nunito';
-  src: url('Nunito-Regular.woff2') format('woff2'),
-    url('Nunito-Regular.woff') format('woff');
+  font-family: 'fontello';
+  src: url('fontello.woff2') format('woff2'),
+    url('fontello.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Raleway';
-  src: url('Raleway-Regular.woff2') format('woff2'),
-    url('Raleway-Regular.woff') format('woff');
-  font-weight: normal;
+[class^="i-"]:before,
+[class*=" i-"]:before {
+  position: relative;
+  display: inline-block;
+  font-family: "fontello";
   font-style: normal;
-  font-display: swap;
+  font-weight: normal;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+.i-basket:before {
+  content: '\e800';
+}
+
+/* '' */
+.i-star:before {
+  content: '\e801';
+}
+
+/* '' */
+.i-star-empty:before {
+  content: '\e802';
+}
+
+/* '' */
+.i-star-half:before {
+  content: '\e803';
+}
+
+/* '' */
+.i-cancel:before {
+  content: '\e804';
+}
+
+/* '' */
+.i-plus:before {
+  content: '\e805';
+}
+
+/* '' */
+.i-minus:before {
+  content: '\e806';
+}
+
+/* '' */
+.i-info-circled:before {
+  content: '\e807';
+}
+
+/* '' */
+.i-help-circled:before {
+  content: '\e808';
+}
+
+/* '' */
+.i-down-dir:before {
+  content: '\e809';
+}
+
+/* '' */
+.i-up-dir:before {
+  content: '\e80a';
+}
+
+/* '' */
+.i-left-dir:before {
+  content: '\e80b';
+}
+
+/* '' */
+.i-right-dir:before {
+  content: '\e80c';
+}
+
+/* '' */
+.i-cog:before {
+  content: '\e80d';
+}
+
+/* '' */
+.i-block:before {
+  content: '\e80e';
+}
+
+/* '' */
+.i-ok:before {
+  content: '\e80f';
+}
+
+/* '' */
+.i-edit:before {
+  content: '\e810';
+}
+
+/* '' */
+.i-attention:before {
+  content: '\e811';
+}
+
+/* '' */
+.i-trash-empty:before {
+  content: '\e812';
+}
+
+/* '' */
+.i-mail:before {
+  content: '\e813';
+}
+
+/* '' */
+.i-heart:before {
+  content: '\e814';
+}
+
+/* '' */
+.i-heart-empty:before {
+  content: '\e815';
+}
+
+/* '' */
+.i-search:before {
+  content: '\e816';
+}
+
+/* '' */
+.i-play:before {
+  content: '\e817';
+}
+
+/* '' */
+.i-pause:before {
+  content: '\e818';
+}
+
+/* '' */
+.i-lock:before {
+  content: '\e819';
+}
+
+/* '' */
+.i-lock-open:before {
+  content: '\e81a';
+}
+
+/* '' */
+.i-arrows-cw:before {
+  content: '\e81b';
+}
+
+/* '' */
+.i-github-circled:before {
+  content: '\f09b';
+}
+
+/* '' */
+.i-certificate:before {
+  content: '\f0a3';
+}
+
+/* '' */
+.i-menu:before {
+  content: '\f0c9';
+}
+
+/* '' */
+.i-sort-down:before {
+  content: '\f0dd';
+}
+
+/* '' */
+.i-sort-up:before {
+  content: '\f0de';
+}
+
+/* '' */
+.i-mail-alt:before {
+  content: '\f0e0';
+}
+
+/* '' */
+.i-doc-text:before {
+  content: '\f0f6';
+}
+
+/* '' */
+.i-angle-left:before {
+  content: '\f104';
+}
+
+/* '' */
+.i-angle-right:before {
+  content: '\f105';
+}
+
+/* '' */
+.i-angle-up:before {
+  content: '\f106';
+}
+
+/* '' */
+.i-angle-down:before {
+  content: '\f107';
+}
+
+/* '' */
+.i-smile:before {
+  content: '\f118';
+}
+
+/* '' */
+.i-frown:before {
+  content: '\f119';
+}
+
+/* '' */
+.i-meh:before {
+  content: '\f11a';
+}
+
+/* '' */
+.i-star-half-alt:before {
+  content: '\f123';
+}
+
+/* '' */
+.i-help:before {
+  content: '\f128';
+}
+
+/* '' */
+.i-info:before {
+  content: '\f129';
+}
+
+/* '' */
+.i-ellipsis:before {
+  content: '\f141';
+}
+
+/* '' */
+.i-minus-squared-alt:before {
+  content: '\f147';
+}
+
+/* '' */
+.i-dollar:before {
+  content: '\f155';
+}
+
+/* '' */
+.i-linux:before {
+  content: '\f17c';
+}
+
+/* '' */
+.i-male:before {
+  content: '\f183';
+}
+
+/* '' */
+.i-box:before {
+  content: '\f187';
+}
+
+/* '' */
+.i-plus-squared-alt:before {
+  content: '\f196';
+}
+
+/* '' */
+.i-child:before {
+  content: '\f1ae';
+}
+
+/* '' */
+.i-cube:before {
+  content: '\f1b2';
+}
+
+/* '' */
+.i-cubes:before {
+  content: '\f1b3';
+}
+
+/* '' */
+.i-spotify:before {
+  content: '\f1bc';
+}
+
+/* '' */
+.i-share:before {
+  content: '\f1e0';
+}
+
+/* '' */
+.i-cc-visa:before {
+  content: '\f1f0';
+}
+
+/* '' */
+.i-cc-mastercard:before {
+  content: '\f1f1';
+}
+
+/* '' */
+.i-cc-discover:before {
+  content: '\f1f2';
+}
+
+/* '' */
+.i-cc-amex:before {
+  content: '\f1f3';
+}
+
+/* '' */
+.i-trash:before {
+  content: '\f1f8';
+}
+
+/* '' */
+.i-copyright:before {
+  content: '\f1f9';
+}
+
+/* '' */
+.i-toggle-off:before {
+  content: '\f204';
+}
+
+/* '' */
+.i-toggle-on:before {
+  content: '\f205';
+}
+
+/* '' */
+.i-cart-plus:before {
+  content: '\f217';
+}
+
+/* '' */
+.i-map-signs:before {
+  content: '\f277';
+}
+
+/* '' */
+.i-address-book-o:before {
+  content: '\f2ba';
+}
+
+/* '' */
+.i-user-circle-o:before {
+  content: '\f2be';
+}
+
+/* '' */

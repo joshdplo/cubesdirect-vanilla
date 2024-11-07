@@ -251,6 +251,9 @@ button {
   border: 0;
   background: transparent;
   cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  font-weight: normal;
 }
 
 button.btn,

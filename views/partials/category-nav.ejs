@@ -1,11 +1,34 @@
-<ul>
+<% if(mainNav) { %>
+<button class="nav-main_categories-toggle" aria-expanded="false" aria-controls="nav-main_category-menu">All
+  Categories</button>
+<% } %>
+<ul <%= mainNav ? 'id=nav-main_category-menu' : '' %>>
   <% categories.forEach(cat => {  %>
-  <li <%= cat.subcategories.length ? 'class=parent' : '' %>>
-    <a href="/category/<%= cat.id %>"><%= stringUtils.titleCase(cat.name) %></a>
+  <% const isMainNavWithSubcats = mainNav && cat.subcategories.length %>
+  <li <%= cat.subcategories.length ? 'class=parent' : '' %>
+    <%= isMainNavWithSubcats ? `id=cat${cat.id} aria-expanded=false aria-controls=subcats${cat.id} tabindex=0` : '' %>>
+    <% if(isMainNavWithSubcats) { %>
+    <%= stringUtils.titleCase(cat.name) %>
+    <% } else { %>
+    <a href="/category/<%= cat.id %>">
+      <%= stringUtils.titleCase(cat.name) %>
+    </a>
+    <% } %>
     <% if(cat.subcategories.length) { %>
-    <ul class="l2">
+    <ul class="l2" <%= cat.subcategories.length ? `id=subcats${cat.id}` : '' %>>
+      <% if(isMainNavWithSubcats) { %>
+      <li>
+        <a href="/category/<%= cat.id %>">
+          View All <%= stringUtils.titleCase(cat.name) %>
+        </a>
+      </li>
+      <% } %>
       <% cat.subcategories.forEach(subcat => { %>
-      <li><a href="/category/<%= subcat.id %>"><%= stringUtils.titleCase(subcat.name) %></a></li>
+      <li>
+        <a href="/category/<%= subcat.id %>">
+          <%= stringUtils.titleCase(subcat.name) %>
+        </a>
+      </li>
       <% }) %>
     </ul>
     <% } %>

@@ -16,11 +16,15 @@ export default class Header extends BaseComponent {
   openMenu() {
     this.dom.nav.classList.add('showing');
     this.dom.nav.offsetHeight; // force reflow
-    requestAnimationFrame(() => { this.dom.nav.classList.add('animated') });
+    requestAnimationFrame(() => {
+      this.dom.nav.classList.add('animated');
+      document.body.classList.add('nav-open');
+    });
   }
 
   closeMenu() {
     this.dom.nav.classList.remove('animated');
+    document.body.classList.remove('nav-open');
     this.dom.nav.addEventListener('transitionend', () => {
       this.dom.nav.classList.remove('showing');
     }, { once: true });

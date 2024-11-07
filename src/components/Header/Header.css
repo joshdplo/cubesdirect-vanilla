@@ -58,7 +58,7 @@ body {
 }
 
 .nav-main_right a {
-  padding: 0 .25rem;
+  padding: 0 .45rem;
 }
 
 .nav-main_right a:last-child {
@@ -91,9 +91,14 @@ body {
 }
 
 /* Main Menu desktop */
+#nav-main_menu {
+  height: 100%;
+}
+
 #nav-main_menu ul {
   position: relative;
   display: flex;
+  height: 100%;
   list-style: none;
 }
 
@@ -172,7 +177,8 @@ body {
     transform: translateX(-110%);
     opacity: 0;
     transition: transform .3s ease, opacity .3s ease;
-    background-color: var(--c-light);
+    /* background-color: var(--c-light); */
+    background-color: #fff;
     border-right: 1px solid var(--c-gray);
   }
 

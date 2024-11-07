@@ -4,6 +4,7 @@ import { BaseComponent } from "../componentSystem.js";
 export default class Header extends BaseComponent {
   init() {
     this.isOpen = false;
+    this.isToggling = false;
 
     this.dom = {
       hamburger: this.element.querySelector('#hamburger'),
@@ -19,6 +20,7 @@ export default class Header extends BaseComponent {
     requestAnimationFrame(() => {
       this.dom.nav.classList.add('animated');
       document.body.classList.add('nav-open');
+      this.isToggling = false;
     });
   }
 
@@ -27,13 +29,19 @@ export default class Header extends BaseComponent {
     document.body.classList.remove('nav-open');
     this.dom.nav.addEventListener('transitionend', () => {
       this.dom.nav.classList.remove('showing');
+      this.isToggling = false;
     }, { once: true });
   }
 
   toggle() {
+    if (this.isToggling) {
+      console.log('too slow, cowpoke!');
+      return;
+    }
     const showing = this.dom.hamburger.getAttribute('aria-expanded') === 'true';
     this.isOpen = showing;
 
+    this.isToggling = true;
     this.dom.hamburger.setAttribute('aria-expanded', showing ? 'false' : 'true');
     showing ? this.closeMenu() : this.openMenu();
   }

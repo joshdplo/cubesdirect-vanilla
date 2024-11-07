@@ -4,7 +4,7 @@
     <div class="nav-main_left">
       <button id="hamburger" aria-expanded="false" aria-label="Toggle navigation menu" aria-controls="nav-main_menu">
         <i class="open i-menu"></i>
-        <i class="close i-left-dir"></i>
+        <i class="close i-x"></i>
       </button>
       <a class="nav-main_logo" href="/">
         CubesDirect
@@ -18,12 +18,12 @@
     </nav>
     <div class="nav-main_right">
       <a href="<%= user ? '/account' : '/login' %>">
-        <i class="i-user-circle-o"></i>
+        <i class="user i-user"></i>
         <span class="sr-only"><%= user ? 'Account' : 'Login' %></span>
       </a>
       <a href="/cart">
         <span class="sr-only">Cart</span>
-        <i class="i-basket"></i>
+        <i class="cart i-shopping-cart"></i>
         <% if (cart && cart.count) { %>
         <span class="nav-main_cart-number <%= cart.count > 99 ? 'xl' : '' %>"><%= cart.count %></span>
         <% } %>

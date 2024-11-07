@@ -8,6 +8,7 @@ export const pageIndex = async (req, res, next) => {
       where: { featured: true }
     });
     res.render('pages/index', {
+      title: 'Winter and Christmas Cubes Available',
       featuredProducts
     });
   } catch (error) {

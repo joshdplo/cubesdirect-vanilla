@@ -1,0 +1,14 @@
+/**
+ * Login
+ */
+.login_password-reset {
+  font-size: .8rem;
+}
+
+form#login fieldset:last-of-type {
+  margin-bottom: .25rem;
+}
+
+form#login button[type="submit"] {
+  margin-top: 1.2rem;
+}

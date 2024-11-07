@@ -19,12 +19,15 @@
         <label for="password">Password</label>
         <input type="password" name="password" id="password" autocomplete="current-password">
       </fieldset>
+      <p class="login_password-reset">
+        Forgot your password? <a href="/reset-password-request">Reset Password</a>.
+      </p>
       <div class="messages"></div>
       <button type="submit">Log in</button>
     </form>
     <div class="spacer-1"></div>
     <div class="form-area callout-area">
-      <p>Don't have an account for <%= global.SITE_NAME %>?<br>
+      <p>Don't have a <%= global.SITE_NAME %> account?<br>
         <a href="/register">Register here</a>.
       </p>
       <% if (global.EMAIL_ENABLED) { %>

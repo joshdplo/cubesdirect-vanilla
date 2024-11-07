@@ -173,6 +173,10 @@ h5 a {
   text-decoration-color: var(--c-primary);
 }
 
+p+p {
+  margin-top: 1rem;
+}
+
 /*
  * Generics
  */
@@ -210,8 +214,8 @@ h5 a {
 }
 
 .minimal-content {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 2.75rem;
+  padding-bottom: 2.75rem;
 }
 
 .full-page {
@@ -306,5 +310,5 @@ form label {
 
 form input[type="submit"],
 form button[type="submit"] {
-  margin-top: .35rem;
+  margin-top: .2rem;
 }

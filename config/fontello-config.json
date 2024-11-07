@@ -79,12 +79,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "3fce1eca43f917c8f23e532749abae5d",
-      "css": "user-circle-o",
-      "code": 62142,
-      "src": "fontawesome"
-    },
-    {
       "uid": "0f6a2573a7b6df911ed199bb63717e27",
       "css": "github-circled",
       "code": 61595,
@@ -265,18 +259,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "ca2d64f8a3ea7cbf6af45898b2dcf35e",
-      "css": "male",
-      "code": 61827,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "c2314ed1d2314b89f9285c53bcbf2548",
-      "css": "child",
-      "code": 61870,
-      "src": "fontawesome"
-    },
-    {
       "uid": "d61be837c725a299b432dcbee2ecdae6",
       "css": "certificate",
       "code": 61603,
@@ -418,6 +400,60 @@
       "uid": "fb4794d89b77ab712ad56c0dc4c76c6b",
       "css": "spotify",
       "code": 61884,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "8b80d36d4ef43889db10bc1f0dc9a862",
+      "css": "user",
+      "code": 59420,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "b86df50a2d898bfcd371fa86c0b8b2fb",
+      "css": "user-o",
+      "code": 62144,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3db5347bd219f3bce6025780f5d9ef45",
+      "css": "tag",
+      "code": 59421,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "90e0aff5c929e444038355746a952aaf",
+      "css": "shopping-basket",
+      "code": 62097,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "48b87105bd38c20315f1b705b8c7b38c",
+      "css": "list",
+      "code": 59422,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "4109c474ff99cad28fd5a2c38af2ec6f",
+      "css": "filter",
+      "code": 61616,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3a00327e61b997b58518bd43ed83c3df",
+      "css": "login",
+      "code": 59423,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0d20938846444af8deb1920dc85a29fb",
+      "css": "logout",
+      "code": 59424,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3fce1eca43f917c8f23e532749abae5d",
+      "css": "user-circle-o",
+      "code": 62142,
       "src": "fontawesome"
     }
   ]

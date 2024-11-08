@@ -1,0 +1,35 @@
+[data-cmp="tab"] {
+  position: relative;
+  display: grid;
+  padding-right: 2rem;
+}
+
+[data-cmp="tab"]::before {
+  content: "\e940";
+  position: absolute;
+  display: block;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'feather' !important;
+}
+
+[data-cmp="tab"][aria-expanded="true"]::before {
+  content: "\e947";
+}
+
+[data-cmp="tab"]+[aria-labeledby] {
+  position: relative;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: .3s ease;
+  transform-origin: top left;
+}
+
+[data-cmp="tab"]+[aria-labeledby]>* {
+  overflow: hidden;
+}
+
+[data-cmp="tab"][aria-expanded="true"]+[aria-labeledby] {
+  grid-template-rows: 1fr;
+}

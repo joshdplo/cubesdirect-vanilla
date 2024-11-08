@@ -85,6 +85,30 @@ body {
   line-height: var(--line-height-default);
 }
 
+#page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, .6);
+  backdrop-filter: blur(3px);
+  transform: scaleX(0);
+  z-index: -1;
+  transition: opacity .15s ease;
+  transition-delay: .25s;
+  transform-origin: right;
+}
+
+body.nav-open #page-overlay {
+  transform: scaleX(1);
+  opacity: 1;
+  pointer-events: all;
+  z-index: 9;
+}
+
 main>h1,
 main.heading {
   margin-bottom: 1rem;
@@ -113,6 +137,20 @@ main.heading {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.pad {
+  padding: var(--padding-global);
+}
+
+.pad-x {
+  padding-left: var(--padding-global);
+  padding-right: var(--padding-global);
+}
+
+.pad-y {
+  padding-top: var(--padding-global);
+  padding-bottom: var(--padding-global);
 }
 
 /*
@@ -175,6 +213,10 @@ h5 a {
 
 p+p {
   margin-top: 1rem;
+}
+
+ul {
+  list-style: none;
 }
 
 /*

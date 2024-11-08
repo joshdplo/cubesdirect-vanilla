@@ -114,7 +114,6 @@ body {
   position: relative;
   display: flex;
   height: 100%;
-  list-style: none;
 }
 
 #nav-main_menu li {

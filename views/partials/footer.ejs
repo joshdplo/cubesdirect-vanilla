@@ -1,5 +1,31 @@
-<footer data-cmp="footer">
-  <div class="left">footer left</div>
-  <%- include ('./category-nav', {mainNav: false}) %>
-  <div class="right">footer right</div>
+<footer class="footer-main" data-cmp="footer">
+  <div class="footer-main_menus">
+    <div class="footer-main_categories pad">
+      <%- include ('./category-nav', {mainNav: false}) %>
+    </div>
+    <div class="footer-main_account pad">
+      <% if(user) { %>
+      <%- include ('./account-menu', {collapsed: true}) %>
+      <% } else { %>
+      <ul>
+        <li><a href="/login">Log In</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+      <% } %>
+    </div>
+    <div class="footer-main_email pad"></div>
+  </div>
+  <div class="footer-main_info">
+    <div class="footer-main_copyright">
+      &copy; 2024 CubesDirect
+    </div>
+    <ul>
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/thanks">Thanks</a></li>
+      <li><a href="https://github.com/joshdplo/cubesdirect-vanilla" title="View code on github">
+          <i class="i-github"></i>
+          <span class="sr-only">View code on github</span>
+        </a></li>
+    </ul>
+  </div>
 </footer>

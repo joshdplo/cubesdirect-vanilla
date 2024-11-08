@@ -1,4 +1,59 @@
-footer {
+/**
+ * Footer Mobile + Base
+ */
+.footer-main {
   background: var(--c-gray);
-  padding: 1rem;
+}
+
+.footer-main a:hover {
+  text-decoration: underline;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: .125em;
+  text-underline-offset: 1.5px;
+  text-decoration-color: var(--c-gray-dark);
+}
+
+.footer-main,
+.footer-main_menus,
+.footer-main_email,
+.footer-main_info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-main_info {
+  flex-direction: row;
+  justify-content: space-between;
+  padding: .5rem 1rem;
+  background-color: var(--c-gray-dark);
+  color: var(--c-light);
+  font-size: .85rem;
+}
+
+.footer-main_info ul,
+.footer-main_info li,
+.footer-main_info a {
+  display: flex;
+}
+
+.footer-main_info a {
+  align-items: center;
+  justify-content: center;
+  padding: 0 .35rem;
+  line-height: 1;
+}
+
+.footer-main_info ul li:last-child a {
+  padding-right: 0;
+}
+
+/**
+ * Footer Desktop
+ */
+@media screen and (min-width: 800px) {
+  .footer-main_menus {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

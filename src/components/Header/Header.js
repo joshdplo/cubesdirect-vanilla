@@ -8,10 +8,13 @@ export default class Header extends BaseComponent {
 
     this.dom = {
       hamburger: this.element.querySelector('#hamburger'),
-      nav: this.element.querySelector('nav')
+      nav: this.element.querySelector('nav'),
+      pageOverlay: document.querySelector('#page-overlay')
     };
 
     this.addEventListener(this.dom.hamburger, 'click', this.toggle.bind(this));
+    this.addEventListener(this.dom.pageOverlay, 'click', this.toggle.bind(this));
+    this.addEventListener(document, 'keyup', this.onDocumentKeyup.bind(this));
   }
 
   openMenu() {
@@ -21,15 +24,17 @@ export default class Header extends BaseComponent {
       this.dom.nav.classList.add('animated');
       document.body.classList.add('nav-open');
       this.isToggling = false;
+      this.isOpen = true;
     });
   }
 
   closeMenu() {
-    this.dom.nav.classList.remove('animated');
     document.body.classList.remove('nav-open');
+    this.dom.nav.classList.remove('animated');
     this.dom.nav.addEventListener('transitionend', () => {
       this.dom.nav.classList.remove('showing');
       this.isToggling = false;
+      this.isOpen = false;
     }, { once: true });
   }
 
@@ -39,10 +44,13 @@ export default class Header extends BaseComponent {
       return;
     }
     const showing = this.dom.hamburger.getAttribute('aria-expanded') === 'true';
-    this.isOpen = showing;
 
     this.isToggling = true;
     this.dom.hamburger.setAttribute('aria-expanded', showing ? 'false' : 'true');
     showing ? this.closeMenu() : this.openMenu();
+  }
+
+  onDocumentKeyup(e) {
+    if (e.key === 'Escape' && this.isOpen) this.toggle();
   }
 }

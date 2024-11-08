@@ -1,12 +1,5 @@
-<%# User data %>
-<% const userData = user ? {
-  id: user.id,
-  roles: user.roles,
-  isVerified: user.isVerified
-} : null %>
-<% if(userData) { %>
-<div data-user="<%= JSON.stringify(userData) %>"></div>
-<% } %>
+<%# Overlay %>
+<div id="page-overlay"></div>
 
 <%# Main Scripts %>
 <script type="module" src="/main.js" defer></script>

@@ -88,7 +88,7 @@ app.use((error, req, res, next) => {
 // Server Start
 const PORT = process.env.PORT || 5000;
 const NAME = process.env.NAME;
-const server = app.listen(PORT, () => console.log(`${NAME} Server running on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`--------\n${NAME} Server running: http://localhost:${PORT}\n--------`));
 
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {

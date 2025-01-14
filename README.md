@@ -1,6 +1,9 @@
 # CubesDirect (Vanilla)
 A mock e-commerce site built using Node, Express, SQLite, EJS, vanilla JavaScript and vanilla CSS.
 
+## THIS PROJECT IS INCOMPLETE
+It still runs fine, and it's about 85% complete, but the UI is largely missing.
+
 ## Running Locally
 - Nodemailer Setup **(optional)**
   - when running/developing locally
@@ -13,20 +16,6 @@ A mock e-commerce site built using Node, Express, SQLite, EJS, vanilla JavaScrip
     - NOTE: you can only send mails via mailtrap to the *address you created your mailtrap account with* (you **can** change your mailtrap email account if needed!)
   - using gmail for email testing
     - i didn't test gmail sending, but (here is a note from nodemailer on using gmail)[https://nodemailer.com/usage/using-gmail/]. With a potential couple extra steps, it *should* work.
-
-## Why I made CubesDirect
-I made this project for xxxxxxxxxx
-
-### Process
-The process for creating CubesDirect was xxxxxxxxxx
-1. Planning
-  - @TODO
-2. Building
-  - @TODO
-3. Polishing
-  - @TODO
-4. Deploying
-  - @TODO
 
 ### What I learned & improved on from this project
 
@@ -51,29 +40,3 @@ The process for creating CubesDirect was xxxxxxxxxx
 - Practice general lighting
 - Introduction to area lighting for products
 - Introduction to PBR textures basics
-
-------------------
-
-### TODO FE
-- ensure svg icons are scaling with zoom (move away from feathericons?)
-- revisit/refine font size clamping
-- global message accessibility (error = aria-role="alert")
-- header accessibility (if introducing dropdowns)
-- add 'show password' functionality to password fields
-
-### TODO BE
-- guest user shipping address should be able to be re-used for guest billing address
-- if user starts an order, refresh their access token
-- implement joi validation on all models
-- product slugs for URLs and categories
-- revisit caching strategy, where can it be used to better affect as we get closer to launch?
-- mock up order shipped + order delivered logic + emails (after 1 minute each)
-
-### TODO Final
-- finalize product/category data + images (`products.js`)
-- create a setup script that is checked on `npm start` (should be lightweight enough)
-  - check for env file and copy if not exist (DONE)
-  - check for `data/db.sqlite` and seed db if not exist
-
-### TODO Optional
-- basic address validation?

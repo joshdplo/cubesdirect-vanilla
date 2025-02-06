@@ -130,6 +130,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# mac
+.DS_Store
+
 # cubesdirect
 *.sqlite
 data/*.json

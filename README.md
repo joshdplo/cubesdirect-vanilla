@@ -2,7 +2,7 @@
 A mock e-commerce site built using Node, Express, SQLite, EJS, vanilla JavaScript and vanilla CSS.
 
 ## THIS PROJECT IS INCOMPLETE
-It still runs fine, and it's about 85% complete, but the UI is largely missing.
+It's around 80% complete, but the UI is missing.
 
 ## Running Locally
 - Nodemailer Setup **(optional)**
